@@ -5,7 +5,8 @@ import { type ImageSourcePropType } from "react-native";
 export interface Card {
   uniqueId?: string;
   pairId: string;
-  image: ImageSourcePropType;
+  imageP: ImageSourcePropType;
+  imageL: ImageSourcePropType;
   isFlipped: boolean;
 }
 
