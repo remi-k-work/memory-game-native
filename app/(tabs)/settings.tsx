@@ -1,119 +1,65 @@
 // react native
-import { View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 
 // other libraries
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useGameStore } from "@/stores/gameProvider";
 
 // components
 import CollectionSlider from "@/components/collection-slider";
+import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "~/components/ui/card";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "~/components/ui/select";
-import { Text } from "~/components/ui/text";
+import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
 
 export default function Screen() {
-  const insets = useSafeAreaInsets();
-  const contentInsets = {
-    top: insets.top,
-    bottom: insets.bottom,
-    left: 12,
-    right: 12,
-  };
+  // Get the state and actions we need from the game store
+  const difficulty = useGameStore((state) => state.difficulty);
+  const changedDifficulty = useGameStore((state) => state.changedDifficulty);
 
   return (
     <View className="flex-1 items-center justify-center">
       <Card className="w-full max-w-sm">
         <CardHeader>
-          <CardTitle>Card Title</CardTitle>
-          <CardDescription>Card Description</CardDescription>
+          <CardTitle>Game Settings</CardTitle>
+          <CardDescription>Change the difficulty and collection</CardDescription>
         </CardHeader>
-        <CardContent>
-          <Text>Card Content</Text>
-          <CollectionSlider test={1} />
-          <Select defaultValue={{ value: "apple", label: "Apple" }} onValueChange={(value) => console.log(value)}>
-            <SelectTrigger className="w-[250px]">
-              <SelectValue className="native:text-lg text-sm text-foreground" placeholder="Select a fruit" />
-            </SelectTrigger>
-            <SelectContent insets={contentInsets} className="w-[250px]">
-              <SelectGroup>
-                <SelectLabel>Fruits</SelectLabel>
-                <SelectItem label="Apple" value="apple">
-                  Apple
-                </SelectItem>
-                <SelectItem label="Banana" value="banana">
-                  Banana
-                </SelectItem>
-                <SelectItem label="Blueberry" value="blueberry">
-                  Blueberry
-                </SelectItem>
-                <SelectItem label="Grapes" value="grapes">
-                  Grapes
-                </SelectItem>
-                <SelectItem label="Pineapple" value="pineapple">
-                  Pineapple
-                </SelectItem>
-                <SelectItem label="Pineapple" value="pineapple">
-                  Pineapple
-                </SelectItem>
-                <SelectItem label="Pineapple" value="pineapple">
-                  Pineapple
-                </SelectItem>
-                <SelectItem label="Pineapple" value="pineapple">
-                  Pineapple
-                </SelectItem>
-                <SelectItem label="Pineapple" value="pineapple">
-                  Pineapple
-                </SelectItem>
-                <SelectItem label="Pineapple" value="pineapple">
-                  Pineapple
-                </SelectItem>
-                <SelectItem label="Pineapple" value="pineapple">
-                  Pineapple
-                </SelectItem>
-                <SelectItem label="Pineapple" value="pineapple">
-                  Pineapple
-                </SelectItem>
-                <SelectItem label="Pineapple" value="pineapple">
-                  Pineapple
-                </SelectItem>
-                <SelectItem label="Pineapple" value="pineapple">
-                  Pineapple
-                </SelectItem>
-                <SelectItem label="Pineapple" value="pineapple">
-                  Pineapple
-                </SelectItem>
-                <SelectItem label="Pineapple" value="pineapple">
-                  Pineapple
-                </SelectItem>
-                <SelectItem label="Pineapple" value="pineapple">
-                  Pineapple
-                </SelectItem>
-                <SelectItem label="Pineapple" value="pineapple">
-                  Pineapple
-                </SelectItem>
-                <SelectItem label="Pineapple" value="pineapple">
-                  Pineapple
-                </SelectItem>
-                <SelectItem label="Pineapple" value="pineapple">
-                  Pineapple
-                </SelectItem>
-                <SelectItem label="Pineapple" value="pineapple">
-                  Pineapple
-                </SelectItem>
-                <SelectItem label="Pineapple" value="pineapple">
-                  Pineapple
-                </SelectItem>
-                <SelectItem label="Pineapple" value="pineapple">
-                  Pineapple
-                </SelectItem>
-                <SelectItem label="Pineapple" value="pineapple">
-                  Pineapple
-                </SelectItem>
-                <SelectItem label="Pineapple" value="pineapple">
-                  Pineapple
-                </SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+        <CardContent className="gap-6">
+          <View className="gap-1">
+            <Text className="text-muted-foreground">Select Difficulty</Text>
+            <RadioGroup
+              value={difficulty}
+              onValueChange={(value) => changedDifficulty(value as "easy" | "medium" | "hard")}
+              className="flex-row items-center justify-center gap-0"
+            >
+              <TouchableOpacity
+                className="pointer-events-box-only flex-row items-center gap-1 rounded-l-xl bg-green-500 p-4"
+                onPress={() => changedDifficulty("easy")}
+              >
+                <RadioGroupItem value="easy" aria-labelledby="label-for-easy" />
+                <Label nativeID="label-for-easy" className="native:text-xl">
+                  EASY
+                </Label>
+              </TouchableOpacity>
+              <TouchableOpacity className="pointer-events-box-only flex-row items-center gap-1 bg-yellow-500 p-4" onPress={() => changedDifficulty("medium")}>
+                <RadioGroupItem value="medium" aria-labelledby="label-for-medium" />
+                <Label nativeID="label-for-medium" className="native:text-xl">
+                  MEDIUM
+                </Label>
+              </TouchableOpacity>
+              <TouchableOpacity
+                className="pointer-events-box-only flex-row items-center gap-1 rounded-r-xl bg-red-500 p-4"
+                onPress={() => changedDifficulty("hard")}
+              >
+                <RadioGroupItem value="hard" aria-labelledby="label-for-hard" />
+                <Label nativeID="label-for-hard" className="native:text-xl">
+                  HARD
+                </Label>
+              </TouchableOpacity>
+            </RadioGroup>
+          </View>
+          <View className="gap-1">
+            <Text className="text-muted-foreground">Select Collection</Text>
+            <CollectionSlider test={1} />
+          </View>
         </CardContent>
         <CardFooter>
           <Text>Card Footer</Text>

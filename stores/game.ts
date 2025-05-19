@@ -18,6 +18,7 @@ export interface GameState {
 interface GameActions {
   chosenaCard: (choice: Card) => void;
   chosenaPair: () => void;
+  changedDifficulty: (difficulty: "easy" | "medium" | "hard") => void;
   shuffleCards: (cols: number, rows: number, cards?: Card[]) => void;
   resetGame: () => void;
 }
@@ -79,6 +80,16 @@ export const createGameStore = (initState?: GameState) => {
           return { cards: getCardsWtihUnFlippedPair(choiceOne!, choiceTwo!), turns: state.turns + 1, choiceOne: undefined, choiceTwo: undefined };
         }
       }),
+
+    // Player has changed the difficulty
+    changedDifficulty: (difficulty) =>
+      set(() => ({
+        cards: difficulty === "easy" ? shuffleCards(3, 4) : difficulty === "medium" ? shuffleCards(4, 5) : shuffleCards(5, 6),
+        difficulty,
+        turns: 0,
+        choiceOne: undefined,
+        choiceTwo: undefined,
+      })),
 
     // Shuffle cards
     shuffleCards: (cols, rows, cards) => set(() => ({ cards: shuffleCards(cols, rows, cards), turns: 0, choiceOne: undefined, choiceTwo: undefined })),

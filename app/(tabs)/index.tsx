@@ -1,15 +1,19 @@
 // react native
 import { useWindowDimensions, View } from "react-native";
 
+// other libraries
+import { useGameStore } from "@/stores/gameProvider";
+
 // components
 import CardGrid from "@/components/CardGrid";
 
 export default function Screen() {
+  // Get the state and actions we need from the game store
+  const difficulty = useGameStore((state) => state.difficulty);
+
   // Determine the current screen orientation
   const { height, width } = useWindowDimensions();
   const isPortrait = height >= width;
-
-  const difficulty: "easy" | "medium" | "hard" = "easy";
 
   switch (difficulty as "easy" | "medium" | "hard") {
     case "easy":

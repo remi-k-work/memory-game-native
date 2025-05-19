@@ -25,7 +25,7 @@ export default function SingleCard({ card, card: { imageP, imageL, isFlipped } }
       <Image
         source={isPortrait ? imageP : imageL}
         className={cn(
-          "h-full w-full bg-black transition-transform duration-500 ease-in-out",
+          "h-full w-full bg-card transition-transform duration-500 ease-in-out",
           isFlipped ? "delay-500 [transform:rotateY(180deg)]" : "[transform:rotateY(90deg)]",
         )}
         resizeMode="contain"
