@@ -11,7 +11,13 @@ export interface Card {
 }
 
 export interface Collection {
-  category: string;
+  category: CollectionCategory;
   previewP: ImageSourcePropType;
   previewL: ImageSourcePropType;
 }
+
+export type Difficulty = "easy" | "medium" | "hard";
+
+export type CollectionCategory = "default" | string;
+
+export type Orientation = "all" | "horizontal" | "vertical";

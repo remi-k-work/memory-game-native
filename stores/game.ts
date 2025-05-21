@@ -1,25 +1,29 @@
 // other libraries
 import { createStore } from "zustand/vanilla";
-import { shuffleCards } from "./cards";
+import { createShuffledCardPairs, replaceCardImages } from "./cards";
 
 // types
-import type { Card } from "@/types/shared";
+import type { Card, CollectionCategory, Difficulty } from "@/types/shared";
+
+// constants
+import { INIT_CARDS } from "@/constants/cards";
 
 export interface GameState {
-  cards: Card[];
-  collection: "default" | string;
-  difficulty: "easy" | "medium" | "hard";
+  fetchedCards: Card[];
+  currentCards: Card[];
+  collection: CollectionCategory;
+  difficulty: Difficulty;
   turns: number;
   choiceOne?: Card;
   choiceTwo?: Card;
-  prevChoice?: Card;
 }
 
 interface GameActions {
   chosenaCard: (choice: Card) => void;
   chosenaPair: () => void;
-  changedDifficulty: (difficulty: "easy" | "medium" | "hard") => void;
-  shuffleCards: (cols: number, rows: number, cards?: Card[]) => void;
+  changedDifficulty: (difficulty: Difficulty) => void;
+  changedCollection: (collection: CollectionCategory) => void;
+  hasFetchedCards: (fetchedCards: Card[]) => void;
   resetGame: () => void;
 }
 
@@ -34,7 +38,8 @@ export type GameStoreApi = ReturnType<typeof createGameStore>;
 
 export const createGameStore = (initState?: GameState) => {
   const DEFAULT_STATE: GameState = {
-    cards: shuffleCards(3, 4),
+    fetchedCards: INIT_CARDS,
+    currentCards: createShuffledCardPairs(3, 4, INIT_CARDS),
     collection: "default",
     difficulty: "easy",
     turns: 0,
@@ -59,8 +64,8 @@ export const createGameStore = (initState?: GameState) => {
         if (hasPairSelected || choice.isFlipped) return state;
 
         // We require two choices in order to compare cards, establish and save either the first or second one, and flip each card
-        if (state.choiceOne) return { cards: getCardsWithFlipped(choice), choiceTwo: choice };
-        else return { cards: getCardsWithFlipped(choice), choiceOne: choice };
+        if (state.choiceOne) return { currentCards: getCardsWithFlipped(choice), choiceTwo: choice };
+        else return { currentCards: getCardsWithFlipped(choice), choiceOne: choice };
       }),
 
     // Player has chosen a pair
@@ -77,22 +82,31 @@ export const createGameStore = (initState?: GameState) => {
           return { turns: state.turns + 1, choiceOne: undefined, choiceTwo: undefined };
         } else {
           // No, start a new turn and unflip the previously flipped cards (no match)
-          return { cards: getCardsWtihUnFlippedPair(choiceOne!, choiceTwo!), turns: state.turns + 1, choiceOne: undefined, choiceTwo: undefined };
+          return { currentCards: getCardsWtihUnFlippedPair(choiceOne!, choiceTwo!), turns: state.turns + 1, choiceOne: undefined, choiceTwo: undefined };
         }
       }),
 
     // Player has changed the difficulty
     changedDifficulty: (difficulty) =>
-      set(() => ({
-        cards: difficulty === "easy" ? shuffleCards(3, 4) : difficulty === "medium" ? shuffleCards(4, 5) : shuffleCards(5, 6),
+      set((state) => ({
+        currentCards:
+          difficulty === "easy"
+            ? createShuffledCardPairs(3, 4, state.fetchedCards)
+            : difficulty === "medium"
+              ? createShuffledCardPairs(4, 5, state.fetchedCards)
+              : createShuffledCardPairs(5, 6, state.fetchedCards),
         difficulty,
         turns: 0,
         choiceOne: undefined,
         choiceTwo: undefined,
       })),
 
-    // Shuffle cards
-    shuffleCards: (cols, rows, cards) => set(() => ({ cards: shuffleCards(cols, rows, cards), turns: 0, choiceOne: undefined, choiceTwo: undefined })),
+    // Player has changed the collection
+    changedCollection: (collection) => set(() => ({ collection })),
+
+    // A new set of cards has been fetched
+    hasFetchedCards: (fetchedCards) =>
+      set((state) => ({ fetchedCards, currentCards: replaceCardImages(state.currentCards, fetchedCards), choiceOne: undefined, choiceTwo: undefined })),
 
     // Reset the game
     resetGame: () => set(() => ({ ...DEFAULT_STATE })),
@@ -101,20 +115,22 @@ export const createGameStore = (initState?: GameState) => {
 
     // Get cards with flipped
     getCardsWithFlipped: (choice) => {
-      const { cards } = get();
-      return cards.map((card) => (card.uniqueId === choice.uniqueId ? { ...card, isFlipped: true } : card));
+      const { currentCards } = get();
+      return currentCards.map((currentCard) => (currentCard.uniqueId === choice.uniqueId ? { ...currentCard, isFlipped: true } : currentCard));
     },
 
     // Get cards with unflipped pair
     getCardsWtihUnFlippedPair: (choiceOne, choiceTwo) => {
-      const { cards } = get();
-      return cards.map((card) => (card.uniqueId === choiceOne.uniqueId || card.uniqueId === choiceTwo.uniqueId ? { ...card, isFlipped: false } : card));
+      const { currentCards } = get();
+      return currentCards.map((currentCard) =>
+        currentCard.uniqueId === choiceOne.uniqueId || currentCard.uniqueId === choiceTwo.uniqueId ? { ...currentCard, isFlipped: false } : currentCard,
+      );
     },
 
     // Is the game over?
     isGameOver: () => {
-      const { cards } = get();
-      return cards.every((card) => card.isFlipped);
+      const { currentCards } = get();
+      return currentCards.every((currentCard) => currentCard.isFlipped);
     },
   }));
 };

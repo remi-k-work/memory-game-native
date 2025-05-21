@@ -18,7 +18,7 @@ interface CardGridProps {
 
 export default function CardGrid({ cols, rows }: CardGridProps) {
   // Get the state and actions we need from the game store
-  const cards = useGameStore((state) => state.cards);
+  const currentCards = useGameStore((state) => state.currentCards);
   const choiceOne = useGameStore((state) => state.choiceOne);
   const choiceTwo = useGameStore((state) => state.choiceTwo);
   const chosenaPair = useGameStore((state) => state.chosenaPair);
@@ -39,7 +39,7 @@ export default function CardGrid({ cols, rows }: CardGridProps) {
       {Array.from({ length: rows }).map((_, rowIndex) => (
         <View key={rowIndex} className="flex-1 flex-row gap-1">
           {Array.from({ length: cols }).map((_, colIndex) => (
-            <SingleCard key={colIndex} card={cards[rowIndex * cols + colIndex]} />
+            <SingleCard key={currentCards[rowIndex * cols + colIndex].uniqueId} card={currentCards[rowIndex * cols + colIndex]} />
           ))}
         </View>
       ))}

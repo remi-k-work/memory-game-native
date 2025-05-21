@@ -58,7 +58,7 @@ export default function Screen() {
           </View>
           <View className="gap-1">
             <Text className="text-muted-foreground">Select Collection</Text>
-            <CollectionSlider test={1} />
+            <CollectionSlider />
           </View>
         </CardContent>
         <CardFooter>

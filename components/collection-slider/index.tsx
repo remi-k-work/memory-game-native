@@ -1,41 +1,33 @@
-// react
-import { useState } from "react";
-
 // react native
-import { Animated, ScrollView, Text, useAnimatedValue, useWindowDimensions, View } from "react-native";
+import { Animated, ScrollView, useAnimatedValue, useWindowDimensions, View } from "react-native";
+
+// other libraries
+import { useGameStore } from "@/stores/gameProvider";
 
 // components
 import Indicator from "./Indicator";
 import Slide from "./Slide";
 
-// types
-interface CollectionSliderProps {
-  test: number;
-}
-
 // constants
 import { COLLECTIONS } from "@/constants/collections";
 
-export default function CollectionSlider({ test }: CollectionSliderProps) {
+export default function CollectionSlider() {
+  // Get the state and actions we need from the game store
+  const changedCollection = useGameStore((state) => state.changedCollection);
+
   // Get the application window's width
   const { width: windowWidth } = useWindowDimensions();
 
-  const [currentIndex, setCurrentIndex] = useState(0);
   const scrollX = useAnimatedValue(0);
 
   return (
     <View className="h-48 items-center justify-center gap-1">
-      <Text className="text-2xl text-foreground">{COLLECTIONS[currentIndex].category}</Text>
       <ScrollView
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
         onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }])}
-        onMomentumScrollEnd={({
-          nativeEvent: {
-            contentOffset: { x },
-          },
-        }) => setCurrentIndex(Math.floor(x / windowWidth))}
+        onMomentumScrollEnd={({ nativeEvent: { contentOffset } }) => changedCollection(COLLECTIONS[Math.floor(contentOffset.x / windowWidth)].category)}
         scrollEventThrottle={1}
         snapToAlignment="center"
       >
