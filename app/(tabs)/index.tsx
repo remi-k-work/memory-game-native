@@ -1,10 +1,11 @@
 // react
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 // react native
 import { ActivityIndicator, useWindowDimensions, View } from "react-native";
 
 // other libraries
+import { useDidUpdateEffect } from "@/hooks/useDidUpdateEffect";
 import { fetchRandomCards } from "@/stores/cards";
 import { useGameStore } from "@/stores/gameProvider";
 
@@ -18,6 +19,7 @@ export default function Screen() {
   // Get the state and actions we need from the game store
   const collection = useGameStore((state) => state.collection);
   const difficulty = useGameStore((state) => state.difficulty);
+  const showIllustrations = useGameStore((state) => state.showIllustrations);
   const hasFetchedCards = useGameStore((state) => state.hasFetchedCards);
 
   // Determine the current screen orientation
@@ -26,12 +28,12 @@ export default function Screen() {
 
   const [isLoading, setLoading] = useState(false);
 
-  useEffect(() => {
+  useDidUpdateEffect(() => {
     // Fetch a random card set for the specified collection category
     const fetchCards = async () => {
       try {
         setLoading(true);
-        hasFetchedCards(await fetchRandomCards(collection));
+        hasFetchedCards(await fetchRandomCards(showIllustrations ? "illustration" : "photo", collection));
       } catch (error) {
         console.error("Error fetching a random card set:", error);
       } finally {
@@ -42,7 +44,7 @@ export default function Screen() {
     // Do not try to fetch the initial fallback card set, which is the default one
     if (collection !== "default") fetchCards();
     else hasFetchedCards(INIT_CARDS);
-  }, [collection]);
+  }, [collection, showIllustrations]);
 
   if (isLoading)
     return (

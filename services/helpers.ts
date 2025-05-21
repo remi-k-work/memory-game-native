@@ -1,15 +1,15 @@
 // types
-import type { CollectionCategory, Orientation } from "@/types/shared";
+import type { CollectionCategory, ImageType, Orientation } from "@/types/shared";
 
 // constants
 import { PIXABBAY_API_URL } from "@/constants/pixabay";
 
 // Generate a suitable URL for the Pixabay API request
-export function generatePixabayUrl(orientation: Orientation, category: CollectionCategory, editorsChoice: "true" | "false" = "false") {
+export function generatePixabayUrl(imageType: ImageType, orientation: Orientation, category: CollectionCategory, editorsChoice: "true" | "false" = "false") {
   const pixabayUrl = new URL(PIXABBAY_API_URL);
 
   pixabayUrl.searchParams.append("key", process.env.EXPO_PUBLIC_PIXABAY_KEY!);
-  pixabayUrl.searchParams.append("image_type", "photo");
+  pixabayUrl.searchParams.append("image_type", imageType);
   pixabayUrl.searchParams.append("orientation", orientation);
   pixabayUrl.searchParams.append("category", category);
   pixabayUrl.searchParams.append("editors_choice", editorsChoice);

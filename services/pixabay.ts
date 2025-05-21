@@ -5,18 +5,22 @@ import { type ImageSourcePropType } from "react-native";
 import { generatePixabayUrl, generateRandomPageNumber, getPixabayTotalHits } from "./helpers";
 
 // types
-import type { CollectionCategory, Orientation } from "@/types/shared";
+import type { CollectionCategory, ImageType, Orientation } from "@/types/shared";
 
 // Get a batch of 28 random images for a specific orientation and collection category
-export async function fetchRandomImageUrls(orientation: Orientation = "all", collectionCategory: CollectionCategory): Promise<ImageSourcePropType[]> {
+export async function fetchRandomImageUrls(
+  imageType: ImageType,
+  orientation: Orientation,
+  collectionCategory: CollectionCategory,
+): Promise<ImageSourcePropType[]> {
   // Unfortunately, we must use Pixabay's API twice, the first fetch to obtain the overall number of hits
-  let pixabayUrl = generatePixabayUrl(orientation, collectionCategory, "true");
+  let pixabayUrl = generatePixabayUrl(imageType, orientation, collectionCategory, "true");
   let totalHits = await getPixabayTotalHits(pixabayUrl);
 
   // We need to be able to retrieve at least 28 images
   if (totalHits < 28) {
     // We cannot retrieve at least 28 images; try to be a bit more lenient
-    pixabayUrl = generatePixabayUrl(orientation, collectionCategory);
+    pixabayUrl = generatePixabayUrl(imageType, orientation, collectionCategory);
     totalHits = await getPixabayTotalHits(pixabayUrl);
 
     // We really need to be able to retrieve at least 28 images - this time throw an error

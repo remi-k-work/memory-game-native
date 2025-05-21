@@ -5,7 +5,7 @@ import { randomUUID } from "expo-crypto";
 import { fetchRandomImageUrls } from "@/services/pixabay";
 
 // types
-import type { Card, CollectionCategory } from "@/types/shared";
+import type { Card, CollectionCategory, ImageType } from "@/types/shared";
 import type { ImageSourcePropType } from "react-native";
 
 // Generate a shuffled array of card pairs that fits in the defined grid and includes the previously fetched cards at random
@@ -42,10 +42,10 @@ export function replaceCardImages(currentCards: Card[], fetchedCards: Card[]): C
 }
 
 // Fetch a random card set for the specified collection category
-export async function fetchRandomCards(collectionCategory: CollectionCategory): Promise<Card[]> {
+export async function fetchRandomCards(imageType: ImageType, collectionCategory: CollectionCategory): Promise<Card[]> {
   // Generate a batch of 28 random images in portrait and landscape orientations, as well as the chosen collection category
-  const imagesP = await fetchRandomImageUrls("vertical", collectionCategory);
-  const imagesL = await fetchRandomImageUrls("horizontal", collectionCategory);
+  const imagesP = await fetchRandomImageUrls(imageType, "vertical", collectionCategory);
+  const imagesL = await fetchRandomImageUrls(imageType, "horizontal", collectionCategory);
 
   // Create an array of cards from the fetched images
   const fetchedCards: Card[] = [];

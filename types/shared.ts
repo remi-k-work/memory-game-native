@@ -21,3 +21,5 @@ export type Difficulty = "easy" | "medium" | "hard";
 export type CollectionCategory = "default" | string;
 
 export type Orientation = "all" | "horizontal" | "vertical";
+
+export type ImageType = "photo" | "illustration";

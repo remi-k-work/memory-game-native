@@ -13,6 +13,7 @@ export interface GameState {
   currentCards: Card[];
   collection: CollectionCategory;
   difficulty: Difficulty;
+  showIllustrations: boolean;
   turns: number;
   choiceOne?: Card;
   choiceTwo?: Card;
@@ -23,6 +24,7 @@ interface GameActions {
   chosenaPair: () => void;
   changedDifficulty: (difficulty: Difficulty) => void;
   changedCollection: (collection: CollectionCategory) => void;
+  switchedIllustrations: () => void;
   hasFetchedCards: (fetchedCards: Card[]) => void;
   resetGame: () => void;
 }
@@ -42,6 +44,7 @@ export const createGameStore = (initState?: GameState) => {
     currentCards: createShuffledCardPairs(3, 4, INIT_CARDS),
     collection: "default",
     difficulty: "easy",
+    showIllustrations: false,
     turns: 0,
     choiceOne: undefined,
     choiceTwo: undefined,
@@ -103,6 +106,9 @@ export const createGameStore = (initState?: GameState) => {
 
     // Player has changed the collection
     changedCollection: (collection) => set(() => ({ collection })),
+
+    // Player has switched illustrations
+    switchedIllustrations: () => set((state) => ({ showIllustrations: !state.showIllustrations })),
 
     // A new set of cards has been fetched
     hasFetchedCards: (fetchedCards) =>
