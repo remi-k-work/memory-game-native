@@ -25,13 +25,14 @@ interface GameActions {
   changedDifficulty: (difficulty: Difficulty) => void;
   changedCollection: (collection: CollectionCategory) => void;
   switchedIllustrations: () => void;
+  startedaNewGame: () => void;
   hasFetchedCards: (fetchedCards: Card[]) => void;
-  resetGame: () => void;
 }
 
 interface GameDerived {
   getCardsWithFlipped: (choice: Card) => Card[];
   getCardsWtihUnFlippedPair: (choiceOne: Card, choiceTwo: Card) => Card[];
+  isGameInProgress: () => boolean;
   isGameOver: () => boolean;
 }
 
@@ -41,7 +42,7 @@ export type GameStoreApi = ReturnType<typeof createGameStore>;
 export const createGameStore = (initState?: GameState) => {
   const DEFAULT_STATE: GameState = {
     fetchedCards: INIT_CARDS,
-    currentCards: createShuffledCardPairs(3, 4, INIT_CARDS),
+    currentCards: createShuffledCardPairs("easy", INIT_CARDS),
     collection: "default",
     difficulty: "easy",
     showIllustrations: false,
@@ -92,12 +93,7 @@ export const createGameStore = (initState?: GameState) => {
     // Player has changed the difficulty
     changedDifficulty: (difficulty) =>
       set((state) => ({
-        currentCards:
-          difficulty === "easy"
-            ? createShuffledCardPairs(3, 4, state.fetchedCards)
-            : difficulty === "medium"
-              ? createShuffledCardPairs(4, 5, state.fetchedCards)
-              : createShuffledCardPairs(5, 6, state.fetchedCards),
+        currentCards: createShuffledCardPairs(difficulty, state.fetchedCards),
         difficulty,
         turns: 0,
         choiceOne: undefined,
@@ -110,12 +106,13 @@ export const createGameStore = (initState?: GameState) => {
     // Player has switched illustrations
     switchedIllustrations: () => set((state) => ({ showIllustrations: !state.showIllustrations })),
 
+    // Player has started a new game
+    startedaNewGame: () =>
+      set((state) => ({ currentCards: createShuffledCardPairs(state.difficulty, state.fetchedCards), turns: 0, choiceOne: undefined, choiceTwo: undefined })),
+
     // A new set of cards has been fetched
     hasFetchedCards: (fetchedCards) =>
       set((state) => ({ fetchedCards, currentCards: replaceCardImages(state.currentCards, fetchedCards), choiceOne: undefined, choiceTwo: undefined })),
-
-    // Reset the game
-    resetGame: () => set(() => ({ ...DEFAULT_STATE })),
 
     // *** State-derived functions and selectors ***
 
@@ -131,6 +128,12 @@ export const createGameStore = (initState?: GameState) => {
       return currentCards.map((currentCard) =>
         currentCard.uniqueId === choiceOne.uniqueId || currentCard.uniqueId === choiceTwo.uniqueId ? { ...currentCard, isFlipped: false } : currentCard,
       );
+    },
+
+    // Is the game in progress?
+    isGameInProgress: () => {
+      const { turns } = get();
+      return turns > 0;
     },
 
     // Is the game over?

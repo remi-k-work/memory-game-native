@@ -5,7 +5,8 @@ import { Text, View } from "react-native";
 import CollectionSlider from "@/components/collection-slider";
 import DifficultyChanger from "@/components/DifficultyChanger";
 import IllustrationsSwitch from "@/components/IllustrationsSwitch";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "~/components/ui/card";
+import NewGameButton from "@/components/NewGameButton";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function Screen() {
   return (
@@ -28,6 +29,7 @@ export default function Screen() {
             <Text className="text-muted-foreground">Photos or Illustrations?</Text>
             <IllustrationsSwitch />
           </View>
+          <NewGameButton />
         </CardContent>
         <CardFooter>
           <Text>Card Footer</Text>

@@ -5,12 +5,14 @@ import { randomUUID } from "expo-crypto";
 import { fetchRandomImageUrls } from "@/services/pixabay";
 
 // types
-import type { Card, CollectionCategory, ImageType } from "@/types/shared";
+import type { Card, CollectionCategory, Difficulty, ImageType } from "@/types/shared";
 import type { ImageSourcePropType } from "react-native";
 
 // Generate a shuffled array of card pairs that fits in the defined grid and includes the previously fetched cards at random
-export function createShuffledCardPairs(cols: number, rows: number, fetchedCards: Card[]): Card[] {
+export function createShuffledCardPairs(difficulty: Difficulty, fetchedCards: Card[]): Card[] {
   // Pick a random subset of the fetched cards (our fetched card set always contains 28 images, which is more than we need)
+  const cols = difficulty === "easy" ? 3 : difficulty === "medium" ? 4 : 5;
+  const rows = difficulty === "easy" ? 4 : difficulty === "medium" ? 5 : 6;
   const pickedFetchedCards = [...fetchedCards].sort(() => Math.random() - 0.5).slice(0, (cols * rows) / 2);
 
   // Increase the number of cards per card to two (original plus matching) so that they share the same pair id; also, assign a unique id to each card
