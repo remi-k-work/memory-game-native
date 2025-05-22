@@ -1,33 +1,28 @@
 // expo
-import { Tabs } from "expo-router";
+import { TabList, Tabs, TabSlot, TabTrigger } from "expo-router/ui";
 
-// assets
-import Ionicons from "@expo/vector-icons/Ionicons";
+// components
+import TabButton from "@/components/TabButton";
+import TabTurns from "@/components/TabTurns";
 
 export default function Layout() {
   return (
-    <Tabs screenOptions={{ headerShown: false, tabBarInactiveTintColor: "#000000", tabBarActiveTintColor: "#ffd33d" }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: "Game",
-          tabBarIcon: ({ color, focused }) => <Ionicons name={focused ? "game-controller-sharp" : "game-controller-outline"} color={color} size={24} />,
-        }}
-      />
-      <Tabs.Screen
-        name="settings"
-        options={{
-          title: "Settings",
-          tabBarIcon: ({ color, focused }) => <Ionicons name={focused ? "settings-sharp" : "settings-outline"} color={color} size={24} />,
-        }}
-      />
-      <Tabs.Screen
-        name="high-scores"
-        options={{
-          title: "High Scores",
-          tabBarIcon: ({ color, focused }) => <Ionicons name={focused ? "list-sharp" : "list-outline"} color={color} size={24} />,
-        }}
-      />
+    <Tabs>
+      <TabSlot />
+      <TabList style={{ alignItems: "center", justifyContent: "space-around" }}>
+        <TabTrigger name="index" href="/" asChild>
+          <TabButton regularIconName="game-controller-outline" focusedIconName="game-controller-sharp" />
+        </TabTrigger>
+        <TabTrigger name="settings" href="/settings" asChild>
+          <TabButton regularIconName="settings-outline" focusedIconName="settings-sharp" />
+        </TabTrigger>
+        <TabTrigger name="high-scores" href="/high-scores" asChild>
+          <TabButton regularIconName="stats-chart-outline" focusedIconName="stats-chart-sharp" />
+        </TabTrigger>
+        <TabTrigger name="turns" href="/turns" onPress={(ev) => ev.preventDefault()} asChild>
+          <TabTurns />
+        </TabTrigger>
+      </TabList>
     </Tabs>
   );
 }

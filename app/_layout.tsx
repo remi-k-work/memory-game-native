@@ -53,8 +53,10 @@ export default function Layout() {
     <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
       <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
       <GameStoreProvider>
-        <View className="pt-safe flex-1">
-          <Stack screenOptions={{ headerShown: false }} />
+        <View className="m-safe flex-1">
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          </Stack>
         </View>
       </GameStoreProvider>
       <PortalHost />
