@@ -31,6 +31,7 @@ export default function Screen() {
   useDidUpdateEffect(() => {
     // Fetch a random card set for the specified collection category
     const fetchCards = async () => {
+      console.log(collection);
       try {
         setLoading(true);
         hasFetchedCards(await fetchRandomCards(showIllustrations ? "illustration" : "photo", collection));

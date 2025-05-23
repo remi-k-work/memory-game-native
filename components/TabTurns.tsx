@@ -9,8 +9,8 @@ export default function TabTurns() {
   const turns = useGameStore((state) => state.turns);
 
   return (
-    <View className="h-12 w-16 items-center justify-center rounded-lg bg-background">
-      <Text className="line-clamp-1 text-center text-4xl text-foreground">{turns}</Text>
+    <View className="h-12 w-16 items-center justify-center rounded-xl bg-foreground">
+      <Text className="line-clamp-1 text-center text-4xl text-background">{turns}</Text>
     </View>
   );
 }

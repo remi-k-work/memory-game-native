@@ -1,5 +1,5 @@
 // react native
-import { Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 
 // components
 import CollectionSlider from "@/components/collection-slider";
@@ -10,8 +10,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 
 export default function Screen() {
   return (
-    <View className="flex-1 items-center justify-center">
-      <Card className="w-full max-w-sm">
+    <ScrollView contentContainerClassName="items-center mt-safe">
+      <Card className="w-full max-w-lg">
         <CardHeader>
           <CardTitle>Game Settings</CardTitle>
           <CardDescription>Change the difficulty, collection set, and card image type</CardDescription>
@@ -32,9 +32,9 @@ export default function Screen() {
           <NewGameButton />
         </CardContent>
         <CardFooter>
-          <Text>Card Footer</Text>
+          <Text className="text-muted-foreground">Card Footer</Text>
         </CardFooter>
       </Card>
-    </View>
+    </ScrollView>
   );
 }

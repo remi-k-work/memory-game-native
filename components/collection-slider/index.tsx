@@ -16,7 +16,7 @@ export default function CollectionSlider() {
   const changedCollection = useGameStore((state) => state.changedCollection);
 
   // Get the application window's width
-  const { width: windowWidth } = useWindowDimensions();
+  const { width } = useWindowDimensions();
 
   const scrollX = useAnimatedValue(0);
 
@@ -27,7 +27,7 @@ export default function CollectionSlider() {
         pagingEnabled
         showsHorizontalScrollIndicator={false}
         onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }])}
-        onMomentumScrollEnd={({ nativeEvent: { contentOffset } }) => changedCollection(COLLECTIONS[Math.floor(contentOffset.x / windowWidth)].category)}
+        onMomentumScrollEnd={({ nativeEvent: { contentOffset } }) => changedCollection(COLLECTIONS[Math.floor(contentOffset.x / width)].category)}
         scrollEventThrottle={1}
         snapToAlignment="center"
       >
