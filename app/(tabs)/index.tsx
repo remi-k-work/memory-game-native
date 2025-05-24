@@ -30,12 +30,14 @@ export default function Screen() {
 
   useDidUpdateEffect(() => {
     // Fetch a random card set for the specified collection category
+    const controller = new AbortController();
+
     const fetchCards = async () => {
-      console.log(collection);
       try {
         setLoading(true);
-        hasFetchedCards(await fetchRandomCards(showIllustrations ? "illustration" : "photo", collection));
+        hasFetchedCards(await fetchRandomCards(showIllustrations ? "illustration" : "photo", collection, controller.signal));
       } catch (error) {
+        if (error instanceof Error && error.name === "AbortError") return;
         console.error("Error fetching a random card set:", error);
       } finally {
         setLoading(false);
@@ -45,6 +47,8 @@ export default function Screen() {
     // Do not try to fetch the initial fallback card set, which is the default one
     if (collection !== "default") fetchCards();
     else hasFetchedCards(INIT_CARDS);
+
+    return () => controller.abort();
   }, [collection, showIllustrations]);
 
   if (isLoading)

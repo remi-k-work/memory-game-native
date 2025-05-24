@@ -6,6 +6,7 @@ import CollectionSlider from "@/components/collection-slider";
 import DifficultyChanger from "@/components/DifficultyChanger";
 import IllustrationsSwitch from "@/components/IllustrationsSwitch";
 import NewGameButton from "@/components/NewGameButton";
+import PixaBayBanner from "@/components/PixaBayBanner";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function Screen() {
@@ -14,7 +15,7 @@ export default function Screen() {
       <Card className="w-full max-w-lg">
         <CardHeader>
           <CardTitle>Game Settings</CardTitle>
-          <CardDescription>Change the difficulty, collection set, and card image type</CardDescription>
+          <CardDescription>Adjust your game experience</CardDescription>
         </CardHeader>
         <CardContent className="gap-6">
           <View className="gap-1">
@@ -32,7 +33,7 @@ export default function Screen() {
           <NewGameButton />
         </CardContent>
         <CardFooter>
-          <Text className="text-muted-foreground">Card Footer</Text>
+          <PixaBayBanner />
         </CardFooter>
       </Card>
     </ScrollView>

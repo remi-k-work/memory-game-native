@@ -44,10 +44,10 @@ export function replaceCardImages(currentCards: Card[], fetchedCards: Card[]): C
 }
 
 // Fetch a random card set for the specified collection category
-export async function fetchRandomCards(imageType: ImageType, collectionCategory: CollectionCategory): Promise<Card[]> {
+export async function fetchRandomCards(imageType: ImageType, collectionCategory: CollectionCategory, signal: AbortSignal): Promise<Card[]> {
   // Generate a batch of 28 random images in portrait and landscape orientations, as well as the chosen collection category
-  const imagesP = await fetchRandomImageUrls(imageType, "vertical", collectionCategory);
-  const imagesL = await fetchRandomImageUrls(imageType, "horizontal", collectionCategory);
+  const imagesP = await fetchRandomImageUrls(imageType, "vertical", collectionCategory, signal);
+  const imagesL = await fetchRandomImageUrls(imageType, "horizontal", collectionCategory, signal);
 
   // Create an array of cards from the fetched images
   const fetchedCards: Card[] = [];

@@ -12,16 +12,17 @@ export async function fetchRandomImageUrls(
   imageType: ImageType,
   orientation: Orientation,
   collectionCategory: CollectionCategory,
+  signal: AbortSignal,
 ): Promise<ImageSourcePropType[]> {
   // Unfortunately, we must use Pixabay's API twice, the first fetch to obtain the overall number of hits
   let pixabayUrl = generatePixabayUrl(imageType, orientation, collectionCategory, "true");
-  let totalHits = await getPixabayTotalHits(pixabayUrl);
+  let totalHits = await getPixabayTotalHits(pixabayUrl, signal);
 
   // We need to be able to retrieve at least 28 images
   if (totalHits < 28) {
     // We cannot retrieve at least 28 images; try to be a bit more lenient
     pixabayUrl = generatePixabayUrl(imageType, orientation, collectionCategory);
-    totalHits = await getPixabayTotalHits(pixabayUrl);
+    totalHits = await getPixabayTotalHits(pixabayUrl, signal);
 
     // We really need to be able to retrieve at least 28 images - this time throw an error
     if (totalHits < 28) throw new Error("We need to be able to retrieve at least 28 images!");
@@ -34,7 +35,7 @@ export async function fetchRandomImageUrls(
   pixabayUrl.searchParams.append("page", String(randomPageNumber));
 
   // The second fetch is to get the list of images and their URLs; we need all 28 of them
-  const response = await fetch(pixabayUrl);
+  const response = await fetch(pixabayUrl, { signal });
   if (!response.ok) throw new Error(await response.text());
 
   const hits = await response.json();

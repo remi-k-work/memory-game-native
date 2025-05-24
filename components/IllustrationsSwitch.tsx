@@ -30,12 +30,12 @@ export default function IllustrationsSwitch() {
   return (
     <View className="flex-row items-center gap-2">
       <Switch
+        nativeID="show-illustrations"
         checked={currShowIllustrations}
         onCheckedChange={() => {
           setCurrShowIllustrations(!currShowIllustrations);
           handleShowIllustrationsChanged();
         }}
-        nativeID="show-illustrations"
       />
       <Label
         nativeID="show-illustrations"

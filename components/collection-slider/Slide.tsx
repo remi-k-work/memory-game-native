@@ -14,8 +14,12 @@ export default function Slide({ collection: { category, previewP, previewL } }: 
   const isPortrait = height >= width;
 
   return (
-    <View className="flex-1" style={{ width }}>
-      <ImageBackground source={isPortrait ? previewP : previewL} className="flex-1 items-center justify-center overflow-hidden rounded-lg">
+    <View className="flex-1 items-center justify-center" style={{ width }}>
+      <ImageBackground
+        source={isPortrait ? previewP : previewL}
+        resizeMode="cover"
+        className="w-80 flex-1 items-center justify-center overflow-hidden rounded-lg p-4"
+      >
         <View className="rounded-lg bg-background/75 p-4">
           <Text className="text-lg text-foreground">{category}</Text>
         </View>

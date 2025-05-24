@@ -28,11 +28,11 @@ export default function SingleCard({ card, card: { imageP, imageL, isFlipped } }
     <Pressable className="flex-1 overflow-hidden rounded-lg" onPress={() => chosenaCard(card)}>
       <Image
         source={isPortrait ? imageP : imageL}
+        resizeMode="contain"
         className={cn(
           "h-full w-full bg-card transition-transform duration-500 ease-in-out",
-          isFlipped ? "delay-500 [transform:rotateY(0deg)]" : "[transform:rotateY(90deg)]",
+          !isFlipped ? "delay-500 [transform:rotateY(0deg)]" : "[transform:rotateY(90deg)]",
         )}
-        resizeMode="contain"
       />
       <LinearGradient
         colors={[colors.stone[950], colors.indigo[900]]}
@@ -40,7 +40,7 @@ export default function SingleCard({ card, card: { imageP, imageL, isFlipped } }
         end={{ x: 1, y: 1 }}
         className={cn(
           "absolute h-full w-full transition-transform duration-500 ease-in-out",
-          isFlipped ? "[transform:rotateY(90deg)]" : "delay-500 [transform:rotateY(0deg)]",
+          !isFlipped ? "[transform:rotateY(90deg)]" : "delay-500 [transform:rotateY(0deg)]",
         )}
       />
     </Pressable>

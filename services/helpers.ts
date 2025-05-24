@@ -26,8 +26,8 @@ export function generateRandomPageNumber(totalHits: number, pageSize: number) {
 }
 
 // Get the number of images accessible through Pixabay's API
-export async function getPixabayTotalHits(pixabayUrl: URL): Promise<number> {
-  const response = await fetch(pixabayUrl);
+export async function getPixabayTotalHits(pixabayUrl: URL, signal: AbortSignal): Promise<number> {
+  const response = await fetch(pixabayUrl, { signal });
   if (!response.ok) throw new Error(await response.text());
 
   const hits = await response.json();
@@ -45,13 +45,4 @@ export function getPixabayRateLimitStatus(response: Response) {
   };
 
   return rateLimit;
-}
-
-// Get the image from the specified URL and save the result as a blob
-export async function fetchImageAsBlob(imageUrl: URL) {
-  const response = await fetch(imageUrl);
-  if (!response.ok) throw new Error(await response.text());
-
-  const imageBlob = await response.blob();
-  return imageBlob;
 }
