@@ -2,10 +2,11 @@
 import { useState } from "react";
 
 // react native
-import { ActivityIndicator, useWindowDimensions, View } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 
 // other libraries
-import { useDidUpdateEffect } from "@/hooks/useDidUpdateEffect";
+import useDidUpdateEffect from "@/hooks/useDidUpdateEffect";
+import useOrientation from "@/hooks/useOrientation";
 import { fetchRandomCards } from "@/stores/cards";
 import { useGameStore } from "@/stores/gameProvider";
 
@@ -22,9 +23,8 @@ export default function Screen() {
   const showIllustrations = useGameStore((state) => state.showIllustrations);
   const hasFetchedCards = useGameStore((state) => state.hasFetchedCards);
 
-  // Determine the current screen orientation
-  const { height, width } = useWindowDimensions();
-  const isPortrait = height >= width;
+  // Determine the current screen orientation and size
+  const { isPortrait } = useOrientation();
 
   const [isLoading, setLoading] = useState(false);
 

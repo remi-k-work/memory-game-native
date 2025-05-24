@@ -42,7 +42,7 @@ export default function NewGameButton() {
               <Text>Cancel</Text>
             </AlertDialogCancel>
             <AlertDialogAction onPress={startedaNewGame}>
-              <Text>Continue</Text>
+              <Text>Start a New Game</Text>
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

@@ -1,5 +1,8 @@
 // react native
-import { Animated, useWindowDimensions, View } from "react-native";
+import { Animated, View } from "react-native";
+
+// other libraries
+import useOrientation from "@/hooks/useOrientation";
 
 // types
 interface IndicatorProps {
@@ -10,8 +13,8 @@ interface IndicatorProps {
 import { COLLECTIONS } from "@/constants/collections";
 
 export default function Indicator({ scrollX }: IndicatorProps) {
-  // Get the application window's width
-  const { width: windowWidth } = useWindowDimensions();
+  // Determine the current screen orientation and size
+  const { width: windowWidth } = useOrientation();
 
   return (
     <View className="flex-row flex-wrap items-center justify-center gap-1">

@@ -2,7 +2,7 @@
 import { useEffect, useRef, type DependencyList, type EffectCallback } from "react";
 
 // A custom react hook that behaves like `useEffect` but skips the initial mount
-export const useDidUpdateEffect = (effect: EffectCallback, deps?: DependencyList) => {
+export default function useDidUpdateEffect(effect: EffectCallback, deps?: DependencyList) {
   // A ref to track whether the component has mounted for the first time
   const didMount = useRef(false);
 
@@ -11,4 +11,4 @@ export const useDidUpdateEffect = (effect: EffectCallback, deps?: DependencyList
     if (didMount.current) return effect();
     else didMount.current = true;
   }, deps);
-};
+}

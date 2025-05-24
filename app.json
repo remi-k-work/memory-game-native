@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "memory-game-native",
-    "slug": "memory-game-native",
+    "name": "PixaMory",
+    "slug": "pixamory",
     "version": "1.0.0",
     "orientation": "default",
     "icon": "./assets/images/icon.png",
-    "scheme": "memorygamenative",
+    "scheme": "pixamory",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {

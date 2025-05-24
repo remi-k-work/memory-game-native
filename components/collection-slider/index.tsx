@@ -1,7 +1,9 @@
 // react native
-import { Animated, ScrollView, useAnimatedValue, useWindowDimensions, View } from "react-native";
+import { Animated, ScrollView, useAnimatedValue, View } from "react-native";
 
 // other libraries
+import useOrientation from "@/hooks/useOrientation";
+import { cn } from "@/lib/utils";
 import { useGameStore } from "@/stores/gameProvider";
 
 // components
@@ -15,13 +17,13 @@ export default function CollectionSlider() {
   // Get the state and actions we need from the game store
   const changedCollection = useGameStore((state) => state.changedCollection);
 
-  // Get the application window's width
-  const { width } = useWindowDimensions();
+  // Determine the current screen orientation and size
+  const { width, isPortrait } = useOrientation();
 
   const scrollX = useAnimatedValue(0);
 
   return (
-    <View className="h-48 items-center justify-center gap-1">
+    <View className={cn("items-center justify-center gap-1", isPortrait ? "h-80" : "h-48")}>
       <ScrollView
         horizontal
         pagingEnabled

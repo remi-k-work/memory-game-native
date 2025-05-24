@@ -11,7 +11,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 
 export default function Screen() {
   return (
-    <ScrollView contentContainerClassName="items-center mt-safe">
+    <ScrollView contentContainerClassName="items-center" className="mt-safe">
       <Card className="w-full max-w-lg">
         <CardHeader>
           <CardTitle>Game Settings</CardTitle>

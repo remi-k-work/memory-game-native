@@ -1,10 +1,11 @@
 // react native
-import { Image, Pressable, useWindowDimensions } from "react-native";
+import { Image, Pressable } from "react-native";
 
 // expo
 import { LinearGradient } from "expo-linear-gradient";
 
 // other libraries
+import useOrientation from "@/hooks/useOrientation";
 import { cn } from "@/lib/utils";
 import { useGameStore } from "@/stores/gameProvider";
 import colors from "tailwindcss/colors";
@@ -20,9 +21,8 @@ export default function SingleCard({ card, card: { imageP, imageL, isFlipped } }
   // Get the state and actions we need from the game store
   const chosenaCard = useGameStore((state) => state.chosenaCard);
 
-  // Determine the current screen orientation
-  const { height, width } = useWindowDimensions();
-  const isPortrait = height >= width;
+  // Determine the current screen orientation and size
+  const { isPortrait } = useOrientation();
 
   return (
     <Pressable className="flex-1 overflow-hidden rounded-lg" onPress={() => chosenaCard(card)}>

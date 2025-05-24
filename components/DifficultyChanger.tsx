@@ -6,7 +6,7 @@ import { useGameStore } from "@/stores/gameProvider";
 
 // components
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 // types
 import type { Difficulty } from "@/types/shared";
