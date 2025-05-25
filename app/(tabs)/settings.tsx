@@ -1,7 +1,8 @@
 // react native
-import { ScrollView, Text, View } from "react-native";
+import { Text, View } from "react-native";
 
 // components
+import BodyScrollView from "@/components/BodyScrollView";
 import CollectionSlider from "@/components/collection-slider";
 import DifficultyChanger from "@/components/DifficultyChanger";
 import IllustrationsSwitch from "@/components/IllustrationsSwitch";
@@ -11,8 +12,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 
 export default function Screen() {
   return (
-    <ScrollView contentContainerClassName="items-center" className="mt-safe">
-      <Card className="w-full max-w-lg">
+    <BodyScrollView>
+      <Card className="w-full">
         <CardHeader>
           <CardTitle>Game Settings</CardTitle>
           <CardDescription>Adjust your game experience</CardDescription>
@@ -36,6 +37,6 @@ export default function Screen() {
           <PixaBayBanner />
         </CardFooter>
       </Card>
-    </ScrollView>
+    </BodyScrollView>
   );
 }

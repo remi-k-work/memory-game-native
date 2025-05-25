@@ -23,3 +23,11 @@ export type CollectionCategory = "default" | string;
 export type Orientation = "all" | "horizontal" | "vertical";
 
 export type ImageType = "photo" | "illustration";
+
+export interface HighScore {
+  name: string;
+  turns: number;
+  collection: CollectionCategory;
+}
+
+export type HighScores = Record<Difficulty, HighScore[]>;

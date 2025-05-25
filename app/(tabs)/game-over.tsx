@@ -1,7 +1,8 @@
 // react native
-import { ScrollView, Text, View } from "react-native";
+import { Text, View } from "react-native";
 
 // components
+import BodyScrollView from "@/components/BodyScrollView";
 import Collection from "@/components/preview/Collection";
 import Difficulty from "@/components/preview/Difficulty";
 import Turns from "@/components/preview/Turns";
@@ -9,8 +10,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 
 export default function Screen() {
   return (
-    <ScrollView contentContainerClassName="items-center" className="mt-safe">
-      <Card className="w-full max-w-lg">
+    <BodyScrollView>
+      <Card className="w-full">
         <CardHeader className="items-center">
           <CardTitle className="text-4xl">Game Over!</CardTitle>
           <CardDescription className="text-xl">You have completed the game!</CardDescription>
@@ -33,6 +34,6 @@ export default function Screen() {
           <Text className="text-foreground">You did not beat the high score, try again!</Text>
         </CardFooter>
       </Card>
-    </ScrollView>
+    </BodyScrollView>
   );
 }
