@@ -19,6 +19,14 @@ export default function HighScoreTable({ difficulty }: HighScoreTableProps) {
   // Get the state and actions we need from the high score store
   const highScores = useHighScoreStore((state) => state[difficulty]);
 
+  // *** TEST CODE ***
+  const turns = 809;
+  const hasMadeHighScore = useHighScoreStore((state) => state.hasMadeHighScore(difficulty, turns));
+  const getgetHighScoreInsertIndex = useHighScoreStore((state) => state.getHighScoreInsertIndex(difficulty, turns));
+  console.log("hasMadeHighScore", hasMadeHighScore);
+  console.log("getgetHighScoreInsertIndex", getgetHighScoreInsertIndex);
+  // *** TEST CODE ***
+
   return (
     <Table>
       <TableHeader>

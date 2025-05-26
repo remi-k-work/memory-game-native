@@ -17,7 +17,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { Difficulty } from "@/types/shared";
 
 export default function Screen() {
-  const [value, setValue] = useState<Difficulty>("easy");
+  const [difficultyTab, setDifficultyTab] = useState<Difficulty>("easy");
 
   return (
     <BodyScrollView>
@@ -27,15 +27,15 @@ export default function Screen() {
           <CardDescription className="text-xl">High Scores</CardDescription>
         </CardHeader>
         <CardContent className="p-0">
-          <Tabs value={value} onValueChange={(value) => setValue(value as Difficulty)}>
+          <Tabs value={difficultyTab} onValueChange={(value) => setDifficultyTab(value as Difficulty)}>
             <TabsList className="native:h-16 native:px-0 flex-row rounded-none bg-card p-0">
-              <TabsTrigger value="easy" className={cn("h-16 rounded-t-xl bg-green-500", value === "easy" && "h-20")}>
+              <TabsTrigger value="easy" className={cn("h-16 rounded-t-xl bg-green-500", difficultyTab === "easy" && "h-20")}>
                 <Text className="bg-green-500 px-4 py-2 text-center text-xl text-foreground">EASY</Text>
               </TabsTrigger>
-              <TabsTrigger value="medium" className={cn("h-16 rounded-t-xl bg-yellow-500", value === "medium" && "h-20")}>
+              <TabsTrigger value="medium" className={cn("h-16 rounded-t-xl bg-yellow-500", difficultyTab === "medium" && "h-20")}>
                 <Text className="bg-yellow-500 px-4 py-2 text-center text-xl text-foreground">MEDIUM</Text>
               </TabsTrigger>
-              <TabsTrigger value="hard" className={cn("h-16 rounded-t-xl bg-red-500", value === "hard" && "h-20")}>
+              <TabsTrigger value="hard" className={cn("h-16 rounded-t-xl bg-red-500", difficultyTab === "hard" && "h-20")}>
                 <Text className="bg-red-500 px-4 py-2 text-center text-xl text-foreground">HARD</Text>
               </TabsTrigger>
             </TabsList>

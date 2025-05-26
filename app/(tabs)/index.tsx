@@ -37,8 +37,14 @@ export default function Screen() {
         setLoading(true);
         hasFetchedCards(await fetchRandomCards(showIllustrations ? "illustration" : "photo", collection, controller.signal));
       } catch (error) {
+        // Ignore abort errors from aborting the fetch
         if (error instanceof Error && error.name === "AbortError") return;
+
+        // There was an error fetching a random card set; log it
         console.error("Error fetching a random card set:", error);
+
+        // Fall back to the initial fallback card set
+        hasFetchedCards(INIT_CARDS);
       } finally {
         setLoading(false);
       }
