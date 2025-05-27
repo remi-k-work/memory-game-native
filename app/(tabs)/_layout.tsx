@@ -25,6 +25,9 @@ export default function Layout() {
         <TabTrigger name="game-over" href="/game-over" asChild>
           <TabButton regularIconName="stats-chart-outline" focusedIconName="stats-chart-sharp" />
         </TabTrigger>
+        <TabTrigger name="congrats" href="/congrats" asChild>
+          <TabButton regularIconName="stats-chart-outline" focusedIconName="stats-chart-sharp" />
+        </TabTrigger>
       </TabList>
     </Tabs>
   );

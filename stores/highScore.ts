@@ -2,18 +2,20 @@
 import { createStore } from "zustand/vanilla";
 
 // types
-import type { Difficulty, HighScores } from "@/types/shared";
+import type { Difficulty, HighScore, HighScores } from "@/types/shared";
 
 // constants
 import { INIT_HIGH_SCORES } from "@/constants/high-scores";
 
 export interface HighScoreState extends HighScores {}
 
-interface HighScoreActions {}
+interface HighScoreActions {
+  enteredNewHighScore: (difficulty: Difficulty, newHighScoreIndex: number, newHighScore: HighScore) => void;
+}
 
 interface HighScoreDerived {
   hasMadeHighScore: (difficulty: Difficulty, turns: number) => boolean;
-  getHighScoreInsertIndex: (difficulty: Difficulty, turns: number) => number;
+  getNewHighScoreIndex: (difficulty: Difficulty, turns: number) => number;
 }
 
 export type HighScoreStore = HighScoreState & HighScoreActions & HighScoreDerived;
@@ -26,6 +28,13 @@ export const createHighScoreStore = (initState?: HighScoreState) => {
     ...DEFAULT_STATE,
     ...initState,
 
+    // Player has entered a new high score
+    enteredNewHighScore: (difficulty, newHighScoreIndex, newHighScore) =>
+      set((state) => ({
+        ...state,
+        [difficulty]: [...state[difficulty].slice(0, newHighScoreIndex), newHighScore, ...state[difficulty].slice(newHighScoreIndex + 1)],
+      })),
+
     // *** State-derived functions and selectors ***
 
     // Has the player made a high score for a given difficulty?
@@ -35,7 +44,7 @@ export const createHighScoreStore = (initState?: HighScoreState) => {
     },
 
     // Get the index at which a new high score should be inserted for a given difficulty
-    getHighScoreInsertIndex: (difficulty, turns) => {
+    getNewHighScoreIndex: (difficulty, turns) => {
       const highScores = get()[difficulty];
       return highScores.findIndex((highScore) => highScore.turns >= turns);
     },
