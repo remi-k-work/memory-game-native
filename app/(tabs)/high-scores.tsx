@@ -4,8 +4,13 @@ import { useState } from "react";
 // react native
 import { Text } from "react-native";
 
+// expo
+import { useLocalSearchParams } from "expo-router";
+
 // other libraries
+import useDidUpdateEffect from "@/hooks/useDidUpdateEffect";
 import { cn } from "@/lib/utils";
+import { useGameStore } from "@/stores/gameProvider";
 
 // components
 import BodyScrollView from "@/components/BodyScrollView";
@@ -17,7 +22,20 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { Difficulty } from "@/types/shared";
 
 export default function Screen() {
-  const [difficultyTab, setDifficultyTab] = useState<Difficulty>("easy");
+  // Get the state and actions we need from the game store
+  const difficulty = useGameStore((state) => state.difficulty);
+
+  // Get access to the search parameters
+  const { highScoreIndexToHighlight, forDifficulty } = useLocalSearchParams<{ highScoreIndexToHighlight?: string; forDifficulty?: string }>();
+
+  // The currently active difficulty tab for which high scores are being displayed
+  const [difficultyTab, setDifficultyTab] = useState<Difficulty>(difficulty);
+
+  // When the difficulty changes, update the active difficulty tab (keep them in sync)
+  useDidUpdateEffect(() => setDifficultyTab(difficulty), [difficulty]);
+  useDidUpdateEffect(() => {
+    if (forDifficulty) setDifficultyTab(forDifficulty as Difficulty);
+  }, [forDifficulty]);
 
   return (
     <BodyScrollView>
@@ -40,13 +58,13 @@ export default function Screen() {
               </TabsTrigger>
             </TabsList>
             <TabsContent value="easy" className="mx-1 rounded-lg bg-green-700">
-              <HighScoreTable difficulty="easy" />
+              <HighScoreTable difficulty="easy" highScoreIndexToHighlight={forDifficulty === "easy" ? Number(highScoreIndexToHighlight ?? "-1") : -1} />
             </TabsContent>
             <TabsContent value="medium" className="mx-1 rounded-lg bg-yellow-700">
-              <HighScoreTable difficulty="medium" />
+              <HighScoreTable difficulty="medium" highScoreIndexToHighlight={forDifficulty === "medium" ? Number(highScoreIndexToHighlight ?? "-1") : -1} />
             </TabsContent>
             <TabsContent value="hard" className="mx-1 rounded-lg bg-red-700">
-              <HighScoreTable difficulty="hard" />
+              <HighScoreTable difficulty="hard" highScoreIndexToHighlight={forDifficulty === "hard" ? Number(highScoreIndexToHighlight ?? "-1") : -1} />
             </TabsContent>
           </Tabs>
         </CardContent>

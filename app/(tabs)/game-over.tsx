@@ -2,7 +2,7 @@
 import { View } from "react-native";
 
 // expo
-import { useRouter } from "expo-router";
+import { router } from "expo-router";
 
 // other libraries
 import { useGameStore } from "@/stores/gameProvider";
@@ -19,8 +19,6 @@ import { Text } from "@/components/ui/text";
 export default function Screen() {
   // Get the state and actions we need from the game store
   const startedaNewGame = useGameStore((state) => state.startedaNewGame);
-
-  const router = useRouter();
 
   function handleOKPressed() {
     // Player has started a new game

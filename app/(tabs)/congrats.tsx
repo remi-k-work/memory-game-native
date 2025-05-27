@@ -5,7 +5,7 @@ import { useState } from "react";
 import { View } from "react-native";
 
 // expo
-import { useRouter } from "expo-router";
+import { router } from "expo-router";
 
 // other libraries
 import { useGameStore } from "@/stores/gameProvider";
@@ -28,9 +28,10 @@ export default function Screen() {
 
   // Get the state and actions we need from the high score store
   const highScores = useHighScoreStore((state) => state[difficulty]);
+  const newHighScoreIndex = useHighScoreStore((state) => state.getNewHighScoreIndex(difficulty, currTurns));
   const enteredNewHighScore = useHighScoreStore((state) => state.enteredNewHighScore);
 
-  const router = useRouter();
+  // The current player's name that they have entered
   const [currName, setCurrName] = useState("");
 
   function handleOKPressed() {
@@ -41,14 +42,13 @@ export default function Screen() {
     }
 
     // Player has entered a new high score
-    const newHighScoreIndex = 0; // <==== TODO: Get the index at which a new high score should be inserted
     enteredNewHighScore(difficulty, newHighScoreIndex, { ...highScores[newHighScoreIndex], name: currName, collection: currCollection, turns: currTurns });
 
     // Player has started a new game
     startedaNewGame();
 
-    // Go back to the home screen
-    router.navigate("/high-scores");
+    // Go back to the high scores screen and highlight the new high score
+    router.navigate(`/high-scores?highScoreIndexToHighlight=${newHighScoreIndex}&forDifficulty=${difficulty}`);
   }
 
   function handleCancelPressed() {
@@ -71,7 +71,7 @@ export default function Screen() {
             <Text className="text-muted-foreground">Difficulty Level</Text>
             <Difficulty />
           </View>
-          <HighScoreTable difficulty={difficulty} newHighScoreIndex={0} onNameChanged={setCurrName} />
+          <HighScoreTable difficulty={difficulty} newHighScoreIndex={newHighScoreIndex} onNameChanged={setCurrName} />
         </CardContent>
         <CardFooter className="justify-around pt-6">
           <Button size="lg" onPress={handleOKPressed}>
