@@ -14,26 +14,26 @@ export default function Screen() {
   return (
     <BodyScrollView>
       <Card className="w-full">
-        <CardHeader>
-          <CardTitle>Game Settings</CardTitle>
-          <CardDescription>Adjust your game experience</CardDescription>
+        <CardHeader className="items-center">
+          <CardTitle className="text-4xl">Game Settings</CardTitle>
+          <CardDescription className="text-xl">Adjust your game experience</CardDescription>
         </CardHeader>
-        <CardContent className="gap-6">
-          <View className="gap-1">
+        <CardContent className="items-center gap-6 rounded-lg bg-muted p-0 pt-6">
+          <View className="items-center gap-2">
             <Text className="text-muted-foreground">What Difficulty?</Text>
             <DifficultyChanger />
           </View>
-          <View className="gap-1">
+          <View className="items-center gap-2">
             <Text className="text-muted-foreground">Which Collection Set?</Text>
             <CollectionSlider />
           </View>
-          <View className="gap-1">
+          <View className="items-center gap-2">
             <Text className="text-muted-foreground">Photos or Illustrations?</Text>
             <IllustrationsSwitch />
           </View>
           <NewGameButton />
         </CardContent>
-        <CardFooter>
+        <CardFooter className="justify-center pt-6">
           <PixaBayBanner />
         </CardFooter>
       </Card>
