@@ -1,5 +1,5 @@
-// other libraries
-import { StateStorage } from "zustand/middleware";
+// types
+import type { StateStorage } from "zustand/middleware";
 
 // A simple in-memory object to simulate storage
 const inMemoryStore: Record<string, string> = {};
@@ -11,7 +11,7 @@ export default function inMemoryStorage(): StateStorage {
       await new Promise((resolve) => setTimeout(resolve, 3000));
 
       const value = inMemoryStore[name] ?? null;
-      console.log(`[InMemoryStorage] getItem: ${value}`);
+      console.log(`[inMemoryStorage] getItem: ${value}`);
       return value;
     },
     setItem: async (name: string, value: string): Promise<void> => {
@@ -19,14 +19,14 @@ export default function inMemoryStorage(): StateStorage {
       await new Promise((resolve) => setTimeout(resolve, 3000));
 
       inMemoryStore[name] = value;
-      console.log(`[InMemoryStorage] setItem: ${value}`);
+      console.log(`[inMemoryStorage] setItem: ${value}`);
     },
     removeItem: async (name: string): Promise<void> => {
       // simulate async delay
       await new Promise((resolve) => setTimeout(resolve, 3000));
 
       delete inMemoryStore[name];
-      console.log(`[InMemoryStorage] removeItem '${name}'`);
+      console.log(`[inMemoryStorage] removeItem '${name}'`);
     },
   };
 }
