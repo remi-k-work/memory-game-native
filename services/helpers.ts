@@ -2,7 +2,13 @@
 import type { CollectionCategory, ImageType, Orientation } from "@/types/shared";
 
 // constants
+import { HIGH_SCORE_API_URL } from "@/constants/high-score";
 import { PIXABBAY_API_URL } from "@/constants/pixabay";
+
+// Generate a suitable URL for the High score API request
+export function generateHighScoreUrl() {
+  return HIGH_SCORE_API_URL;
+}
 
 // Generate a suitable URL for the Pixabay API request
 export function generatePixabayUrl(imageType: ImageType, orientation: Orientation, category: CollectionCategory, editorsChoice: "true" | "false" = "false") {

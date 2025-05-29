@@ -7,11 +7,18 @@ import { View } from "react-native";
 import { Slot } from "expo-router";
 
 // components
+import { getHighScore } from "@/services/high-score";
 import { GameStoreProvider } from "@/stores/gameProvider";
 import { HighScoreStoreProvider } from "@/stores/highScoreProvider";
 import { PortalHost } from "@rn-primitives/portal";
 
 export default function Layout() {
+  // *** TEST CODE ***
+  getHighScore()
+    .then((highScore) => console.log(highScore))
+    .catch((error) => console.error(error));
+  // *** TEST CODE ***
+
   return (
     <GameStoreProvider>
       <HighScoreStoreProvider>
