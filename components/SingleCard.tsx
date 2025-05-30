@@ -31,7 +31,7 @@ export default function SingleCard({ card, card: { imageP, imageL, isFlipped } }
         resizeMode="contain"
         className={cn(
           "h-full w-full bg-card transition-transform duration-500 ease-in-out",
-          !isFlipped ? "delay-500 [transform:rotateY(0deg)]" : "[transform:rotateY(90deg)]",
+          isFlipped ? "delay-500 [transform:rotateY(0deg)]" : "[transform:rotateY(90deg)]",
         )}
       />
       <LinearGradient
@@ -40,7 +40,7 @@ export default function SingleCard({ card, card: { imageP, imageL, isFlipped } }
         end={{ x: 1, y: 1 }}
         className={cn(
           "absolute h-full w-full transition-transform duration-500 ease-in-out",
-          !isFlipped ? "[transform:rotateY(90deg)]" : "delay-500 [transform:rotateY(0deg)]",
+          isFlipped ? "[transform:rotateY(90deg)]" : "delay-500 [transform:rotateY(0deg)]",
         )}
       />
     </Pressable>

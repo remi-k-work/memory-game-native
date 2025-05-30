@@ -1,8 +1,8 @@
 // other libraries
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { createStore } from "zustand/vanilla";
 import { createShuffledCardPairs, replaceCardImages } from "./cards";
-import highScoreStorage from "./highScoreStorage";
 
 // types
 import type { Card, CollectionCategory, Difficulty } from "@/types/shared";
@@ -160,7 +160,7 @@ export const createGameStore = (initState?: GameState) => {
       {
         name: "game",
         version: 1,
-        storage: createJSONStorage(() => highScoreStorage()),
+        storage: createJSONStorage(() => AsyncStorage),
 
         // The store has been hydrated
         onRehydrateStorage: (state) => () => state._setHasHydrated(),

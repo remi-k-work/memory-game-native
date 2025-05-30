@@ -1,8 +1,8 @@
-// expo
-import { randomUUID } from "expo-crypto";
-
 // services
 import { fetchRandomImageUrls } from "@/services/pixabay";
+
+// other libraries
+import randomUUID from "@/lib/randomUUID";
 
 // types
 import type { Card, CollectionCategory, Difficulty, ImageType } from "@/types/shared";

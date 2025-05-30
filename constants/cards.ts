@@ -1,5 +1,5 @@
-// expo
-import { randomUUID } from "expo-crypto";
+// other libraries
+import randomUUID from "@/lib/randomUUID";
 
 // types
 import type { Card } from "@/types/shared";
