@@ -2,7 +2,7 @@
 import { useState } from "react";
 
 // react native
-import { Text } from "react-native";
+import { Keyboard, Text } from "react-native";
 
 // other libraries
 import { useGameStore } from "@/stores/gameProvider";
@@ -31,30 +31,52 @@ export default function Entry({ index, highScore: { name, turns, collection }, i
   const [currName, setCurrName] = useState("");
 
   return isNewHighScore ? (
-    <TableRow className="items-center bg-primary">
-      <TableCell className="w-1/5">
-        <Text className="text-center text-primary-foreground">{index + 1}</Text>
-      </TableCell>
-      <TableCell className="w-1/5">
-        <Input
-          autoCapitalize="characters"
-          maxLength={3}
-          autoFocus
-          placeholder="AAA"
-          value={currName}
-          onChangeText={(value) => {
-            setCurrName(value);
-            onNameChanged?.(value);
-          }}
-        />
-      </TableCell>
-      <TableCell className="w-2/5">
-        <Text className="text-center text-primary-foreground">{currCollection}</Text>
-      </TableCell>
-      <TableCell className="w-1/5">
-        <Text className="text-center text-primary-foreground">{currTurns}</Text>
-      </TableCell>
-    </TableRow>
+    <>
+      {/* Show the old high score entry, which is being replaced, crossed out */}
+      <TableRow className="items-center bg-background">
+        <TableCell className="w-1/5">
+          <Text className="text-center text-foreground line-through">{index + 1}</Text>
+        </TableCell>
+        <TableCell className="w-1/5">
+          <Text className="text-center text-foreground line-through">{name}</Text>
+        </TableCell>
+        <TableCell className="w-2/5">
+          <Text className="text-center text-foreground line-through">{collection}</Text>
+        </TableCell>
+        <TableCell className="w-1/5">
+          <Text className="text-center text-foreground line-through">{turns}</Text>
+        </TableCell>
+      </TableRow>
+
+      {/* Show the new high score entry as highlighted and editable */}
+      <TableRow className="items-center bg-primary">
+        <TableCell className="w-1/5">
+          <Text className="text-center text-primary-foreground">{index + 1}</Text>
+        </TableCell>
+        <TableCell className="w-1/5">
+          <Input
+            autoCapitalize="characters"
+            maxLength={3}
+            autoFocus
+            placeholder={name}
+            value={currName}
+            onChangeText={(value) => {
+              setCurrName(value);
+              onNameChanged?.(value);
+
+              // Dismiss the keyboard once the player has entered their name
+              if (value.trim().length === 3) Keyboard.dismiss();
+            }}
+          />
+        </TableCell>
+        <TableCell className="w-2/5">
+          <Text className="text-center text-primary-foreground">{currCollection}</Text>
+        </TableCell>
+        <TableCell className="w-1/5">
+          <Text className="text-center text-primary-foreground">{currTurns}</Text>
+        </TableCell>
+      </TableRow>
+    </>
   ) : isHighlighted ? (
     <TableRow className="items-center bg-primary">
       <TableCell className="w-1/5">

@@ -9,7 +9,7 @@ import { router } from "expo-router";
 
 // other libraries
 import { useGameStore } from "@/stores/gameProvider";
-import { useHighScoreStore } from "@/stores/highScoreProvider";
+import { useHighScoreStore, useRehydrateHighScore } from "@/stores/highScoreProvider";
 
 // components
 import BodyScrollView from "@/components/BodyScrollView";
@@ -27,22 +27,32 @@ export default function Screen() {
   const startedaNewGame = useGameStore((state) => state.startedaNewGame);
 
   // Get the state and actions we need from the high score store
+  const rehydrateHighScore = useRehydrateHighScore();
   const highScores = useHighScoreStore((state) => state[difficulty]);
-  const newHighScoreIndex = useHighScoreStore((state) => state.getNewHighScoreIndex(difficulty, currTurns));
+  const getNewHighScoreIndex = useHighScoreStore((state) => state.getNewHighScoreIndex);
   const enteredNewHighScore = useHighScoreStore((state) => state.enteredNewHighScore);
 
   // The current player's name that they have entered
   const [currName, setCurrName] = useState("");
 
-  function handleOKPressed() {
+  async function handleOKPressed() {
     // The player's name is required and must be exactly 3 characters long
     if (!currName.trim() || currName.trim().length !== 3) {
       alert("Please enter a name that is exactly 3 characters long.");
       return;
     }
 
+    // Rehydrate the high score with the latest data
+    await rehydrateHighScore();
+
     // Player has entered a new high score
-    enteredNewHighScore(difficulty, newHighScoreIndex, { ...highScores[newHighScoreIndex], name: currName, collection: currCollection, turns: currTurns });
+    const newHighScoreIndex = getNewHighScoreIndex(difficulty, currTurns);
+    enteredNewHighScore(difficulty, newHighScoreIndex, {
+      ...highScores[newHighScoreIndex],
+      name: currName.toUpperCase(),
+      collection: currCollection,
+      turns: currTurns,
+    });
 
     // Player has started a new game
     startedaNewGame();
@@ -71,7 +81,7 @@ export default function Screen() {
             <Text className="text-muted-foreground">Difficulty Level</Text>
             <Difficulty />
           </View>
-          <HighScoreTable difficulty={difficulty} newHighScoreIndex={newHighScoreIndex} onNameChanged={setCurrName} />
+          <HighScoreTable difficulty={difficulty} newHighScoreIndex={getNewHighScoreIndex(difficulty, currTurns)} onNameChanged={setCurrName} />
         </CardContent>
         <CardFooter className="justify-around pt-6">
           <Button size="lg" onPress={handleOKPressed}>

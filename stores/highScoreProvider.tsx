@@ -37,3 +37,9 @@ export const useHighScoreStore = <T,>(selector: (store: HighScoreStore) => T): T
   if (!highScoreStoreContext) throw new Error("useHighScoreStore must be used within a HighScoreStoreProvider.");
   return useStore(highScoreStoreContext, selector);
 };
+
+export const useRehydrateHighScore = () => {
+  const highScoreStoreContext = use(HighScoreStoreContext);
+  if (!highScoreStoreContext) throw new Error("useRehydrateHighScore must be used within a HighScoreStoreProvider.");
+  return highScoreStoreContext.persist.rehydrate;
+};

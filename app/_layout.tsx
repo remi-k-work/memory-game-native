@@ -6,10 +6,16 @@ import { View } from "react-native";
 // expo
 import { Slot } from "expo-router";
 
+// other libraries
+import { configureReanimatedLogger, ReanimatedLogLevel } from "react-native-reanimated";
+
 // components
 import { GameStoreProvider } from "@/stores/gameProvider";
 import { HighScoreStoreProvider } from "@/stores/highScoreProvider";
 import { PortalHost } from "@rn-primitives/portal";
+
+// logger configuration for react native reanimated
+configureReanimatedLogger({ level: ReanimatedLogLevel.warn, strict: false });
 
 export default function Layout() {
   return (

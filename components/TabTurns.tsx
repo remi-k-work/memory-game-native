@@ -7,7 +7,7 @@ import { router } from "expo-router";
 // other libraries
 import useDidUpdateEffect from "@/hooks/useDidUpdateEffect";
 import { useGameStore } from "@/stores/gameProvider";
-import { useHighScoreStore } from "@/stores/highScoreProvider";
+import { useHighScoreStore, useRehydrateHighScore } from "@/stores/highScoreProvider";
 
 export default function TabTurns() {
   // Get the state and actions we need from the game store
@@ -16,21 +16,28 @@ export default function TabTurns() {
   const turns = useGameStore((state) => state.turns);
 
   // Get the state and actions we need from the high score store
-  const hasMadeHighScore = useHighScoreStore((state) => state.hasMadeHighScore(difficulty, turns));
+  const rehydrateHighScore = useRehydrateHighScore();
+  const hasMadeHighScore = useHighScoreStore((state) => state.hasMadeHighScore);
 
   useDidUpdateEffect(() => {
-    // Is the game over?
-    if (isGameOver) {
+    // Processing the game over in an async manner is necessary
+    const processGameOver = async () => {
+      // Rehydrate the high score with the latest data
+      await rehydrateHighScore();
+
       // Has the player made a high score for a given difficulty?
-      if (hasMadeHighScore) {
+      if (hasMadeHighScore(difficulty, turns)) {
         // Yes, navigate to the congrats screen
         router.navigate("/congrats");
       } else {
         // No, navigate to the game over screen
         router.navigate("/game-over");
       }
-    }
-  }, [isGameOver, hasMadeHighScore]);
+    };
+
+    // Is the game over?
+    if (isGameOver) processGameOver();
+  }, [isGameOver]);
 
   return (
     <View className="h-12 w-16 items-center justify-center rounded-xl bg-foreground">
