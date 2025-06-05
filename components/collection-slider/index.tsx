@@ -51,7 +51,7 @@ export default function CollectionSlider() {
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
-        onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }])}
+        onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], { useNativeDriver: false })}
         onMomentumScrollEnd={({ nativeEvent: { contentOffset } }) => changedCollection(COLLECTIONS[Math.round(contentOffset.x / width)].category)}
         scrollEventThrottle={1}
         snapToAlignment="center"

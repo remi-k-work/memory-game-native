@@ -7,6 +7,7 @@ import { View } from "react-native";
 import { Slot } from "expo-router";
 
 // other libraries
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { configureReanimatedLogger, ReanimatedLogLevel } from "react-native-reanimated";
 
 // components
@@ -17,15 +18,20 @@ import { PortalHost } from "@rn-primitives/portal";
 // logger configuration for react native reanimated
 configureReanimatedLogger({ level: ReanimatedLogLevel.warn, strict: false });
 
+// Create a client
+const queryClient = new QueryClient();
+
 export default function Layout() {
   return (
-    <GameStoreProvider>
-      <HighScoreStoreProvider>
-        <View className="mb-safe flex-1 bg-background">
-          <Slot />
-        </View>
-        <PortalHost />
-      </HighScoreStoreProvider>
-    </GameStoreProvider>
+    <QueryClientProvider client={queryClient}>
+      <GameStoreProvider>
+        <HighScoreStoreProvider>
+          <View className="mb-safe flex-1 bg-background">
+            <Slot />
+          </View>
+          <PortalHost />
+        </HighScoreStoreProvider>
+      </GameStoreProvider>
+    </QueryClientProvider>
   );
 }
