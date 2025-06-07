@@ -9,15 +9,15 @@ export default function Layout() {
   return (
     <Tabs>
       <TabSlot />
-      <TabList style={{ alignItems: "center", justifyContent: "space-around" }}>
+      <TabList style={{ alignItems: "center", justifyContent: "space-around", paddingBlock: 4 }}>
         <TabTrigger name="index" href="/" asChild>
-          <TabButton regularIconName="game-controller-outline" focusedIconName="game-controller-sharp" />
+          <TabButton />
         </TabTrigger>
         <TabTrigger name="settings" href="/settings" asChild>
-          <TabButton regularIconName="settings-outline" focusedIconName="settings-sharp" />
+          <TabButton />
         </TabTrigger>
         <TabTrigger name="high-scores" href="/high-scores" asChild>
-          <TabButton regularIconName="stats-chart-outline" focusedIconName="stats-chart-sharp" />
+          <TabButton />
         </TabTrigger>
         <TabTrigger name="turns" href="/turns" onPress={(ev) => ev.preventDefault()} asChild>
           <TabTurns />

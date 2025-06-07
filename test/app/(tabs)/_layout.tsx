@@ -11,22 +11,22 @@ export default function Layout() {
       <TabSlot />
       <TabList style={{ alignItems: "center", justifyContent: "space-around" }}>
         <TabTrigger name="index" href="/" asChild>
-          <TabButton regularIconName="game-controller-outline" focusedIconName="game-controller-sharp" />
+          <TabButton />
         </TabTrigger>
         <TabTrigger name="settings" href="/settings" asChild>
-          <TabButton regularIconName="settings-outline" focusedIconName="settings-sharp" />
+          <TabButton />
         </TabTrigger>
         <TabTrigger name="high-scores" href="/high-scores" asChild>
-          <TabButton regularIconName="stats-chart-outline" focusedIconName="stats-chart-sharp" />
+          <TabButton />
         </TabTrigger>
         <TabTrigger name="turns" href="/turns" onPress={(ev) => ev.preventDefault()} asChild>
           <TabTurns />
         </TabTrigger>
         <TabTrigger name="game-over" href="/game-over" asChild>
-          <TabButton regularIconName="stats-chart-outline" focusedIconName="stats-chart-sharp" />
+          <TabButton />
         </TabTrigger>
         <TabTrigger name="congrats" href="/congrats" asChild>
-          <TabButton regularIconName="stats-chart-outline" focusedIconName="stats-chart-sharp" />
+          <TabButton />
         </TabTrigger>
       </TabList>
     </Tabs>
