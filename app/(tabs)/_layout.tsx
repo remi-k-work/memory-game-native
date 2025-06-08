@@ -11,13 +11,13 @@ export default function Layout() {
       <TabSlot />
       <TabList style={{ alignItems: "center", justifyContent: "space-around", paddingBlock: 4 }}>
         <TabTrigger name="index" href="/" asChild>
-          <TabButton />
+          <TabButton iconName="PuzzlePiece" />
         </TabTrigger>
         <TabTrigger name="settings" href="/settings" asChild>
-          <TabButton />
+          <TabButton iconName="WrenchScrewDriver" />
         </TabTrigger>
         <TabTrigger name="high-scores" href="/high-scores" asChild>
-          <TabButton />
+          <TabButton iconName="Trophy" />
         </TabTrigger>
         <TabTrigger name="turns" href="/turns" onPress={(ev) => ev.preventDefault()} asChild>
           <TabTurns />

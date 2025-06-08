@@ -13,6 +13,9 @@ import { useGameStore } from "@/stores/gameProvider";
 import { useHighScoreStore, useRehydrateHighScore } from "@/stores/highScoreProvider";
 import Animated, { runOnJS, useSharedValue, withSpring } from "react-native-reanimated";
 
+// constants
+const TURNS_TEXT_HEIGHT = 58;
+
 export default function TabTurns() {
   // Get the state and actions we need from the game store
   const isGameOver = useGameStore((state) => state.isGameOver());
@@ -42,9 +45,6 @@ export default function TabTurns() {
     // Is the game over?
     if (isGameOver) processGameOver();
   }, [isGameOver]);
-
-  // The fixed height of the turns text
-  const TURNS_TEXT_HEIGHT = 58;
 
   // To show the "old" number of turns as the "new" one slides in
   const [prevTurns, setPrevTurns] = useState(turns);

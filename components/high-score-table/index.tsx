@@ -31,16 +31,16 @@ export default function HighScoreTable({ difficulty, newHighScoreIndex = -1, hig
       <TableHeader>
         <TableRow>
           <TableHead className="w-1/5">
-            <Text className="text-center font-bold text-muted-foreground">#</Text>
+            <Text className="text-center font-bold text-foreground">#</Text>
           </TableHead>
           <TableHead className="w-1/5">
-            <Text className="text-center font-bold text-muted-foreground">Name</Text>
+            <Text className="text-center font-bold text-foreground">Name</Text>
           </TableHead>
           <TableHead className="w-2/5">
-            <Text className="text-center font-bold text-muted-foreground">Collection</Text>
+            <Text className="text-center font-bold text-foreground">Collection</Text>
           </TableHead>
           <TableHead className="w-1/5">
-            <Text className="text-center font-bold text-muted-foreground">Turns</Text>
+            <Text className="text-center font-bold text-foreground">Turns</Text>
           </TableHead>
         </TableRow>
       </TableHeader>
