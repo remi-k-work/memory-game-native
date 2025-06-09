@@ -5,18 +5,34 @@ import { Text, View } from "react-native";
 import BodyScrollView from "@/components/BodyScrollView";
 import CollectionSlider from "@/components/collection-slider";
 import DifficultyChanger from "@/components/DifficultyChanger";
+import FlippingLetter from "@/components/FlippingLetter";
 import IllustrationsSwitch from "@/components/IllustrationsSwitch";
 import NewGameButton from "@/components/NewGameButton";
 import PixaBayBanner from "@/components/PixaBayBanner";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/custom/card";
 
 export default function Screen() {
   return (
     <BodyScrollView>
-      <Card className="w-full">
-        <CardHeader className="items-center">
-          <CardTitle className="text-4xl">Game Settings</CardTitle>
-          <CardDescription className="text-xl">Adjust your game experience</CardDescription>
+      <Card>
+        <CardHeader>
+          <CardTitle>
+            <FlippingLetter letter="WrenchScrewDriver" />
+            <FlippingLetter letter="G" />
+            <FlippingLetter letter="a" />
+            <FlippingLetter letter="m" />
+            <FlippingLetter letter="e" />
+            <FlippingLetter letter=" " />
+            <FlippingLetter letter="S" />
+            <FlippingLetter letter="e" />
+            <FlippingLetter letter="t" />
+            <FlippingLetter letter="t" />
+            <FlippingLetter letter="i" />
+            <FlippingLetter letter="n" />
+            <FlippingLetter letter="g" />
+            <FlippingLetter letter="s" />
+          </CardTitle>
+          <CardDescription>Adjust your game experience</CardDescription>
         </CardHeader>
         <CardContent className="items-center gap-6 rounded-lg bg-muted p-0 pt-6">
           <View className="items-center gap-2">
