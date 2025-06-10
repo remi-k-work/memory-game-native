@@ -23,7 +23,7 @@ interface FlipCardProps {
 export default function FlipCard({ isFlipped, direction = "y", duration = 500, children }: FlipCardProps) {
   return (
     <FlipCardContext value={{ isFlipped, direction, duration }}>
-      <View>{children}</View>
+      <View className="flex-1">{children}</View>
     </FlipCardContext>
   );
 }

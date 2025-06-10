@@ -21,7 +21,7 @@ function CardDescription({ className, ...props }: TextProps) {
 }
 
 function CardContent({ className, ...props }: ViewProps) {
-  return <View className={cn("items-center gap-6 rounded-lg bg-muted px-0 pt-6", className)} {...props} />;
+  return <View className={cn("items-center gap-6 rounded-lg bg-muted px-0 py-6", className)} {...props} />;
 }
 
 function CardFooter({ className, ...props }: ViewProps) {

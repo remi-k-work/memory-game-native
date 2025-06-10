@@ -1,5 +1,5 @@
 // react
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 // react native
 import { Image, Pressable } from "react-native";
@@ -8,10 +8,14 @@ import { Image, Pressable } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
 // other libraries
+import useDidUpdateEffect from "@/hooks/useDidUpdateEffect";
 import useOrientation from "@/hooks/useOrientation";
-import { cn } from "@/lib/utils";
 import { useGameStore } from "@/stores/gameProvider";
+import { useSharedValue } from "react-native-reanimated";
 import colors from "tailwindcss/colors";
+
+// components
+import FlipCard, { FlipCardFlippedContent, FlipCardRegularContent } from "@/components/flip-card";
 
 // types
 import type { Card } from "@/types/shared";
@@ -30,31 +34,37 @@ export default function SingleCard({ card, card: { imageP, imageL, isFlipped } }
   // Whether the card image is currently loading
   const [isLoading, setIsLoading] = useState(false);
 
+  // A shared value to track if the card is flipped that drives the animation
+  const isFlippedFlag = useSharedValue(isFlipped);
+
+  // To keep the shared value in sync with the prop
+  useDidUpdateEffect(() => {
+    isFlippedFlag.value = isFlipped;
+  }, [isFlipped]);
+
+  // A random flip direction (kept in a ref to unflip it later in the same way)
+  const directionRef = useRef<"x" | "y">(Math.random() < 0.5 ? "x" : "y");
+
   return (
     <Pressable disabled={isLoading} className="flex-1 overflow-hidden rounded-lg" onPress={() => chosenaCard(card)}>
-      <Image
-        source={isPortrait ? imageP : imageL}
-        resizeMode="contain"
-        className={cn(
-          "h-full w-full bg-muted transition-transform duration-500 ease-in-out",
-          isFlipped ? "delay-500 [transform:rotateY(0deg)]" : "[transform:rotateY(90deg)]",
-        )}
-        onLoadStart={() => setIsLoading(true)}
-        onLoadEnd={() => setIsLoading(false)}
-      />
-      {isLoading ? (
-        <LinearGradient colors={[colors.stone[950], colors.rose[900]]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} className="absolute h-full w-full" />
-      ) : (
-        <LinearGradient
-          colors={[colors.stone[950], colors.indigo[900]]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          className={cn(
-            "absolute h-full w-full transition-transform duration-500 ease-in-out",
-            isFlipped ? "[transform:rotateY(90deg)]" : "delay-500 [transform:rotateY(0deg)]",
+      <FlipCard isFlipped={isFlippedFlag} direction={directionRef.current}>
+        <FlipCardRegularContent>
+          {isLoading ? (
+            <LinearGradient colors={[colors.stone[950], colors.rose[900]]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} className="flex-1" />
+          ) : (
+            <LinearGradient colors={[colors.stone[950], colors.indigo[900]]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} className="flex-1" />
           )}
-        />
-      )}
+        </FlipCardRegularContent>
+        <FlipCardFlippedContent>
+          <Image
+            source={isPortrait ? imageP : imageL}
+            resizeMode="contain"
+            className="h-full w-full bg-muted"
+            onLoadStart={() => setIsLoading(true)}
+            onLoadEnd={() => setIsLoading(false)}
+          />
+        </FlipCardFlippedContent>
+      </FlipCard>
     </Pressable>
   );
 }

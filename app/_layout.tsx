@@ -16,7 +16,7 @@ import { HighScoreStoreProvider } from "@/stores/highScoreProvider";
 import { PortalHost } from "@rn-primitives/portal";
 
 // logger configuration for react native reanimated
-configureReanimatedLogger({ level: ReanimatedLogLevel.warn, strict: false });
+configureReanimatedLogger({ level: ReanimatedLogLevel.warn, strict: true });
 
 // Create a client
 const queryClient = new QueryClient();

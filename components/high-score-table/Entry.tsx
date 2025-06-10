@@ -8,8 +8,8 @@ import { Keyboard, Text } from "react-native";
 import { useGameStore } from "@/stores/gameProvider";
 
 // components
+import { TableCell, TableRow } from "@/components/ui/custom/table";
 import { Input } from "@/components/ui/input";
-import { TableCell, TableRow } from "@/components/ui/table";
 
 // types
 import type { HighScore } from "@/types/shared";

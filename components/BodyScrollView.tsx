@@ -12,7 +12,7 @@ interface BodyScrollViewProps {
 export default function BodyScrollView({ children }: BodyScrollViewProps) {
   return (
     <View className="mt-safe flex-1 items-center justify-center">
-      <ScrollView contentContainerClassName="items-center" className="w-full max-w-lg grow-0">
+      <ScrollView contentContainerClassName="items-center" className="w-full max-w-4xl grow-0">
         {children}
       </ScrollView>
     </View>

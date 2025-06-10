@@ -59,7 +59,7 @@ export default function Screen() {
           </CardTitle>
           <CardDescription>High Scores</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="bg-transparent">
           <Tabs value={difficultyTab} onValueChange={(value) => setDifficultyTab(value as Difficulty)}>
             <TabsList className="native:h-16 native:px-0 flex-row rounded-none bg-card p-0">
               <TabsTrigger value="easy" className={cn("h-16 rounded-t-xl bg-green-700", difficultyTab === "easy" && "h-20")}>

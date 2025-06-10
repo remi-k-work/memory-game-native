@@ -63,30 +63,32 @@ export default function FlippingLetter({ letter }: FlippingLetterProps) {
   const isIcon = letter === "PuzzlePiece" || letter === "Trophy" || letter === "WrenchScrewDriver" || letter === "Star";
 
   return (
-    <FlipCard isFlipped={isFlipped} direction={Math.random() < 0.5 ? "x" : "y"}>
-      <FlipCardRegularContent>
-        <View className="overflow-hidden rounded-xl bg-muted" style={{ width: isIcon ? 64 : 46, height: 64 }}>
-          <Text className="line-clamp-1 text-center text-4xl text-muted-foreground" style={{ lineHeight: 64 }} adjustsFontSizeToFit>
-            •
-          </Text>
-        </View>
-      </FlipCardRegularContent>
-      <FlipCardFlippedContent>
-        {isIcon ? (
-          <View className="items-center justify-center rounded-xl bg-primary" style={{ width: 64, height: 64 }}>
-            {letter === "PuzzlePiece" && <PuzzlePiece width={48} height={48} fill={primaryForeground} />}
-            {letter === "Trophy" && <Trophy width={48} height={48} fill={primaryForeground} />}
-            {letter === "WrenchScrewDriver" && <WrenchScrewDriver width={48} height={48} fill={primaryForeground} />}
-            {letter === "Star" && <Star width={48} height={48} fill={primaryForeground} />}
-          </View>
-        ) : (
-          <View className="overflow-hidden rounded-xl bg-muted" style={{ width: 46, height: 64 }}>
+    <View style={{ width: isIcon ? 64 : 46, height: 64 }}>
+      <FlipCard isFlipped={isFlipped} direction={Math.random() < 0.5 ? "x" : "y"}>
+        <FlipCardRegularContent>
+          <View className="overflow-hidden rounded-xl bg-muted" style={{ width: isIcon ? 64 : 46, height: 64 }}>
             <Text className="line-clamp-1 text-center text-4xl text-muted-foreground" style={{ lineHeight: 64 }} adjustsFontSizeToFit>
-              {letter}
+              •
             </Text>
           </View>
-        )}
-      </FlipCardFlippedContent>
-    </FlipCard>
+        </FlipCardRegularContent>
+        <FlipCardFlippedContent>
+          {isIcon ? (
+            <View className="items-center justify-center rounded-xl bg-primary" style={{ width: 64, height: 64 }}>
+              {letter === "PuzzlePiece" && <PuzzlePiece width={48} height={48} fill={primaryForeground} />}
+              {letter === "Trophy" && <Trophy width={48} height={48} fill={primaryForeground} />}
+              {letter === "WrenchScrewDriver" && <WrenchScrewDriver width={48} height={48} fill={primaryForeground} />}
+              {letter === "Star" && <Star width={48} height={48} fill={primaryForeground} />}
+            </View>
+          ) : (
+            <View className="overflow-hidden rounded-xl bg-muted" style={{ width: 46, height: 64 }}>
+              <Text className="line-clamp-1 text-center text-4xl text-muted-foreground" style={{ lineHeight: 64 }} adjustsFontSizeToFit>
+                {letter}
+              </Text>
+            </View>
+          )}
+        </FlipCardFlippedContent>
+      </FlipCard>
+    </View>
   );
 }

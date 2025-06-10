@@ -95,7 +95,7 @@ export default function Screen() {
           </View>
           <HighScoreTable difficulty={difficulty} newHighScoreIndex={getNewHighScoreIndex(difficulty, currTurns)} onNameChanged={setCurrName} />
         </CardContent>
-        <CardFooter>
+        <CardFooter className="flex-row justify-around">
           <Button size="lg" onPress={handleOKPressed}>
             <Text>OK</Text>
           </Button>
