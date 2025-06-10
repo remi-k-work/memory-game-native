@@ -14,8 +14,9 @@ import { useGameStore } from "@/stores/gameProvider";
 
 // components
 import BodyScrollView from "@/components/BodyScrollView";
+import FlippingLetter from "@/components/FlippingLetter";
 import HighScoreTable from "@/components/high-score-table";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/custom/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 // types
@@ -39,12 +40,26 @@ export default function Screen() {
 
   return (
     <BodyScrollView>
-      <Card className="w-full">
-        <CardHeader className="items-center">
-          <CardTitle className="text-4xl">Hall of Fame</CardTitle>
-          <CardDescription className="text-xl">High Scores</CardDescription>
+      <Card>
+        <CardHeader>
+          <CardTitle>
+            <FlippingLetter letter="Trophy" />
+            <FlippingLetter letter="H" />
+            <FlippingLetter letter="a" />
+            <FlippingLetter letter="l" />
+            <FlippingLetter letter="l" />
+            <FlippingLetter letter=" " />
+            <FlippingLetter letter="o" />
+            <FlippingLetter letter="f" />
+            <FlippingLetter letter=" " />
+            <FlippingLetter letter="F" />
+            <FlippingLetter letter="a" />
+            <FlippingLetter letter="m" />
+            <FlippingLetter letter="e" />
+          </CardTitle>
+          <CardDescription>High Scores</CardDescription>
         </CardHeader>
-        <CardContent className="p-0">
+        <CardContent>
           <Tabs value={difficultyTab} onValueChange={(value) => setDifficultyTab(value as Difficulty)}>
             <TabsList className="native:h-16 native:px-0 flex-row rounded-none bg-card p-0">
               <TabsTrigger value="easy" className={cn("h-16 rounded-t-xl bg-green-700", difficultyTab === "easy" && "h-20")}>

@@ -13,10 +13,11 @@ import { useHighScoreStore, useRehydrateHighScore } from "@/stores/highScoreProv
 
 // components
 import BodyScrollView from "@/components/BodyScrollView";
+import FlippingLetter from "@/components/FlippingLetter";
 import HighScoreTable from "@/components/high-score-table";
 import Difficulty from "@/components/preview/Difficulty";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/custom/card";
 import { Text } from "@/components/ui/text";
 
 export default function Screen() {
@@ -71,19 +72,30 @@ export default function Screen() {
 
   return (
     <BodyScrollView>
-      <Card className="w-full">
-        <CardHeader className="items-center">
-          <CardTitle className="text-4xl">Congratulations!</CardTitle>
-          <CardDescription className="text-xl">You have made a high score!</CardDescription>
+      <Card>
+        <CardHeader>
+          <CardTitle>
+            <FlippingLetter letter="Star" />
+            <FlippingLetter letter="C" />
+            <FlippingLetter letter="o" />
+            <FlippingLetter letter="n" />
+            <FlippingLetter letter="g" />
+            <FlippingLetter letter="r" />
+            <FlippingLetter letter="a" />
+            <FlippingLetter letter="t" />
+            <FlippingLetter letter="s" />
+            <FlippingLetter letter="!" />
+          </CardTitle>
+          <CardDescription>You have made a high score!</CardDescription>
         </CardHeader>
-        <CardContent className="items-center gap-6 rounded-lg bg-muted px-0 pt-6">
+        <CardContent>
           <View className="items-center gap-1">
             <Text className="text-muted-foreground">Difficulty Level</Text>
             <Difficulty />
           </View>
           <HighScoreTable difficulty={difficulty} newHighScoreIndex={getNewHighScoreIndex(difficulty, currTurns)} onNameChanged={setCurrName} />
         </CardContent>
-        <CardFooter className="justify-around pt-6">
+        <CardFooter>
           <Button size="lg" onPress={handleOKPressed}>
             <Text>OK</Text>
           </Button>

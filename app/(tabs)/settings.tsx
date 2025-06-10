@@ -18,11 +18,6 @@ export default function Screen() {
         <CardHeader>
           <CardTitle>
             <FlippingLetter letter="WrenchScrewDriver" />
-            <FlippingLetter letter="G" />
-            <FlippingLetter letter="a" />
-            <FlippingLetter letter="m" />
-            <FlippingLetter letter="e" />
-            <FlippingLetter letter=" " />
             <FlippingLetter letter="S" />
             <FlippingLetter letter="e" />
             <FlippingLetter letter="t" />
@@ -34,7 +29,7 @@ export default function Screen() {
           </CardTitle>
           <CardDescription>Adjust your game experience</CardDescription>
         </CardHeader>
-        <CardContent className="items-center gap-6 rounded-lg bg-muted p-0 pt-6">
+        <CardContent>
           <View className="items-center gap-2">
             <Text className="text-muted-foreground">What Difficulty?</Text>
             <DifficultyChanger />
@@ -49,7 +44,7 @@ export default function Screen() {
           </View>
           <NewGameButton />
         </CardContent>
-        <CardFooter className="justify-center pt-6">
+        <CardFooter>
           <PixaBayBanner />
         </CardFooter>
       </Card>

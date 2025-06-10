@@ -9,11 +9,12 @@ import { useGameStore } from "@/stores/gameProvider";
 
 // components
 import BodyScrollView from "@/components/BodyScrollView";
+import FlippingLetter from "@/components/FlippingLetter";
 import Collection from "@/components/preview/Collection";
 import Difficulty from "@/components/preview/Difficulty";
 import Turns from "@/components/preview/Turns";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/custom/card";
 import { Text } from "@/components/ui/text";
 
 export default function Screen() {
@@ -30,12 +31,24 @@ export default function Screen() {
 
   return (
     <BodyScrollView>
-      <Card className="w-full">
-        <CardHeader className="items-center">
-          <CardTitle className="text-4xl">Game Over!</CardTitle>
-          <CardDescription className="text-xl">You have completed the game!</CardDescription>
+      <Card>
+        <CardHeader>
+          <CardTitle>
+            <FlippingLetter letter="PuzzlePiece" />
+            <FlippingLetter letter="G" />
+            <FlippingLetter letter="a" />
+            <FlippingLetter letter="m" />
+            <FlippingLetter letter="e" />
+            <FlippingLetter letter=" " />
+            <FlippingLetter letter="O" />
+            <FlippingLetter letter="v" />
+            <FlippingLetter letter="e" />
+            <FlippingLetter letter="r" />
+            <FlippingLetter letter="!" />
+          </CardTitle>
+          <CardDescription>You have completed the game!</CardDescription>
         </CardHeader>
-        <CardContent className="items-center gap-6 rounded-lg bg-muted px-0 pt-6">
+        <CardContent>
           <View className="items-center gap-1">
             <Text className="text-muted-foreground">Number of Turns</Text>
             <Turns />
@@ -50,7 +63,7 @@ export default function Screen() {
           </View>
           <Text className="text-foreground">You haven't beaten the high score yet; try again!</Text>
         </CardContent>
-        <CardFooter className="justify-center pt-6">
+        <CardFooter>
           <Button size="lg" onPress={handleOKPressed}>
             <Text>OK</Text>
           </Button>
