@@ -20,7 +20,7 @@ interface FlipCardProps {
   children: ReactNode;
 }
 
-export default function FlipCard({ isFlipped, direction = "y", duration = 500, children }: FlipCardProps) {
+export default function FlipCard({ isFlipped, direction = "y", duration = 600, children }: FlipCardProps) {
   return (
     <FlipCardContext value={{ isFlipped, direction, duration }}>
       <View className="flex-1">{children}</View>

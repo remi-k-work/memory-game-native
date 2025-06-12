@@ -16,7 +16,7 @@ export default function FlippedContent({ children }: FlippedContentProps) {
   const contentAnimatedStyle = useAnimatedStyle(() => {
     const rotateValue = withTiming(`${interpolate(Number(isFlipped.value), [0, 1], [180, 360])}deg`, { duration });
 
-    return { transform: [direction === "x" ? { rotateX: rotateValue } : { rotateY: rotateValue }] };
+    return { transform: [direction === "x" ? { rotateX: rotateValue } : { rotateY: rotateValue }, { perspective: 300 }] };
   });
 
   return <Animated.View style={[{ backfaceVisibility: "hidden" }, contentAnimatedStyle]}>{children}</Animated.View>;

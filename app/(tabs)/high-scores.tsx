@@ -8,16 +8,17 @@ import { Text } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 
 // other libraries
+import useAnimHighScores from "@/hooks/anims/useAnimHighScores";
 import useDidUpdateEffect from "@/hooks/useDidUpdateEffect";
-import { cn } from "@/lib/utils";
 import { useGameStore } from "@/stores/gameProvider";
+import Animated from "react-native-reanimated";
 
 // components
 import BodyScrollView from "@/components/BodyScrollView";
 import FlippingLetter from "@/components/FlippingLetter";
 import HighScoreTable from "@/components/high-score-table";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/custom/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { AnimatedTabsTrigger, Tabs, TabsContent, TabsList } from "@/components/ui/custom/tabs";
 
 // types
 import type { Difficulty } from "@/types/shared";
@@ -37,6 +38,10 @@ export default function Screen() {
   useDidUpdateEffect(() => {
     if (forDifficulty) setDifficultyTab(forDifficulty as Difficulty);
   }, [forDifficulty]);
+
+  // Use the already encapsulated animation logic for this component
+  const { easyTabTriggerAnimatedStyle, mediumTabTriggerAnimatedStyle, hardTabTriggerAnimatedStyle, TAB_CONTENT_ENTERING, TAB_CONTENT_EXITING } =
+    useAnimHighScores(difficultyTab);
 
   return (
     <BodyScrollView>
@@ -61,25 +66,31 @@ export default function Screen() {
         </CardHeader>
         <CardContent className="bg-transparent">
           <Tabs value={difficultyTab} onValueChange={(value) => setDifficultyTab(value as Difficulty)}>
-            <TabsList className="native:h-16 native:px-0 flex-row rounded-none bg-card p-0">
-              <TabsTrigger value="easy" className={cn("h-16 rounded-t-xl bg-green-700", difficultyTab === "easy" && "h-20")}>
-                <Text className="bg-green-700 px-4 py-2 text-center text-xl text-foreground">EASY</Text>
-              </TabsTrigger>
-              <TabsTrigger value="medium" className={cn("h-16 rounded-t-xl bg-yellow-700", difficultyTab === "medium" && "h-20")}>
-                <Text className="bg-yellow-700 px-4 py-2 text-center text-xl text-foreground">MEDIUM</Text>
-              </TabsTrigger>
-              <TabsTrigger value="hard" className={cn("h-16 rounded-t-xl bg-red-700", difficultyTab === "hard" && "h-20")}>
-                <Text className="bg-red-700 px-4 py-2 text-center text-xl text-foreground">HARD</Text>
-              </TabsTrigger>
+            <TabsList>
+              <AnimatedTabsTrigger value="easy" className="min-w-32 bg-green-700" style={easyTabTriggerAnimatedStyle}>
+                <Text className="bg-green-700 px-4 py-2 text-xl text-foreground">EASY</Text>
+              </AnimatedTabsTrigger>
+              <AnimatedTabsTrigger value="medium" className="min-w-32 bg-yellow-700" style={mediumTabTriggerAnimatedStyle}>
+                <Text className="bg-yellow-700 px-4 py-2 text-xl text-foreground">MEDIUM</Text>
+              </AnimatedTabsTrigger>
+              <AnimatedTabsTrigger value="hard" className="min-w-32 bg-red-700" style={hardTabTriggerAnimatedStyle}>
+                <Text className="bg-red-700 px-4 py-2 text-xl text-foreground">HARD</Text>
+              </AnimatedTabsTrigger>
             </TabsList>
-            <TabsContent value="easy" className="mx-1 rounded-lg bg-green-700">
-              <HighScoreTable difficulty="easy" highScoreIndexToHighlight={forDifficulty === "easy" ? Number(highScoreIndexToHighlight ?? "-1") : -1} />
+            <TabsContent value="easy">
+              <Animated.View entering={TAB_CONTENT_ENTERING} exiting={TAB_CONTENT_EXITING} className="flex-1 bg-green-700">
+                <HighScoreTable difficulty="easy" highScoreIndexToHighlight={forDifficulty === "easy" ? Number(highScoreIndexToHighlight ?? "-1") : -1} />
+              </Animated.View>
             </TabsContent>
-            <TabsContent value="medium" className="mx-1 rounded-lg bg-yellow-700">
-              <HighScoreTable difficulty="medium" highScoreIndexToHighlight={forDifficulty === "medium" ? Number(highScoreIndexToHighlight ?? "-1") : -1} />
+            <TabsContent value="medium">
+              <Animated.View entering={TAB_CONTENT_ENTERING} exiting={TAB_CONTENT_EXITING} className="flex-1 bg-yellow-700">
+                <HighScoreTable difficulty="medium" highScoreIndexToHighlight={forDifficulty === "medium" ? Number(highScoreIndexToHighlight ?? "-1") : -1} />
+              </Animated.View>
             </TabsContent>
-            <TabsContent value="hard" className="mx-1 rounded-lg bg-red-700">
-              <HighScoreTable difficulty="hard" highScoreIndexToHighlight={forDifficulty === "hard" ? Number(highScoreIndexToHighlight ?? "-1") : -1} />
+            <TabsContent value="hard">
+              <Animated.View entering={TAB_CONTENT_ENTERING} exiting={TAB_CONTENT_EXITING} className="flex-1 bg-red-700">
+                <HighScoreTable difficulty="hard" highScoreIndexToHighlight={forDifficulty === "hard" ? Number(highScoreIndexToHighlight ?? "-1") : -1} />
+              </Animated.View>
             </TabsContent>
           </Tabs>
         </CardContent>
