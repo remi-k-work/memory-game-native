@@ -8,6 +8,7 @@ import { Slot } from "expo-router";
 
 // other libraries
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { configureReanimatedLogger, ReanimatedLogLevel } from "react-native-reanimated";
 
 // components
@@ -27,7 +28,9 @@ export default function Layout() {
       <GameStoreProvider>
         <HighScoreStoreProvider>
           <View className="mb-safe flex-1 bg-background">
-            <Slot />
+            <GestureHandlerRootView style={{ flex: 1 }}>
+              <Slot />
+            </GestureHandlerRootView>
           </View>
           <PortalHost />
         </HighScoreStoreProvider>

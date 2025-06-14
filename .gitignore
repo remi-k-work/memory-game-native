@@ -2,6 +2,7 @@
 
 secrets.txt
 .env
+docs/private/
 
 # dependencies
 node_modules/
