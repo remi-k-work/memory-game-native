@@ -3,26 +3,26 @@ import { type SharedValue, useFrameCallback, useSharedValue } from "react-native
 import useSharedValues from "./useSharedValues";
 
 // types
-import type { Animation, AnimationState } from "@/features/animations/types";
+import type { Animation } from "@/features/animations/types";
 
 // This is the core hook that orchestrates the generator-based animations
-export default function useAnimation<S extends AnimationState>(input: Animation<S> | (() => Generator), isPaused?: SharedValue<boolean>) {
-  const { animation, state } = typeof input === "function" ? { animation: input, state: {} as S } : input;
+export default function useAnimation(animation: Animation, isPaused?: SharedValue<boolean>) {
+  // Initialize animation shared values for each property in the provided initial animation state object
+  // Those are "boxes that hold numbers" we want to change over time
+  const animationSharedValues = useSharedValues(animation.animationInitState);
 
-  // Initialize shared values based on the animation's state
-  const values = useSharedValues(state);
+  // Hold the single instance of the animation generator that will drive the entire animation
+  const animationGenerator = useSharedValue<null | Generator>(null);
 
-  // Hold the single instance of the generator that will drive the animation
-  const generator = useSharedValue<null | Generator>(null);
+  // The "animation player", which we feed a script (our animation generator), and it plays it back frame by frame
+  useFrameCallback(({ timeSincePreviousFrame }) => {
+    // Initialize the animation generator if it has not been done already
+    if (!animationGenerator.value) animationGenerator.value = animation.animationGenerator(animationSharedValues);
 
-  useFrameCallback(({ timeSincePreviousFrame: ts }) => {
-    // Initialize the generator if it has not been done already
-    if (!generator.value) generator.value = animation(values);
-
-    // Advance the generator, passing the timeSincePreviousFrame() value to it if not paused
-    if (!isPaused?.value) generator.value.next(ts);
+    // Advance the animation generator, passing the timeSincePreviousFrame value to it, but only if not paused
+    if (!isPaused?.value) animationGenerator.value.next(timeSincePreviousFrame);
   });
 
-  // Return the shared values so they can be used in components
-  return values;
+  // Return the animation shared values so they can be used in components
+  return animationSharedValues;
 }

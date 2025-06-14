@@ -9,7 +9,7 @@ import type { TimingConfig } from "@/features/animations/types";
 import { DEFAULT_TIMING_CONFIG } from "@/features/animations/constants";
 
 // This is the standard timing-based animation
-export default function* timing(value: SharedValue<number>, rawConfig?: TimingConfig) {
+export default function* timing(value: SharedValue<number>, rawConfig?: TimingConfig): Generator<void, void, number> {
   "worklet";
 
   // Take a SharedValue (from Reanimated) to animate and an optional configuration

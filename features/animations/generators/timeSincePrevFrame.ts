@@ -1,8 +1,7 @@
 // Allows the animation to "request" the delta time from the previous frame
-export default function* timeSincePrevFrame() {
+export default function* timeSincePrevFrame(): Generator<void, number, number> {
   "worklet";
 
-  // Get the time since the last frame
-  const time: number = yield;
-  return time;
+  // Yields, waits for elapsed time, then returns it
+  return yield;
 }

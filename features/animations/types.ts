@@ -2,8 +2,7 @@
 import type { EasingFunction, SharedValue } from "react-native-reanimated";
 
 // types
-type Input = (() => Generator) | Generator;
-type Inputs = Input[];
+export type GeneratorInput = (() => Generator) | Generator;
 
 export interface TimingConfig {
   to?: number;
@@ -11,13 +10,14 @@ export interface TimingConfig {
   duration?: number;
 }
 
-export type AnimationValues<S> = {
-  [K in keyof S]: SharedValue<S[K]>;
+export type AnimationSharedValues = {
+  [key: string]: SharedValue<any>;
 };
 
-export type AnimationState = Record<string, unknown>;
+export type AnimationGenerator = (animationSharedValues: AnimationSharedValues) => Generator;
+export type AnimationInitState = Record<string, unknown>;
 
-export type Animation<S extends AnimationState> = {
-  animation: (state: AnimationValues<S>) => Generator;
-  state: S;
+export type Animation = {
+  animationGenerator: AnimationGenerator;
+  animationInitState: AnimationInitState;
 };

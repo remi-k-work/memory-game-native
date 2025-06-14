@@ -1,6 +1,14 @@
 // types
-import type { AnimationState, AnimationValues } from "@/features/animations/types";
+import type { Animation, AnimationGenerator, AnimationInitState, GeneratorInput } from "@/features/animations/types";
 
-// Helper function to create a structured animation object, bundling the animation logic
-// (a generator function that takes SharedValues as state) with its initial state values
-export const makeAnimation = <S extends AnimationState>(animation: (state: AnimationValues<S>) => Generator, state: S) => ({ animation, state });
+// Helper function to create a structured animation object that bundles the animation logic (the generator + shared values) and its initial state
+export const makeAnimation = (animationGenerator: AnimationGenerator, animationInitState: AnimationInitState): Animation => ({
+  animationGenerator,
+  animationInitState,
+});
+
+const materializeGenerator = (generator: GeneratorInput) => {
+  "worklet";
+
+  return typeof generator === "function" ? generator() : generator;
+};

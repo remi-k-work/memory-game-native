@@ -2,7 +2,7 @@
 import timeSincePrevFrame from "./timeSincePrevFrame";
 
 // Simply pauses execution for a given duration
-export default function* wait(duration = 1000) {
+export default function* wait(duration = 1000): Generator<void, void, number> {
   "worklet";
 
   const from: number = yield;

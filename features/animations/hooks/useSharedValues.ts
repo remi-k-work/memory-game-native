@@ -5,27 +5,23 @@ import { useEffect, useState } from "react";
 import { cancelAnimation, makeMutable } from "react-native-reanimated";
 
 // types
-import type { AnimationState, AnimationValues } from "@/features/animations/types";
+import type { AnimationInitState, AnimationSharedValues } from "@/features/animations/types";
 
-// This hook initializes SharedValues for each property in the provided state object
-export default function useSharedValues<S extends AnimationState>(state: S) {
-  // Create SharedValues from initial state
-  const [mutable] = useState(() => {
-    const values = {} as AnimationValues<S>;
-    for (const key in state) values[key] = makeMutable(state[key]);
+// This hook initializes animation shared values for each property in the provided initial animation state object
+export default function useSharedValues(animationInitState: AnimationInitState) {
+  // Create mutable animation shared values from the initial animation state ("boxes that hold numbers" we want to change over time)
+  const [mutableSharedValues] = useState(() => {
+    const animationSharedValues = {} as AnimationSharedValues;
+    for (const key in animationInitState) animationSharedValues[key] = makeMutable(animationInitState[key]);
 
-    return values;
+    return animationSharedValues;
   });
 
-  // Ensure that any active Reanimated animations on these SharedValues are canceled when the component unmounts
+  // Ensure that any active reanimated animations on these shared values are canceled when the component unmounts
   useEffect(() => {
-    return () => {
-      Object.keys(mutable).forEach((element) => {
-        cancelAnimation(mutable[element]);
-      });
-    };
-  }, [mutable]);
+    return () => Object.keys(mutableSharedValues).forEach((element) => cancelAnimation(mutableSharedValues[element]));
+  }, [mutableSharedValues]);
 
-  // Return the shared values so they can be used in components
-  return mutable;
+  // Return the animation shared values so they can be used in components
+  return mutableSharedValues;
 }
