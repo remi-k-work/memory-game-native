@@ -5,6 +5,7 @@ import timeSincePrevFrame from "./timeSincePrevFrame";
 export default function* wait(duration = 1000): Generator<void, void, number> {
   "worklet";
 
+  // Yield to get the start time of the animation
   const from: number = yield;
   const to = from + duration;
 
