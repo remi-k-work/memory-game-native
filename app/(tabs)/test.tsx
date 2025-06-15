@@ -6,8 +6,8 @@ import { useWindowDimensions } from "react-native";
 
 // other libraries
 import timing from "@/features/animations/generators/timing";
-import { makeAnimation } from "@/features/animations/helpers";
 import useAnimation from "@/features/animations/hooks/useAnimation";
+import type { AnimationGenerator, AnimationInitState } from "@/features/animations/types";
 import { BlurMask, Canvas, Circle, Fill, Group, mix, polar2Canvas, vec } from "@shopify/react-native-skia";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { useDerivedValue, useSharedValue, type SharedValue } from "react-native-reanimated";
@@ -35,27 +35,23 @@ const Ring = ({ index, progress }: RingProps) => {
   return <Circle c={center} r={R} color={index % 2 ? c1 : c2} origin={center} transform={transform} />;
 };
 
-const animation = makeAnimation(
-  function* ({ progress }) {
-    "worklet";
+const animationGenerator: AnimationGenerator = function* ({ progress }) {
+  "worklet";
 
-    let to = 1;
-    while (true) {
-      yield* timing(progress, { to, duration: 4000 });
-      to = to === 1 ? 0 : 1;
-    }
-  },
-  {
-    progress: 0,
-  },
-);
+  let to = 1;
+  while (true) {
+    yield* timing(progress, { to, duration: 4000 });
+    to = to === 1 ? 0 : 1;
+  }
+};
+const animationInitState: AnimationInitState = { progress: 0 };
 
 export default function Screen() {
   const { width, height } = useWindowDimensions();
   const center = useMemo(() => vec(width / 2, height / 2 - 64), [height, width]);
 
   const pause = useSharedValue(false);
-  const { progress } = useAnimation(animation, pause);
+  const { progress } = useAnimation(animationGenerator, animationInitState, pause);
 
   const transform = useDerivedValue(() => [{ rotate: mix(progress.value, -Math.PI, 0) }]);
 

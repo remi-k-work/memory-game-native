@@ -22,7 +22,7 @@ export default function Layout() {
         <TabTrigger name="turns" href="/turns" onPress={(ev) => ev.preventDefault()} asChild>
           <TabTurns />
         </TabTrigger>
-        <TabTrigger name="test" href="/test" asChild>
+        <TabTrigger name="test" href="/test2" asChild>
           <TabButton iconName="PuzzlePiece" />
         </TabTrigger>
         <TabTrigger name="game-over" href="/game-over" className="hidden" />
