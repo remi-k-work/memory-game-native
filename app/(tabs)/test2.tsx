@@ -1,5 +1,5 @@
 // other libraries
-import timeSincePrevFrame from "@/features/animations/generators/timeSincePrevFrame";
+import timeSincePrevFrame from "@/features/animations/generators/nextFrame";
 import useAnimation from "@/features/animations/hooks/useAnimation";
 import type { AnimationGenerator, AnimationInitState } from "@/features/animations/types";
 import { Canvas, clamp, Fill, Group, Path, Skia } from "@shopify/react-native-skia";

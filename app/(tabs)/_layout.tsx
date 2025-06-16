@@ -25,7 +25,7 @@ export default function Layout() {
         <TabTrigger name="test2" href="/test2" asChild>
           <TabButton iconName="PuzzlePiece" />
         </TabTrigger>
-        <TabTrigger name="test3" href="/test3" asChild>
+        <TabTrigger name="test" href="/test" asChild>
           <TabButton iconName="PuzzlePiece" />
         </TabTrigger>
         <TabTrigger name="game-over" href="/game-over" className="hidden" />

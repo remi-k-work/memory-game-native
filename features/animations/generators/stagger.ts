@@ -2,7 +2,7 @@
 import parallel from "./parallel";
 import wait from "./wait";
 
-// This is a utility that allows you to run multiple animation generators with a sequential delay between their starts
+// Runs multiple animation scripts in a staggered fashion
 export function* stagger(delay: number, ...animationGenerators: Generator[]): Generator<void, void, number> {
   "worklet";
 
@@ -17,6 +17,6 @@ export function* stagger(delay: number, ...animationGenerators: Generator[]): Ge
     })();
   });
 
-  // Run all new staggered animation generators in parallel
+  // Finally, run all new staggered animation scripts concurrently
   yield* parallel(...staggeredGenerators);
 }

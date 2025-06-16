@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import { useWindowDimensions } from "react-native";
 
 // other libraries
-import timing from "@/features/animations/generators/timing";
+import spring from "@/features/animations/generators/spring";
 import useAnimation from "@/features/animations/hooks/useAnimation";
 import type { AnimationGenerator, AnimationInitState } from "@/features/animations/types";
 import { BlurMask, Canvas, Circle, Fill, Group, mix, polar2Canvas, vec } from "@shopify/react-native-skia";
@@ -35,16 +35,17 @@ const Ring = ({ index, progress }: RingProps) => {
   return <Circle c={center} r={R} color={index % 2 ? c1 : c2} origin={center} transform={transform} />;
 };
 
-const animationGenerator: AnimationGenerator = function* ({ progress }) {
+const animationGenerator: AnimationGenerator = function* ({ progress, isWithSpringComplete }) {
   "worklet";
 
   let to = 1;
   while (true) {
-    yield* timing(progress, { to, duration: 4000 });
+    // yield* timing(progress, { to, duration: 4000 });
+    yield* spring(progress, to, isWithSpringComplete, { mass: 5, stiffness: 100, damping: 10 });
     to = to === 1 ? 0 : 1;
   }
 };
-const animationInitState: AnimationInitState = { progress: 0 };
+const animationInitState: AnimationInitState = { progress: 0, isWithSpringComplete: false };
 
 export default function Screen() {
   const { width, height } = useWindowDimensions();

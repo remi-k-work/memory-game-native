@@ -1,18 +1,18 @@
-// This allows you to run multiple animation generators concurrently
+// Runs multiple animation scripts concurrently
 export default function* parallel(...animationGenerators: Generator[]): Generator<void, void, number> {
   "worklet";
 
-  // Yield and get elapsed time from the frame callback
-  let timeSincePrevFrame = yield;
+  // Get the delta time for the current frame
+  let deltaTime = yield;
 
   do {
-    // Pass the same delta time to all parallel generators
-    const done = animationGenerators.map((animationGenerator) => !!animationGenerator.next(timeSincePrevFrame).done);
+    // Give the same delta time to every script that has not finished yet
+    const allDone = animationGenerators.map((animationGenerator) => !!animationGenerator.next(deltaTime).done);
 
-    // All animation generators are done, exit the function
-    if (done.every((d) => d)) return;
+    // If all scripts have finished, exit the parallel command
+    if (allDone.every((isDone) => isDone)) return;
 
-    // Wait for the next frame's delta time
-    timeSincePrevFrame = yield;
+    // Get the delta time for the next frame
+    deltaTime = yield;
   } while (true);
 }

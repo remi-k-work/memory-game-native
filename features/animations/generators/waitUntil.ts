@@ -1,10 +1,17 @@
 // other libraries
 import { type SharedValue } from "react-native-reanimated";
+import nextFrame from "./nextFrame";
 
-// This is a powerful condition-based wait
-export default function* waitUntil(value: SharedValue<boolean>, invert = false): Generator<void, void, number> {
+// Pauses the animation script until a boolean shared value meets a specific condition
+export default function* waitUntil(sharedValue: SharedValue<boolean>, invert = false): Generator<void, void, number> {
   "worklet";
 
-  // It pauses the generator until a given shared value meets a certain condition (either true or false depending on invert)
-  while (invert ? value.value : !value.value) yield;
+  // This helper function defines the state we are waiting for (if not inverted, we wait for the value to be "true", and vice versa)
+  const hasConditionBeenMet = () => (invert ? !sharedValue.value : sharedValue.value);
+
+  // On every frame, check the condition
+  while (!hasConditionBeenMet()) {
+    // If the condition is not met, pause the script and wait for the player to resume us on the next frame
+    yield* nextFrame();
+  }
 }

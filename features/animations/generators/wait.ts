@@ -1,17 +1,14 @@
 // other libraries
-import timeSincePrevFrame from "./timeSincePrevFrame";
+import nextFrame from "./nextFrame";
 
-// Simply pauses execution for a given duration
+// Pauses the animation script for a given duration; it "consumes" frames by repeatedly pausing (yielding to the player)
+// until the total accumulated delta time meets the desired duration
 export default function* wait(duration = 1000): Generator<void, void, number> {
   "worklet";
 
-  // Yield to get the start time of the animation
-  const from: number = yield;
-  const to = from + duration;
-
-  // It just consumes frames until the duration has passed
-  for (let current = from; current < to; ) {
-    // Advance time by yielding to and receiving from timeSincePrevFrame()
-    current += yield* timeSincePrevFrame();
+  let elapsed = 0;
+  while (elapsed < duration) {
+    // Pause, get the delta time from the player for the next frame, and add it to our total elapsed time
+    elapsed += yield* nextFrame();
   }
 }

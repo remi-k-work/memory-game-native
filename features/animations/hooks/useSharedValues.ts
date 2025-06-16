@@ -7,9 +7,9 @@ import { cancelAnimation, makeMutable } from "react-native-reanimated";
 // types
 import type { AnimationInitState, AnimationSharedValues } from "@/features/animations/types";
 
-// This hook initializes animation shared values for each property in the provided initial animation state object
+// This hook initializes the "boxes that hold numbers" (shared values) for each property in the provided initial animation state
 export default function useSharedValues(animationInitState: AnimationInitState) {
-  // Create mutable animation shared values from the initial animation state ("boxes that hold numbers" we want to change over time)
+  // Create mutable animation shared values from the initial animation state
   const [mutableSharedValues] = useState(() => {
     const animationSharedValues = {} as AnimationSharedValues;
     for (const key in animationInitState) animationSharedValues[key] = makeMutable(animationInitState[key]);
