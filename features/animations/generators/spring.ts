@@ -5,7 +5,7 @@ import nextFrame from "./nextFrame";
 // types
 import type { SpringConfig } from "@/features/animations/types";
 
-// Animates a shared value using reanimated's withspring animation function
+// Animates a shared value via spring-based function interpolation (bridges to reanimated's withspring function)
 export default function* spring(
   sharedValue: SharedValue<number>,
   toValue: number,
@@ -14,18 +14,14 @@ export default function* spring(
 ): Generator<void, void, number> {
   "worklet";
 
-  // Create a mutable shared value to signal animation completion
+  // This shared value is used to signal animation completion
   isWithSpringComplete.value = false;
 
-  // Apply the spring animation; The final argument is a worklet callback
+  // Apply the spring animation and signal its completion on the ui thread
   sharedValue.value = withSpring(toValue, config, (isFinished) => {
-    // Signal completion on the UI thread
     if (isFinished) isWithSpringComplete.value = true;
   });
 
-  // Now, we yield frames until the shared value signals completion.
-  // This effectively pauses our generator script until withSpring reports it's done.
-  while (!isWithSpringComplete.value) {
-    yield* nextFrame(); // Keep yielding frames (and receiving deltaTime, which we ignore here)
-  }
+  // Yield frames until the shared value signals completion
+  while (!isWithSpringComplete.value) yield* nextFrame();
 }

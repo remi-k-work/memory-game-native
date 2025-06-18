@@ -14,11 +14,16 @@ interface RegularContentProps {
 }
 
 export default function RegularContent({ children }: RegularContentProps) {
-  const { isFlipped, direction, duration } = useFlipCardContext();
+  const flipCardContext = useFlipCardContext();
 
   const contentAnimatedStyle = useAnimatedStyle(() => {
-    const rotateValue = withTiming(`${interpolate(Number(isFlipped.value), [0, 1], [0, 180])}deg`, { duration });
+    if (flipCardContext.kind === "animated-already") {
+      const { rotateValueR, direction } = flipCardContext;
+      return { transform: [direction === "x" ? { rotateX: `${rotateValueR.value}deg` } : { rotateY: `${rotateValueR.value}deg` }, { perspective: 300 }] };
+    }
 
+    const { isFlipped, direction, duration } = flipCardContext;
+    const rotateValue = withTiming(`${interpolate(Number(isFlipped.value), [0, 1], [0, 180])}deg`, { duration });
     return { transform: [direction === "x" ? { rotateX: rotateValue } : { rotateY: rotateValue }, { perspective: 300 }] };
   });
 

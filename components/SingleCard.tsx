@@ -35,7 +35,7 @@ export default function SingleCard({ card, card: { uniqueId, imageP, imageL, isF
 
   return (
     <Pressable disabled={isLoading} className="flex-1 overflow-hidden rounded-lg" onPress={() => chosenaCard(card)}>
-      <FlipCard isFlipped={isFlippedFlag} direction={direction}>
+      <FlipCard kind="needs-to-animate" isFlipped={isFlippedFlag} direction={direction}>
         <FlipCardRegularContent>
           {isLoading ? (
             <AnimatedLinearGradient

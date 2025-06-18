@@ -11,11 +11,16 @@ interface FlippedContentProps {
 }
 
 export default function FlippedContent({ children }: FlippedContentProps) {
-  const { isFlipped, direction, duration } = useFlipCardContext();
+  const flipCardContext = useFlipCardContext();
 
   const contentAnimatedStyle = useAnimatedStyle(() => {
-    const rotateValue = withTiming(`${interpolate(Number(isFlipped.value), [0, 1], [180, 360])}deg`, { duration });
+    if (flipCardContext.kind === "animated-already") {
+      const { rotateValueF, direction } = flipCardContext;
+      return { transform: [direction === "x" ? { rotateX: `${rotateValueF.value}deg` } : { rotateY: `${rotateValueF.value}deg` }, { perspective: 300 }] };
+    }
 
+    const { isFlipped, direction, duration } = flipCardContext;
+    const rotateValue = withTiming(`${interpolate(Number(isFlipped.value), [0, 1], [180, 360])}deg`, { duration });
     return { transform: [direction === "x" ? { rotateX: rotateValue } : { rotateY: rotateValue }, { perspective: 300 }] };
   });
 
