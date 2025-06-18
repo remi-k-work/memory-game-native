@@ -14,7 +14,7 @@ import useAnimation from "@/features/animations/hooks/useAnimation";
 import FlippingLetter from "@/components/FlippingLetter2";
 
 // types
-import type { AnimationGenerator, AnimationInitState } from "@/features/animations/types";
+import type { AnimationGenerator } from "@/features/animations/types";
 import type { SharedValue } from "react-native-reanimated";
 
 // constants
@@ -30,7 +30,7 @@ function* flipLetter(rotateValueR: SharedValue<number>, rotateValueF: SharedValu
   yield* parallel(timing(rotateValueR, { to: 180, duration: DURATION }), timing(rotateValueF, { to: 360, duration: DURATION }));
 }
 
-const animationGenerator: AnimationGenerator = function* ({
+const animationGenerator: AnimationGenerator<typeof animationInitState> = function* ({
   rvR01,
   rvF01,
   rvR02,
@@ -67,7 +67,7 @@ const animationGenerator: AnimationGenerator = function* ({
     );
   }
 };
-const animationInitState: AnimationInitState = {
+const animationInitState = {
   rvR01: 0,
   rvF01: 180,
   rvR02: 0,

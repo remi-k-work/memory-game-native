@@ -6,12 +6,16 @@ import useSharedValues from "./useSharedValues";
 import type { AnimationGenerator, AnimationInitState } from "@/features/animations/types";
 
 // The animation player, which continuously feeds delta time into the animation script, allowing it to control the animation state
-export default function useAnimation(animationGenerator: AnimationGenerator, animationInitState: AnimationInitState, isPaused?: SharedValue<boolean>) {
+export default function useAnimation<S extends AnimationInitState>(
+  animationGenerator: AnimationGenerator<S>,
+  animationInitState: S,
+  isPaused?: SharedValue<boolean>,
+) {
   // Those are "boxes that hold numbers" we want to change over time (aka "animated state")
-  const animationSharedValues = useSharedValues(animationInitState);
+  const animationSharedValues = useSharedValues<S>(animationInitState);
 
   // Hold the single instance of the animation generator that will drive the entire animation
-  const generatorOnUIThread = useSharedValue<null | Generator>(null);
+  const generatorOnUIThread = useSharedValue<null | ReturnType<AnimationGenerator<S>>>(null);
 
   // The animation player loop, running frame by frame
   useFrameCallback(({ timeSincePreviousFrame: deltaTime }) => {
@@ -19,7 +23,7 @@ export default function useAnimation(animationGenerator: AnimationGenerator, ani
     if (!generatorOnUIThread.value) generatorOnUIThread.value = animationGenerator(animationSharedValues);
 
     // Advance the animation generator, passing the delta time to it, but only if not paused
-    if (!isPaused?.value) generatorOnUIThread.value.next(deltaTime);
+    if (!isPaused?.value) generatorOnUIThread.value.next(deltaTime ?? 0);
   });
 
   // Return the animation shared values so they can be used in components
