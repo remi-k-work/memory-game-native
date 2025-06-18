@@ -17,6 +17,11 @@ import FlippingLetter from "@/components/FlippingLetter2";
 import type { AnimationGenerator } from "@/features/animations/types";
 import type { SharedValue } from "react-native-reanimated";
 
+interface LetterRotationState {
+  rotateValueR: number;
+  rotateValueF: number;
+}
+
 // constants
 const MIN_DELAY = 1000;
 const MAX_DELAY = 2000;

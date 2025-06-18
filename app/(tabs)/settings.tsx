@@ -8,7 +8,7 @@ import DifficultyChanger from "@/components/DifficultyChanger";
 import IllustrationsSwitch from "@/components/IllustrationsSwitch";
 import NewGameButton from "@/components/NewGameButton";
 import PixaBayBanner from "@/components/PixaBayBanner";
-import SettingsTitle from "@/components/titles/Settings";
+import SettingsTitle from "@/components/titles/Settings2";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/custom/card";
 
 export default function Screen() {
