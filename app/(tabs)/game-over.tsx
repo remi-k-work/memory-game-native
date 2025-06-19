@@ -9,7 +9,7 @@ import { useGameStore } from "@/stores/gameProvider";
 
 // components
 import BodyScrollView from "@/components/BodyScrollView";
-import FlippingLetter from "@/components/FlippingLetter";
+import FlippingTitle from "@/components/FlippingTitle";
 import Collection from "@/components/preview/Collection";
 import Difficulty from "@/components/preview/Difficulty";
 import Turns from "@/components/preview/Turns";
@@ -34,17 +34,7 @@ export default function Screen() {
       <Card>
         <CardHeader>
           <CardTitle>
-            <FlippingLetter letter="PuzzlePiece" />
-            <FlippingLetter letter="G" />
-            <FlippingLetter letter="a" />
-            <FlippingLetter letter="m" />
-            <FlippingLetter letter="e" />
-            <FlippingLetter letter=" " />
-            <FlippingLetter letter="O" />
-            <FlippingLetter letter="v" />
-            <FlippingLetter letter="e" />
-            <FlippingLetter letter="r" />
-            <FlippingLetter letter="!" />
+            <FlippingTitle icon="PuzzlePiece" text="Game Over!" />
           </CardTitle>
           <CardDescription>You have completed the game!</CardDescription>
         </CardHeader>

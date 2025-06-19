@@ -15,7 +15,7 @@ import Animated from "react-native-reanimated";
 
 // components
 import BodyScrollView from "@/components/BodyScrollView";
-import FlippingLetter from "@/components/FlippingLetter";
+import FlippingTitle from "@/components/FlippingTitle";
 import HighScoreTable from "@/components/high-score-table";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/custom/card";
 import { AnimatedTabsTrigger, Tabs, TabsContent, TabsList } from "@/components/ui/custom/tabs";
@@ -48,19 +48,7 @@ export default function Screen() {
       <Card>
         <CardHeader>
           <CardTitle>
-            <FlippingLetter letter="Trophy" />
-            <FlippingLetter letter="H" />
-            <FlippingLetter letter="a" />
-            <FlippingLetter letter="l" />
-            <FlippingLetter letter="l" />
-            <FlippingLetter letter=" " />
-            <FlippingLetter letter="o" />
-            <FlippingLetter letter="f" />
-            <FlippingLetter letter=" " />
-            <FlippingLetter letter="F" />
-            <FlippingLetter letter="a" />
-            <FlippingLetter letter="m" />
-            <FlippingLetter letter="e" />
+            <FlippingTitle icon="Trophy" text="Hall of Fame" />
           </CardTitle>
           <CardDescription>High Scores</CardDescription>
         </CardHeader>

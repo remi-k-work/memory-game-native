@@ -2,7 +2,7 @@
 import { Text, View } from "react-native";
 
 // other libraries
-import useAnimFlippingLetter from "@/hooks/anims/useAnimFlippingLetter";
+import useColorScheme from "@/hooks/useColorScheme";
 
 // components
 import FlipCard, { FlipCardFlippedContent, FlipCardRegularContent } from "@/components/flip-card";
@@ -15,18 +15,32 @@ import WrenchScrewDriver from "@/assets/icons/WrenchScrewDriver";
 
 // types
 import type { FlippingLetterType } from "@/types/shared";
+import type { SharedValue } from "react-native-reanimated";
 
 interface FlippingLetterProps {
   letter: FlippingLetterType;
+  rotateValueR: SharedValue<number>;
+  rotateValueF: SharedValue<number>;
 }
 
-export default function FlippingLetter({ letter }: FlippingLetterProps) {
-  // Use the already encapsulated animation logic for this component
-  const { ICON_WIDTH, LETTER_WIDTH, HEIGHT, isIcon, isFlipped, primaryForeground } = useAnimFlippingLetter(letter);
+// constants
+import { COLORS } from "@/constants/colors";
+
+const ICON_WIDTH = 64;
+const LETTER_WIDTH = 46;
+const HEIGHT = 64;
+
+export default function FlippingLetter({ letter, rotateValueR, rotateValueF }: FlippingLetterProps) {
+  // Get the current user's desired color scheme and extract the appropriate colors
+  const { colorScheme } = useColorScheme();
+  const { primaryForeground } = COLORS[colorScheme];
+
+  // Are we showing an icon instead of a simple letter?
+  const isIcon = letter === "PuzzlePiece" || letter === "Trophy" || letter === "WrenchScrewDriver" || letter === "Star";
 
   return (
     <View style={{ width: isIcon ? ICON_WIDTH : LETTER_WIDTH, height: HEIGHT }}>
-      <FlipCard kind="needs-to-animate" isFlipped={isFlipped} direction={Math.random() < 0.5 ? "x" : "y"}>
+      <FlipCard kind="animated-already" rotateValueR={rotateValueR} rotateValueF={rotateValueF} direction={Math.random() < 0.5 ? "x" : "y"}>
         <FlipCardRegularContent>
           <View className="overflow-hidden rounded-xl bg-muted" style={{ width: isIcon ? ICON_WIDTH : LETTER_WIDTH, height: HEIGHT }}>
             <Text className="line-clamp-1 text-center text-4xl text-muted-foreground" style={{ lineHeight: HEIGHT }} adjustsFontSizeToFit>

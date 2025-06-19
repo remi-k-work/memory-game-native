@@ -13,7 +13,7 @@ import { useHighScoreStore, useRehydrateHighScore } from "@/stores/highScoreProv
 
 // components
 import BodyScrollView from "@/components/BodyScrollView";
-import FlippingLetter from "@/components/FlippingLetter";
+import FlippingTitle from "@/components/FlippingTitle";
 import HighScoreTable from "@/components/high-score-table";
 import Difficulty from "@/components/preview/Difficulty";
 import { Button } from "@/components/ui/button";
@@ -75,16 +75,7 @@ export default function Screen() {
       <Card>
         <CardHeader>
           <CardTitle>
-            <FlippingLetter letter="Star" />
-            <FlippingLetter letter="C" />
-            <FlippingLetter letter="o" />
-            <FlippingLetter letter="n" />
-            <FlippingLetter letter="g" />
-            <FlippingLetter letter="r" />
-            <FlippingLetter letter="a" />
-            <FlippingLetter letter="t" />
-            <FlippingLetter letter="s" />
-            <FlippingLetter letter="!" />
+            <FlippingTitle icon="Star" text="Congrats!" />
           </CardTitle>
           <CardDescription>You have made a high score!</CardDescription>
         </CardHeader>

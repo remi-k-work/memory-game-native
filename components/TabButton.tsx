@@ -1,11 +1,9 @@
 // react native
 import { Pressable } from "react-native";
 
-// expo
-import type { TabTriggerSlotProps } from "expo-router/ui";
-
 // other libraries
-import useAnimTabButton from "@/hooks/anims/useAnimTabButton";
+// import useAnimTabButton from "@/hooks/anims/useAnimTabButton";
+import useAnimTabButton from "@/features/animations/hooks/useAnimTabButton";
 import Animated from "react-native-reanimated";
 
 // assets
@@ -14,6 +12,8 @@ import Trophy from "@/assets/icons/Trophy";
 import WrenchScrewDriver from "@/assets/icons/WrenchScrewDriver";
 
 // types
+import type { TabTriggerSlotProps } from "expo-router/ui";
+
 interface TabButtonProps extends TabTriggerSlotProps {
   iconName: "PuzzlePiece" | "Trophy" | "WrenchScrewDriver";
 }

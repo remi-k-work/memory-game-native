@@ -3,7 +3,7 @@ import { stagger } from "@/features/animations/generators/stagger";
 import timing from "@/features/animations/generators/timing";
 import waitUntil from "@/features/animations/generators/waitUntil";
 import useAnimation from "@/features/animations/hooks/useAnimation";
-import type { AnimationGenerator, AnimationInitState } from "@/features/animations/types";
+import type { AnimationGenerator } from "@/features/animations/types";
 import { mix } from "@shopify/react-native-skia";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import Animated, { useAnimatedStyle, type SharedValue } from "react-native-reanimated";
@@ -23,7 +23,7 @@ const Item = ({ label, transition }: { label: string; transition?: SharedValue<n
 
 const duration = 250;
 
-const animationGenerator: AnimationGenerator = function* ({ transition, open, item1, item2, item3, item4, item5 }) {
+const animationGenerator: AnimationGenerator<typeof animationInitState> = function* ({ transition, open, item1, item2, item3, item4, item5 }) {
   "worklet";
 
   let to = 1;
@@ -42,7 +42,7 @@ const animationGenerator: AnimationGenerator = function* ({ transition, open, it
     to = to === 1 ? 0 : 1;
   }
 };
-const animationInitState: AnimationInitState = { open: false, transition: 0, item1: 0, item2: 0, item3: 0, item4: 0, item5: 0 };
+const animationInitState = { open: false, transition: 0, item1: 0, item2: 0, item3: 0, item4: 0, item5: 0 };
 
 export default function Screen() {
   const { open, transition, item1, item2, item3, item4, item5 } = useAnimation(animationGenerator, animationInitState);

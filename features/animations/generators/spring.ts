@@ -1,16 +1,16 @@
 // other libraries
-import { withSpring, type SharedValue } from "react-native-reanimated";
+import { withSpring } from "react-native-reanimated";
 import nextFrame from "./nextFrame";
 
 // types
-import type { SpringConfig } from "@/features/animations/types";
+import type { AnimatableValue, SharedValue, WithSpringConfig } from "react-native-reanimated";
 
 // Animates a shared value via spring-based function interpolation (bridges to reanimated's withspring function)
 export default function* spring(
-  sharedValue: SharedValue<number>,
-  toValue: number,
+  sharedValue: SharedValue<any>,
+  toValue: AnimatableValue,
   isWithSpringComplete: SharedValue<boolean>,
-  config?: SpringConfig,
+  config?: WithSpringConfig,
 ): Generator<void, void, number> {
   "worklet";
 

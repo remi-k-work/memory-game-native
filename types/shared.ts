@@ -32,4 +32,5 @@ export interface HighScore {
 
 export type HighScores = Record<Difficulty, HighScore[]>;
 
-export type FlippingLetterType = string | "PuzzlePiece" | "Trophy" | "WrenchScrewDriver" | "Star";
+export type FlippingTitleIcon = "PuzzlePiece" | "Trophy" | "WrenchScrewDriver" | "Star";
+export type FlippingLetterType = string | FlippingTitleIcon;

@@ -5,10 +5,10 @@ import { Text, View } from "react-native";
 import BodyScrollView from "@/components/BodyScrollView";
 import CollectionSlider from "@/components/collection-slider";
 import DifficultyChanger from "@/components/DifficultyChanger";
+import FlippingTitle from "@/components/FlippingTitle";
 import IllustrationsSwitch from "@/components/IllustrationsSwitch";
 import NewGameButton from "@/components/NewGameButton";
 import PixaBayBanner from "@/components/PixaBayBanner";
-import SettingsTitle from "@/components/titles/Settings2";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/custom/card";
 
 export default function Screen() {
@@ -17,7 +17,7 @@ export default function Screen() {
       <Card>
         <CardHeader>
           <CardTitle>
-            <SettingsTitle />
+            <FlippingTitle icon="WrenchScrewDriver" text="Settings" />
           </CardTitle>
           <CardDescription>Adjust your game experience</CardDescription>
         </CardHeader>

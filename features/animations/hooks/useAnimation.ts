@@ -61,7 +61,7 @@ export default function useAnimation<S extends AnimationInitState>(
     }, [isPausedInternal, resetAnimationState]),
   );
 
-  // This handles cases where the component is unmounted (e.g., navigating away completely);
+  // This handles cases where the component is unmounted (e.g., navigating away completely)
   // This is crucial for stopping animations and cleaning up resources
   useEffect(() => {
     return () => resetAnimationState();
@@ -80,7 +80,6 @@ export default function useAnimation<S extends AnimationInitState>(
 
     // Advance the animation generator, passing the delta time to it
     const { done } = generatorOnUIThread.value.next(deltaTime ?? 0);
-    console.log({ done });
 
     // If the animation generator is done, mark the animation as finished
     // This prevents the generator from being re-initialized on subsequent frames
