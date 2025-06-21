@@ -1,6 +1,3 @@
-// react
-import { type ReactNode } from "react";
-
 // react native
 import { View } from "react-native";
 
@@ -10,7 +7,8 @@ import FlippedContent from "./FlippedContent";
 import RegularContent from "./RegularContent";
 
 // types
-import { type SharedValue } from "react-native-reanimated";
+import type { ReactNode } from "react";
+import type { SharedValue } from "react-native-reanimated";
 
 interface AnimatedAlready {
   kind: "animated-already";

@@ -1,6 +1,3 @@
-// react
-import { type ReactNode } from "react";
-
 // react native
 import { StyleSheet } from "react-native";
 
@@ -9,6 +6,8 @@ import Animated, { interpolate, useAnimatedStyle, withTiming } from "react-nativ
 import { useFlipCardContext } from "./FlipCardContext";
 
 // types
+import type { ReactNode } from "react";
+
 interface RegularContentProps {
   children: ReactNode;
 }

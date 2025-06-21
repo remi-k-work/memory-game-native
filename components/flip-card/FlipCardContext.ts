@@ -1,10 +1,9 @@
 // react
 import { createContext, use } from "react";
 
-// other libraries
-import { type SharedValue } from "react-native-reanimated";
-
 // types
+import type { SharedValue } from "react-native-reanimated";
+
 interface AnimatedAlready {
   kind: "animated-already";
   rotateValueR: SharedValue<number>;

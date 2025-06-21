@@ -1,7 +1,6 @@
-// other libraries
+// types
 import type { EasingFunction, SharedValue } from "react-native-reanimated";
 
-// types
 export interface TimingConfig {
   to?: number;
   easing?: EasingFunction;

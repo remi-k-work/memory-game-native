@@ -1,11 +1,10 @@
-// react
-import { type ReactNode } from "react";
-
 // other libraries
 import Animated, { interpolate, useAnimatedStyle, withTiming } from "react-native-reanimated";
 import { useFlipCardContext } from "./FlipCardContext";
 
 // types
+import type { ReactNode } from "react";
+
 interface FlippedContentProps {
   children: ReactNode;
 }

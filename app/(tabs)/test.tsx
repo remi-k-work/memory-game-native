@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import { useWindowDimensions } from "react-native";
 
 // other libraries
-import timing from "@/features/animations/generators/timing";
+import spring from "@/features/animations/generators/spring";
 import useAnimation from "@/features/animations/hooks/useAnimation";
 import type { AnimationGenerator } from "@/features/animations/types";
 import { BlurMask, Canvas, Circle, Fill, Group, mix, polar2Canvas, vec } from "@shopify/react-native-skia";
@@ -40,8 +40,8 @@ const animationGenerator: AnimationGenerator<typeof animationInitState> = functi
 
   let to = 1;
   while (true) {
-    yield* timing(progress, { to, duration: 4000 });
-    // yield* spring(progress, to, isWithSpringComplete, { mass: 5, stiffness: 100, damping: 10 });
+    // yield* timing(progress, { to, duration: 4000 });
+    yield* spring(progress, to, { mass: 5, stiffness: 100, damping: 10 });
     to = to === 1 ? 0 : 1;
   }
 };

@@ -5,23 +5,19 @@ import nextFrame from "./nextFrame";
 // types
 import type { AnimatableValue, SharedValue, WithSpringConfig } from "react-native-reanimated";
 
-// Animates a shared value via spring-based function interpolation (bridges to reanimated's withspring function)
-export default function* spring(
-  sharedValue: SharedValue<any>,
-  toValue: AnimatableValue,
-  isWithSpringComplete: SharedValue<boolean>,
-  config?: WithSpringConfig,
-): Generator<void, void, number> {
+// Animates a shared value via Reanimated's withSpring function
+export default function* spring(sharedValue: SharedValue<any>, toValue: AnimatableValue, config?: WithSpringConfig): Generator<void, void, number> {
   "worklet";
 
-  // This shared value is used to signal animation completion
-  isWithSpringComplete.value = false;
+  // Yield to the player (it freezes without this)
+  yield* nextFrame();
 
-  // Apply the spring animation and signal its completion on the ui thread
-  sharedValue.value = withSpring(toValue, config, (isFinished) => {
-    if (isFinished) isWithSpringComplete.value = true;
-  });
+  // To signal withSpring completion
+  let isWithSpringComplete = false;
 
-  // Yield frames until the shared value signals completion
-  while (!isWithSpringComplete.value) yield* nextFrame();
+  // Apply the spring animation and signal its completion
+  sharedValue.value = withSpring(toValue, config, (isFinished) => (isWithSpringComplete = !!isFinished));
+
+  // Yield frames until the spring animation completes
+  while (!isWithSpringComplete) yield* nextFrame();
 }
