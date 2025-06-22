@@ -2,8 +2,6 @@
 import { Pressable } from "react-native";
 
 // other libraries
-// import useAnimTabButton from "@/hooks/anims/useAnimTabButton";
-import useAnimTabButton from "@/features/animations/hooks/useAnimTabButton";
 import Animated from "react-native-reanimated";
 
 // assets
@@ -13,21 +11,24 @@ import WrenchScrewDriver from "@/assets/icons/WrenchScrewDriver";
 
 // types
 import type { TabTriggerSlotProps } from "expo-router/ui";
+import type { ColorValue } from "react-native";
+import type { SharedValue } from "react-native-reanimated";
 
 interface TabButtonProps extends TabTriggerSlotProps {
   iconName: "PuzzlePiece" | "Trophy" | "WrenchScrewDriver";
+  backgroundColor: SharedValue<string>;
+  width: SharedValue<number>;
+  borderRadius: SharedValue<string>;
+  fill: SharedValue<ColorValue | undefined>;
 }
 
-export default function TabButton({ isFocused = false, ...props }: TabButtonProps) {
-  // Use the already encapsulated animation logic for this component
-  const { buttonAnimatedStyle, iconAnimatedProps } = useAnimTabButton(isFocused);
-
+export default function TabButton({ iconName, backgroundColor, width, borderRadius, fill, ...props }: TabButtonProps) {
   return (
     <Pressable {...props}>
-      <Animated.View className="items-center p-2" style={buttonAnimatedStyle}>
-        {props.iconName === "PuzzlePiece" && <PuzzlePiece width={48} height={48} animatedPathProps={iconAnimatedProps} />}
-        {props.iconName === "Trophy" && <Trophy width={48} height={48} animatedPathProps={iconAnimatedProps} />}
-        {props.iconName === "WrenchScrewDriver" && <WrenchScrewDriver width={48} height={48} animatedPathProps={iconAnimatedProps} />}
+      <Animated.View className="items-center p-2" style={{ backgroundColor, width, borderRadius }}>
+        {iconName === "PuzzlePiece" && <PuzzlePiece width={48} height={48} fillSharedValue={fill} />}
+        {iconName === "Trophy" && <Trophy width={48} height={48} fillSharedValue={fill} />}
+        {iconName === "WrenchScrewDriver" && <WrenchScrewDriver width={48} height={48} fillSharedValue={fill} />}
       </Animated.View>
     </Pressable>
   );

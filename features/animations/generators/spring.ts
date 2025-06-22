@@ -9,15 +9,9 @@ import type { AnimatableValue, SharedValue, WithSpringConfig } from "react-nativ
 export default function* spring(sharedValue: SharedValue<any>, toValue: AnimatableValue, config?: WithSpringConfig): Generator<void, void, number> {
   "worklet";
 
-  // Yield to the player (it freezes without this)
+  // Yield to the player
   yield* nextFrame();
 
-  // To signal withSpring completion
-  let isWithSpringComplete = false;
-
-  // Apply the spring animation and signal its completion
-  sharedValue.value = withSpring(toValue, config, (isFinished) => (isWithSpringComplete = !!isFinished));
-
-  // Yield frames until the spring animation completes
-  while (!isWithSpringComplete) yield* nextFrame();
+  // Apply the Reanimated's withSpring function
+  sharedValue.value = withSpring(toValue, config);
 }

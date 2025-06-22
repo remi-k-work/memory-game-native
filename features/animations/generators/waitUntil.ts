@@ -1,6 +1,8 @@
 // other libraries
-import { type SharedValue } from "react-native-reanimated";
 import nextFrame from "./nextFrame";
+
+// types
+import type { SharedValue } from "react-native-reanimated";
 
 // Pauses the animation script until a boolean shared value meets a specific condition
 export default function* waitUntil(sharedValue: SharedValue<boolean>, invert = false): Generator<void, void, number> {

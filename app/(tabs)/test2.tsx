@@ -1,7 +1,7 @@
 // other libraries
 import timeSincePrevFrame from "@/features/animations/generators/nextFrame";
 import useAnimation from "@/features/animations/hooks/useAnimation";
-import type { AnimationGenerator, AnimationInitState } from "@/features/animations/types";
+import type { AnimationGenerator } from "@/features/animations/types";
 import { Canvas, clamp, Fill, Group, Path, Skia } from "@shopify/react-native-skia";
 import { Dimensions } from "react-native";
 import { useDerivedValue, type SharedValue } from "react-native-reanimated";
@@ -31,7 +31,7 @@ const bounce = (value: SharedValue<number>, color: SharedValue<string>, delta: n
   return direction;
 };
 
-const animationGenerator: AnimationGenerator = function* ({ x, y, color }) {
+const animationGenerator: AnimationGenerator<typeof animationInitState> = function* ({ x, y, color }) {
   "worklet";
 
   const direction = { x: 1, y: 1 };
@@ -41,7 +41,7 @@ const animationGenerator: AnimationGenerator = function* ({ x, y, color }) {
     direction.y = bounce(y, color, delta, direction.y, [0, bottomBound]);
   }
 };
-const animationInitState: AnimationInitState = { x: 0, y: 0, color: colors[0] };
+const animationInitState = { x: 0, y: 0, color: colors[0] };
 
 export default function Screen() {
   const { x, y, color } = useAnimation(animationGenerator, animationInitState);

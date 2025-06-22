@@ -1,9 +1,10 @@
 // other libraries
-import { interpolate, type SharedValue } from "react-native-reanimated";
+import { interpolate } from "react-native-reanimated";
 import nextFrame from "./nextFrame";
 
 // types
 import type { TimingConfig } from "@/features/animations/types";
+import type { SharedValue } from "react-native-reanimated";
 
 // constants
 import { DEFAULT_TIMING_CONFIG } from "@/features/animations/constants";

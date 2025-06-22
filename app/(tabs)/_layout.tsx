@@ -5,7 +5,7 @@ import { TabList, Tabs, TabSlot, TabTrigger } from "expo-router/ui";
 import useAnimTabs from "@/features/animations/hooks/useAnimTabs";
 
 // components
-import TabButton from "@/components/TabButton2";
+import TabButton from "@/components/TabButton";
 import TabTurns from "@/components/TabTurns";
 
 export default function Layout() {
@@ -50,7 +50,7 @@ export default function Layout() {
             fill={fillHighScores}
           />
         </TabTrigger>
-        <TabTrigger name="turns" href="/turns" onPress={(ev) => ev.preventDefault()} asChild>
+        <TabTrigger name="turns" href="/turns" onPress={(ev) => ev.preventDefault()}>
           <TabTurns />
         </TabTrigger>
         <TabTrigger name="test" href="/test">
