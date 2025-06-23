@@ -5,7 +5,7 @@ import { Text, View } from "react-native";
 import { router } from "expo-router";
 
 // other libraries
-import useAnimTabTurns from "@/hooks/anims/useAnimTabTurns";
+import useAnimTabTurns from "@/features/animations/hooks/useAnimTabTurns";
 import useDidUpdateEffect from "@/hooks/useDidUpdateEffect";
 import { useGameStore } from "@/stores/gameProvider";
 import { useHighScoreStore, useRehydrateHighScore } from "@/stores/highScoreProvider";

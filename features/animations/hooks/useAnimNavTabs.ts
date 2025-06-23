@@ -20,7 +20,7 @@ import type { SharedValue } from "react-native-reanimated";
 import { COLORS } from "@/constants/colors";
 
 // Encapsulate the animation logic in a custom hook
-export default function useAnimTabs() {
+export default function useAnimNavTabs() {
   // To establish which tab button is focused
   const pathname = usePathname();
 
