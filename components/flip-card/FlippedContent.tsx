@@ -19,7 +19,7 @@ export default function FlippedContent({ children }: FlippedContentProps) {
     }
 
     const { isFlipped, direction, duration } = flipCardContext;
-    const rotateValue = withTiming(`${interpolate(Number(isFlipped.value), [0, 1], [180, 360])}deg`, { duration });
+    const rotateValue = withTiming(`${interpolate(Number(isFlipped), [0, 1], [180, 360])}deg`, { duration });
     return { transform: [direction === "x" ? { rotateX: rotateValue } : { rotateY: rotateValue }, { perspective: 300 }] };
   });
 

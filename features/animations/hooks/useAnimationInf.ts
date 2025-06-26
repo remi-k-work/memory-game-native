@@ -1,5 +1,11 @@
+// react
+import { useCallback, useEffect } from "react";
+
+// expo
+import { useFocusEffect } from "expo-router";
+
 // other libraries
-import { useFrameCallback, useSharedValue } from "react-native-reanimated";
+import { runOnJS, useFrameCallback, useSharedValue } from "react-native-reanimated";
 import useSharedValues from "./useSharedValues";
 
 // types
@@ -14,13 +20,43 @@ export default function useAnimationInf<S extends AnimationInitState>(animationG
   const generatorOnUIThread = useSharedValue<null | ReturnType<AnimationGenerator<S>>>(null);
 
   // The animation player loop, running frame by frame
-  useFrameCallback(({ timeSincePreviousFrame: deltaTime }) => {
+  let isDone = false;
+  const { setActive } = useFrameCallback(({ timeSincePreviousFrame: deltaTime }) => {
     // Initialize the animation generator if it has not been done already
     if (!generatorOnUIThread.value) generatorOnUIThread.value = animationGenerator(animationSharedValues);
 
     // Advance the animation generator, passing the delta time to it
-    generatorOnUIThread.value.next(deltaTime ?? 0);
+    const { done } = generatorOnUIThread.value.next(deltaTime ?? 0);
+
+    // If the animation generator is done, deactivate the frame callback as it is no longer needed
+    if (done) runOnJS(() => (isDone = true));
+    console.log("running animation");
   });
+
+  // This block runs every time the screen comes into focus
+  useFocusEffect(
+    useCallback(() => {
+      // Activate the frame callback on focus
+      setActive(true);
+
+      // This return function acts as a cleanup and runs when the screen loses focus
+      return () => {
+        // Deactivate the frame callback on blur
+        setActive(false);
+      };
+    }, [setActive]),
+  );
+
+  // This handles cases where the component is unmounted (e.g., navigating away completely)
+  // This is crucial for stopping animations and cleaning up resources
+  useEffect(() => {
+    // Deactivate the frame callback on unmount
+    return () => setActive(false);
+  }, [setActive]);
+
+  useEffect(() => {
+    if (isDone) setActive(false);
+  }, [isDone, setActive]);
 
   // Return the animation shared values so they can be used in components
   return animationSharedValues;

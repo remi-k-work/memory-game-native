@@ -5,7 +5,7 @@ import { useCallback, useMemo } from "react";
 import parallel from "@/features/animations/generators/parallel";
 import timing from "@/features/animations/generators/timing";
 import wait from "@/features/animations/generators/wait";
-import useAnimation from "@/features/animations/hooks/useAnimation";
+import useAnimationInf from "@/features/animations/hooks/useAnimationInf";
 
 // types
 import type { AnimationGenerator } from "@/features/animations/types";
@@ -45,7 +45,7 @@ export default function useAnimFlippingTitle(ANIMATED_ITEMS: string[]) {
   );
 
   // Start the animation player with the main animation script
-  const animationSharedValues = useAnimation(animationGenerator, animationInitState);
+  const animationSharedValues = useAnimationInf(animationGenerator, animationInitState);
 
   // Return all that is needed to trigger the animation
   return { animationSharedValues };

@@ -6,6 +6,7 @@ import { Keyboard, Text } from "react-native";
 
 // other libraries
 import { useGameStore } from "@/stores/gameProvider";
+import { useAnimatedKeyboard, useAnimatedStyle } from "react-native-reanimated";
 
 // components
 import { AnimatedTableRow, TableCell, TableRow } from "@/components/ui/custom/table";
@@ -40,6 +41,10 @@ export default function Entry({
   // The current player's name that they have entered
   const [currName, setCurrName] = useState("");
 
+  // To make sure the keyboard does not cover the new high score entry
+  const { height: keyboardHeight } = useAnimatedKeyboard();
+  const animStyleNewHighScore = useAnimatedStyle(() => ({ transform: [{ translateY: -keyboardHeight.value }] }));
+
   return isNewHighScore ? (
     <>
       {/* Show the old high score entry, which is being replaced, crossed out */}
@@ -59,7 +64,7 @@ export default function Entry({
       </TableRow>
 
       {/* Show the new high score entry as highlighted and editable */}
-      <TableRow className="items-center bg-primary">
+      <AnimatedTableRow className="items-center bg-primary" style={animStyleNewHighScore}>
         <TableCell className="w-1/5">
           <Text className="text-center text-primary-foreground">{index + 1}</Text>
         </TableCell>
@@ -85,7 +90,7 @@ export default function Entry({
         <TableCell className="w-1/5">
           <Text className="text-center text-primary-foreground">{currTurns}</Text>
         </TableCell>
-      </TableRow>
+      </AnimatedTableRow>
     </>
   ) : isHighlighted ? (
     <AnimatedTableRow className="items-center bg-primary" style={animStyle}>

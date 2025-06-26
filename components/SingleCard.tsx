@@ -31,11 +31,11 @@ export default function SingleCard({ card, card: { uniqueId, imageP, imageL, isF
   const [isLoading, setIsLoading] = useState(false);
 
   // Use the already encapsulated animation logic for this component
-  const { isFlippedFlag, direction, AnimatedLinearGradient, LOAD_ENTERING, LOAD_EXITING } = useAnimSingleCard(isFlipped);
+  const { direction, AnimatedLinearGradient, LOAD_ENTERING, LOAD_EXITING } = useAnimSingleCard();
 
   return (
     <Pressable disabled={isLoading} className="flex-1 overflow-hidden rounded-lg" onPress={() => chosenaCard(card)}>
-      <FlipCard kind="needs-to-animate" isFlipped={isFlippedFlag} direction={direction}>
+      <FlipCard kind="needs-to-animate" isFlipped={isFlipped} direction={direction}>
         <FlipCardRegularContent>
           {isLoading ? (
             <AnimatedLinearGradient

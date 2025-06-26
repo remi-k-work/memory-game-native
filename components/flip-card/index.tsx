@@ -20,7 +20,7 @@ interface AnimatedAlready {
 
 interface NeedsToAnimate {
   kind: "needs-to-animate";
-  isFlipped: SharedValue<boolean>;
+  isFlipped: boolean;
   direction?: "x" | "y";
   duration?: number;
   children: ReactNode;
