@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Image, Pressable } from "react-native";
 
 // other libraries
-import useAnimSingleCard from "@/hooks/anims/useAnimSingleCard";
+import useAnimSingleCard from "@/features/animations/hooks/useAnimSingleCard";
 import useOrientation from "@/hooks/useOrientation";
 import { useGameStore } from "@/stores/gameProvider";
 import colors from "tailwindcss/colors";

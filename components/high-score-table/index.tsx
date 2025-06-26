@@ -5,20 +5,33 @@ import { Text } from "react-native";
 import { useHighScoreStore } from "@/stores/highScoreProvider";
 
 // components
-import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/custom/table";
+import { AnimatedTable, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/custom/table";
 import Entry from "./Entry";
 
 // types
 import type { Difficulty } from "@/types/shared";
+import type { ComponentPropsWithoutRef } from "react";
+import type { ViewStyle } from "react-native";
+import type { AnimatedStyle } from "react-native-reanimated";
 
-interface HighScoreTableProps {
+interface HighScoreTableProps extends ComponentPropsWithoutRef<typeof AnimatedTable> {
   difficulty: Difficulty;
   newHighScoreIndex?: number;
   highScoreIndexToHighlight?: number;
   onNameChanged?: (name: string) => void;
+  animStyles?: AnimatedStyle<ViewStyle>[];
+  className?: string;
 }
 
-export default function HighScoreTable({ difficulty, newHighScoreIndex = -1, highScoreIndexToHighlight = -1, onNameChanged }: HighScoreTableProps) {
+export default function HighScoreTable({
+  difficulty,
+  newHighScoreIndex = -1,
+  highScoreIndexToHighlight = -1,
+  onNameChanged,
+  animStyles,
+  className,
+  ...props
+}: HighScoreTableProps) {
   // Get the state and actions we need from the high score store
   const highScores = useHighScoreStore((state) => state[difficulty]);
 
@@ -27,7 +40,7 @@ export default function HighScoreTable({ difficulty, newHighScoreIndex = -1, hig
   const nextHighScoreIndex = newHighScoreIndex === 0 ? 3 : newHighScoreIndex === 9 ? 10 : newHighScoreIndex + 2;
 
   return (
-    <Table>
+    <AnimatedTable className={className} {...props}>
       <TableHeader>
         <TableRow>
           <TableHead className="w-1/5">
@@ -62,9 +75,15 @@ export default function HighScoreTable({ difficulty, newHighScoreIndex = -1, hig
             })
           : // Otherwise, display the whole high score table for the specified difficulty
             highScores.map((highScore, index) => (
-              <Entry key={difficulty + index} index={index} highScore={highScore} isHighlighted={index === highScoreIndexToHighlight} />
+              <Entry
+                key={difficulty + index}
+                index={index}
+                highScore={highScore}
+                isHighlighted={index === highScoreIndexToHighlight}
+                animStyle={animStyles?.[index]}
+              />
             ))}
       </TableBody>
-    </Table>
+    </AnimatedTable>
   );
 }

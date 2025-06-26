@@ -8,11 +8,13 @@ import { Keyboard, Text } from "react-native";
 import { useGameStore } from "@/stores/gameProvider";
 
 // components
-import { TableCell, TableRow } from "@/components/ui/custom/table";
+import { AnimatedTableRow, TableCell, TableRow } from "@/components/ui/custom/table";
 import { Input } from "@/components/ui/input";
 
 // types
 import type { HighScore } from "@/types/shared";
+import type { ViewStyle } from "react-native";
+import type { AnimatedStyle } from "react-native-reanimated";
 
 interface EntryProps {
   index: number;
@@ -20,9 +22,17 @@ interface EntryProps {
   isNewHighScore?: boolean;
   isHighlighted?: boolean;
   onNameChanged?: (name: string) => void;
+  animStyle?: AnimatedStyle<ViewStyle>;
 }
 
-export default function Entry({ index, highScore: { name, turns, collection }, isNewHighScore = false, isHighlighted = false, onNameChanged }: EntryProps) {
+export default function Entry({
+  index,
+  highScore: { name, turns, collection },
+  isNewHighScore = false,
+  isHighlighted = false,
+  onNameChanged,
+  animStyle,
+}: EntryProps) {
   // Get the state and actions we need from the game store
   const currCollection = useGameStore((state) => state.collection);
   const currTurns = useGameStore((state) => state.turns);
@@ -78,7 +88,7 @@ export default function Entry({ index, highScore: { name, turns, collection }, i
       </TableRow>
     </>
   ) : isHighlighted ? (
-    <TableRow className="items-center bg-primary">
+    <AnimatedTableRow className="items-center bg-primary" style={animStyle}>
       <TableCell className="w-1/5">
         <Text className="text-center text-primary-foreground">{index + 1}</Text>
       </TableCell>
@@ -91,9 +101,9 @@ export default function Entry({ index, highScore: { name, turns, collection }, i
       <TableCell className="w-1/5">
         <Text className="text-center text-primary-foreground">{turns}</Text>
       </TableCell>
-    </TableRow>
+    </AnimatedTableRow>
   ) : (
-    <TableRow className="items-center">
+    <AnimatedTableRow className="items-center" style={animStyle}>
       <TableCell className="w-1/5">
         <Text className="text-center text-foreground">{index + 1}</Text>
       </TableCell>
@@ -106,6 +116,6 @@ export default function Entry({ index, highScore: { name, turns, collection }, i
       <TableCell className="w-1/5">
         <Text className="text-center text-foreground">{turns}</Text>
       </TableCell>
-    </TableRow>
+    </AnimatedTableRow>
   );
 }

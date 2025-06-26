@@ -2,17 +2,24 @@
 export default function* parallel(...animationGenerators: Generator[]): Generator<void, void, number> {
   "worklet";
 
-  // Get the delta time for the current frame
-  let deltaTime = yield;
+  // Create a stateful list of tasks to track their completion
+  const tasks = animationGenerators.map((generator) => ({ generator, done: false }));
 
-  do {
-    // Give the same delta time to every script that has not finished yet
-    const allDone = animationGenerators.map((animationGenerator) => !!animationGenerator.next(deltaTime).done);
+  // Loop as long as there is at least one task that is not yet done
+  while (tasks.some((task) => !task.done)) {
+    // Pause this generator and wait for the main animation loop to provide the delta time for the next frame
+    const deltaTime = yield;
 
-    // If all scripts have finished, exit the parallel command
-    if (allDone.every((isDone) => isDone)) return;
+    // Iterate over all the tasks
+    for (const task of tasks) {
+      // If a task is not yet finished, advance it by one step
+      if (!task.done) {
+        // Pass the delta time we received from the main loop down to the child generator
+        const result = task.generator.next(deltaTime);
 
-    // Get the delta time for the next frame
-    deltaTime = yield;
-  } while (true);
+        // If the child generator has now finished, update its state
+        if (result.done) task.done = true;
+      }
+    }
+  }
 }

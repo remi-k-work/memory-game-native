@@ -1,6 +1,5 @@
 // other libraries
 import { withSpring } from "react-native-reanimated";
-import nextFrame from "./nextFrame";
 
 // types
 import type { AnimatableValue, AnimationCallback, SharedValue, WithSpringConfig } from "react-native-reanimated";
@@ -13,9 +12,6 @@ export default function* spring(
   callback?: AnimationCallback,
 ): Generator<void, void, number> {
   "worklet";
-
-  // Yield to the player
-  yield* nextFrame();
 
   // Apply the Reanimated's withSpring function
   sharedValue.value = withSpring(toValue, config, callback);

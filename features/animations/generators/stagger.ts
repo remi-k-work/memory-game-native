@@ -3,7 +3,7 @@ import parallel from "./parallel";
 import wait from "./wait";
 
 // Runs multiple animation scripts in a staggered fashion
-export function* stagger(delay: number, ...animationGenerators: Generator[]): Generator<void, void, number> {
+export default function* stagger(delay: number, ...animationGenerators: Generator[]): Generator<void, void, number> {
   "worklet";
 
   // Create a new staggered generator version for each provided animation generator

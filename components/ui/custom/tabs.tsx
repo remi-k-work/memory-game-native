@@ -1,7 +1,7 @@
 // other libraries
+import { cn } from "@/lib/utils";
 import * as TabsPrimitive from "@rn-primitives/tabs";
 import Animated from "react-native-reanimated";
-import { cn } from "~/lib/utils";
 
 const Tabs = TabsPrimitive.Root;
 

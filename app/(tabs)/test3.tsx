@@ -1,5 +1,5 @@
 // other libraries
-import { stagger } from "@/features/animations/generators/stagger";
+import stagger from "@/features/animations/generators/stagger";
 import timing from "@/features/animations/generators/timing";
 import waitUntil from "@/features/animations/generators/waitUntil";
 import useAnimation from "@/features/animations/hooks/useAnimation";

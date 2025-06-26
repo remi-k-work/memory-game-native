@@ -1,8 +1,11 @@
 // react native
-import { Text, type TextProps, View, type ViewProps } from "react-native";
+import { Text, View } from "react-native";
 
 // other libraries
 import { cn } from "@/lib/utils";
+
+// types
+import type { TextProps, ViewProps } from "react-native";
 
 function Card({ className, ...props }: ViewProps) {
   return <View className={cn("w-[98%] rounded-lg border border-border bg-card shadow-sm shadow-foreground/10", className)} {...props} />;

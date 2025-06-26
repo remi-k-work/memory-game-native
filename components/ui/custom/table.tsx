@@ -1,8 +1,12 @@
 // react native
-import { View, type ViewProps } from "react-native";
+import { View } from "react-native";
 
 // other libraries
-import { cn } from "~/lib/utils";
+import { cn } from "@/lib/utils";
+import Animated from "react-native-reanimated";
+
+// types
+import type { ViewProps } from "react-native";
 
 function Table({ className, ...props }: ViewProps) {
   return <View role="table" className={cn("flex-1", className)} {...props} />;
@@ -32,4 +36,8 @@ function TableCell({ className, ...props }: ViewProps) {
   return <View role="cell" className={cn("py-3", className)} {...props} />;
 }
 
-export { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow };
+// Create animated versions of some of the above components that we might need
+const AnimatedTable = Animated.createAnimatedComponent(Table);
+const AnimatedTableRow = Animated.createAnimatedComponent(TableRow);
+
+export { AnimatedTable, AnimatedTableRow, Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow };
