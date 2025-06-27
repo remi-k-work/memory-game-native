@@ -5,11 +5,12 @@ import { useCallback, useEffect } from "react";
 import { useFocusEffect } from "expo-router";
 
 // other libraries
-import { type SharedValue, useFrameCallback, useSharedValue } from "react-native-reanimated";
+import { useFrameCallback, useSharedValue } from "react-native-reanimated";
 import useSharedValues from "./useSharedValues";
 
 // types
 import type { AnimationGenerator, AnimationInitState } from "@/features/animations/types";
+import type { SharedValue } from "react-native-reanimated";
 
 // The animation player, which continuously feeds delta time into the animation script, allowing it to control the animation state
 export default function useAnimation<S extends AnimationInitState>(

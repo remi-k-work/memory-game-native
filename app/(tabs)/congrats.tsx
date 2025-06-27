@@ -77,7 +77,7 @@ export default function Screen() {
           <CardTitle>
             <FlippingTitle icon="Star" text="Congrats!" />
           </CardTitle>
-          <CardDescription>You have made a high score!</CardDescription>
+          <CardDescription>You have made a High Score!</CardDescription>
         </CardHeader>
         <CardContent>
           <View className="items-center gap-1">

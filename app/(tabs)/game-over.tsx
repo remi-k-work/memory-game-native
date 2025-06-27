@@ -36,7 +36,7 @@ export default function Screen() {
           <CardTitle>
             <FlippingTitle icon="PuzzlePiece" text="Game Over!" />
           </CardTitle>
-          <CardDescription>You have completed the game!</CardDescription>
+          <CardDescription>High Score still awaits you!</CardDescription>
         </CardHeader>
         <CardContent>
           <View className="items-center gap-1">
@@ -51,7 +51,6 @@ export default function Screen() {
             <Text className="text-muted-foreground">Collection Set</Text>
             <Collection />
           </View>
-          <Text className="text-foreground">You haven't beaten the high score yet; try again!</Text>
         </CardContent>
         <CardFooter>
           <Button size="lg" onPress={handleOKPressed}>
