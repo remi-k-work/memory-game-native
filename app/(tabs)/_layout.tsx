@@ -17,7 +17,7 @@ export default function Layout() {
         <TabTrigger name="turns" href="/turns" onPress={(ev) => ev.preventDefault()}>
           <TabTurns />
         </TabTrigger>
-        <TabTrigger name="game-over" href="/game-over">
+        <TabTrigger name="test" href="/test">
           <TabTurns />
         </TabTrigger>
         <TabTrigger name="congrats" href="/congrats">
