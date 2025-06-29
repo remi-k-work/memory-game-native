@@ -44,7 +44,7 @@ export function useAnimSlide(scrollOffset: SharedValue<number>, slideIndex: numb
             ),
         },
 
-        // Apply a scale transform that makes distant slides smaller
+        // Apply a scale transform that makes distant slides appear smaller
         { scale: interpolate(activeIndex, [slideIndex - 2, slideIndex - 1, slideIndex, slideIndex + 1], [0.8, 0.9, 1, 1], Extrapolation.CLAMP) },
       ],
 
@@ -64,7 +64,7 @@ export function useAnimDot(scrollOffset: SharedValue<number>, slideIndex: number
 
   // Get the current user's desired color scheme and extract the appropriate colors
   const { colorScheme } = useColorScheme();
-  const { primary, secondary } = COLORS[colorScheme];
+  const { primaryForeground, secondaryForeground } = COLORS[colorScheme];
 
   const animStyleDot = useAnimatedStyle(() => {
     // Which "slide index" the user is currently looking at?
@@ -72,7 +72,7 @@ export function useAnimDot(scrollOffset: SharedValue<number>, slideIndex: number
 
     // Animate the dot to indicate which slide the user is currently looking at
     return {
-      backgroundColor: withTiming(interpolateColor(slideIndex === activeIndex ? 1 : 0, [1, 0], [primary, secondary])),
+      backgroundColor: withTiming(interpolateColor(slideIndex === activeIndex ? 1 : 0, [1, 0], [secondaryForeground, primaryForeground])),
       width: withTiming(slideIndex === activeIndex ? slideWidth * 0.08 : slideWidth * 0.04),
       height: slideHeight * 0.05,
     };

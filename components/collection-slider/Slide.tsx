@@ -2,31 +2,34 @@
 import { ImageBackground, Text, View } from "react-native";
 
 // other libraries
-import useOrientation from "@/hooks/useOrientation";
-import { cn } from "@/lib/utils";
+import { useAnimSlide } from "@/features/animations/hooks/useAnimCollectionSlider";
+import Animated from "react-native-reanimated";
 
 // types
 import type { Collection } from "@/types/shared";
+import type { SharedValue } from "react-native-reanimated";
 
 interface SlideProps {
   collection: Collection;
+  scrollOffset: SharedValue<number>;
+  slideIndex: number;
 }
 
-export default function Slide({ collection: { category, previewP, previewL } }: SlideProps) {
-  // Determine the current screen orientation and size
-  const { width, isPortrait } = useOrientation();
+export default function Slide({ collection: { category, previewP, previewL }, scrollOffset, slideIndex }: SlideProps) {
+  // Use the already encapsulated animation logic for this component
+  const { isPortrait, slideWidth, slideHeight, animStyleSlide } = useAnimSlide(scrollOffset, slideIndex);
 
   return (
-    <View className="flex-1 items-center justify-center" style={{ width }}>
+    <Animated.View style={animStyleSlide}>
       <ImageBackground
         source={isPortrait ? previewP : previewL}
-        resizeMode="cover"
-        className={cn("flex-1 items-center justify-center overflow-hidden rounded-lg p-4", isPortrait ? "w-48" : "w-80")}
+        className="absolute justify-end overflow-hidden rounded-lg"
+        style={{ width: slideWidth, height: slideHeight }}
       >
-        <View className="rounded-lg bg-background/75 p-4">
-          <Text className="text-lg text-foreground">{category}</Text>
+        <View className="rounded-b-lg bg-background/75 p-2">
+          <Text className="text-center text-lg text-foreground">{category}</Text>
         </View>
       </ImageBackground>
-    </View>
+    </Animated.View>
   );
 }

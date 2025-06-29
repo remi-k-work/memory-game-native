@@ -1,32 +1,38 @@
 // react native
-import { Animated, View } from "react-native";
+import { View } from "react-native";
 
 // other libraries
-import useOrientation from "@/hooks/useOrientation";
+import { useAnimDot } from "@/features/animations/hooks/useAnimCollectionSlider";
+import Animated from "react-native-reanimated";
 
 // types
+import type { SharedValue } from "react-native-reanimated";
+
 interface IndicatorProps {
-  scrollX: Animated.Value;
+  scrollOffset: SharedValue<number>;
+}
+
+interface DotProps {
+  scrollOffset: SharedValue<number>;
+  slideIndex: number;
 }
 
 // constants
 import { COLLECTIONS } from "@/constants/collections";
 
-export default function Indicator({ scrollX }: IndicatorProps) {
-  // Determine the current screen orientation and size
-  const { width: windowWidth } = useOrientation();
-
+export default function Indicator({ scrollOffset }: IndicatorProps) {
   return (
-    <View className="flex-row flex-wrap items-center justify-center gap-1">
-      {COLLECTIONS.map((_, index) => {
-        const width = scrollX.interpolate({
-          inputRange: [windowWidth * (index - 1), windowWidth * index, windowWidth * (index + 1)],
-          outputRange: [8, 16, 8],
-          extrapolate: "clamp",
-        });
-
-        return <Animated.View key={index} className="size-3 rounded-lg bg-primary" style={{ width }} />;
-      })}
+    <View className="m-1 flex-row flex-wrap items-center justify-center gap-1">
+      {COLLECTIONS.map((_, slideIndex) => (
+        <Dot key={slideIndex} scrollOffset={scrollOffset} slideIndex={slideIndex} />
+      ))}
     </View>
   );
+}
+
+function Dot({ scrollOffset, slideIndex }: DotProps) {
+  // Use the already encapsulated animation logic for this component
+  const { animStyleDot } = useAnimDot(scrollOffset, slideIndex);
+
+  return <Animated.View className="rounded-lg" style={animStyleDot} />;
 }

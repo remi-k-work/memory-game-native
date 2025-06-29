@@ -2,7 +2,7 @@
 import { View } from "react-native";
 
 // components
-import CollectionSlider from "@/components/collection-slider2";
+import CollectionSlider from "@/components/collection-slider";
 
 export default function Screen() {
   return (
