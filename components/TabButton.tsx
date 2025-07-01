@@ -25,9 +25,9 @@ export default function TabButton({ iconName, animStyle, animProps, ...props }: 
   return (
     <Pressable {...props}>
       <Animated.View className="items-center p-2" style={animStyle}>
-        {iconName === "PuzzlePiece" && <PuzzlePiece width={48} height={48} animatedPathProps={animProps} />}
-        {iconName === "Trophy" && <Trophy width={48} height={48} animatedPathProps={animProps} />}
-        {iconName === "WrenchScrewDriver" && <WrenchScrewDriver width={48} height={48} animatedPathProps={animProps} />}
+        {iconName === "PuzzlePiece" && <PuzzlePiece className="size-14 stroke-muted-foreground stroke-1" animatedPathProps={animProps} />}
+        {iconName === "Trophy" && <Trophy className="size-14 stroke-muted-foreground stroke-1" animatedPathProps={animProps} />}
+        {iconName === "WrenchScrewDriver" && <WrenchScrewDriver className="size-14 stroke-muted-foreground stroke-1" animatedPathProps={animProps} />}
       </Animated.View>
     </Pressable>
   );

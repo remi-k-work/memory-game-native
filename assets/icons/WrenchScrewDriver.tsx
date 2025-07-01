@@ -1,4 +1,5 @@
 // other libraries
+import { cssInterop } from "nativewind";
 import Animated from "react-native-reanimated";
 import Svg, { Path } from "react-native-svg";
 
@@ -13,9 +14,13 @@ interface WrenchScrewDriverProps extends SvgProps {
   fillSharedValue?: SharedValue<ColorValue | undefined>;
 }
 
+// Create styled versions of both the svg and the path components (for components that expect style attributes as props)
+const StyledSvg = cssInterop(Svg, { className: { target: false, nativeStyleToProp: { height: true, width: true } } });
+const StyledPath = cssInterop(Path, { className: { target: false, nativeStyleToProp: { fill: true, stroke: true } } });
+
 // Create animated versions of both the svg and the path components
-const AnimatedSvg = Animated.createAnimatedComponent(Svg);
-const AnimatedPath = Animated.createAnimatedComponent(Path);
+const AnimatedSvg = Animated.createAnimatedComponent(StyledSvg);
+const AnimatedPath = Animated.createAnimatedComponent(StyledPath);
 
 export default function WrenchScrewDriver({ animatedSvgProps, animatedPathProps, fillSharedValue, ...props }: WrenchScrewDriverProps) {
   return (

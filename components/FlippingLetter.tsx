@@ -1,9 +1,6 @@
 // react native
 import { Text, View } from "react-native";
 
-// other libraries
-import useColorScheme from "@/hooks/useColorScheme";
-
 // components
 import FlipCard, { FlipCardFlippedContent, FlipCardRegularContent } from "@/components/flip-card";
 
@@ -24,17 +21,11 @@ interface FlippingLetterProps {
 }
 
 // constants
-import { COLORS } from "@/constants/colors";
-
 const ICON_WIDTH = 64;
 const LETTER_WIDTH = 46;
 const HEIGHT = 64;
 
 export default function FlippingLetter({ letter, rotateValueR, rotateValueF }: FlippingLetterProps) {
-  // Get the current user's desired color scheme and extract the appropriate colors
-  const { colorScheme } = useColorScheme();
-  const { primaryForeground } = COLORS[colorScheme];
-
   // Are we showing an icon instead of a simple letter?
   const isIcon = letter === "PuzzlePiece" || letter === "Trophy" || letter === "WrenchScrewDriver" || letter === "Star";
 
@@ -51,10 +42,10 @@ export default function FlippingLetter({ letter, rotateValueR, rotateValueF }: F
         <FlipCardFlippedContent>
           {isIcon ? (
             <View className="items-center justify-center rounded-xl bg-primary" style={{ width: ICON_WIDTH, height: HEIGHT }}>
-              {letter === "PuzzlePiece" && <PuzzlePiece width={48} height={48} fill={primaryForeground} />}
-              {letter === "Trophy" && <Trophy width={48} height={48} fill={primaryForeground} />}
-              {letter === "WrenchScrewDriver" && <WrenchScrewDriver width={48} height={48} fill={primaryForeground} />}
-              {letter === "Star" && <Star width={48} height={48} fill={primaryForeground} />}
+              {letter === "PuzzlePiece" && <PuzzlePiece className="size-14 fill-primary-foreground stroke-muted-foreground stroke-1" />}
+              {letter === "Trophy" && <Trophy className="size-14 fill-primary-foreground stroke-muted-foreground stroke-1" />}
+              {letter === "WrenchScrewDriver" && <WrenchScrewDriver className="size-14 fill-primary-foreground stroke-muted-foreground stroke-1" />}
+              {letter === "Star" && <Star className="size-14 fill-primary-foreground stroke-muted-foreground stroke-1" />}
             </View>
           ) : (
             <View className="overflow-hidden rounded-xl bg-muted" style={{ width: LETTER_WIDTH, height: HEIGHT }}>

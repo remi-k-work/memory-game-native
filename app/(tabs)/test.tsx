@@ -1,13 +1,80 @@
 // react native
-import { View } from "react-native";
 
 // components
+import BodyScrollView from "@/components/BodyScrollView";
 import CollectionSlider from "@/components/collection-slider";
+import Button from "@/components/ui/custom/button";
+
+// assets
+import PuzzlePiece from "@/assets/icons/PuzzlePiece";
 
 export default function Screen() {
   return (
-    <View className="flex-1 items-center justify-center">
+    <BodyScrollView>
       <CollectionSlider />
-    </View>
+      <Button icon={<PuzzlePiece className="size-9 fill-background stroke-input stroke-1" />}>default</Button>
+      <Button isLoading icon={<PuzzlePiece className="size-9 fill-background stroke-input stroke-1" />}>
+        default
+      </Button>
+      <Button variant="destructive" icon={<PuzzlePiece className="size-9 fill-background stroke-input stroke-1" />}>
+        destructive destructive destructive destructive
+      </Button>
+      <Button variant="outline" icon={<PuzzlePiece className="size-9 fill-background stroke-input stroke-1" />}>
+        outline
+      </Button>
+      <Button variant="secondary" icon={<PuzzlePiece className="size-9 fill-background stroke-input stroke-1" />}>
+        secondary
+      </Button>
+      <Button variant="ghost" icon={<PuzzlePiece className="size-9 fill-background stroke-input stroke-1" />}>
+        ghost
+      </Button>
+      <Button variant="default" size="sm">
+        default
+      </Button>
+      <Button variant="destructive" size="sm">
+        destructive
+      </Button>
+      <Button variant="outline" size="sm">
+        outline
+      </Button>
+      <Button variant="secondary" size="sm">
+        secondary
+      </Button>
+      <Button variant="ghost" size="sm">
+        ghost
+      </Button>
+
+      <Button variant="default" size="lg">
+        default
+      </Button>
+      <Button variant="destructive" size="lg">
+        destructive
+      </Button>
+      <Button variant="outline" size="lg">
+        outline
+      </Button>
+      <Button variant="secondary" size="lg">
+        secondary
+      </Button>
+      <Button variant="ghost" size="lg">
+        ghost
+      </Button>
+
+      <Button variant="default" size="icon" isLoading>
+        <PuzzlePiece className="size-12 fill-background stroke-input stroke-1" />
+      </Button>
+      <Button variant="destructive" size="icon">
+        <PuzzlePiece className="size-12 fill-background stroke-input stroke-1" />
+      </Button>
+      <Button variant="outline" size="icon">
+        <PuzzlePiece className="size-12 fill-background stroke-input stroke-1" />
+      </Button>
+      <Button variant="secondary" size="icon">
+        <PuzzlePiece className="size-12 fill-background stroke-input stroke-1" />
+      </Button>
+      <Button variant="ghost" size="icon">
+        <PuzzlePiece className="size-12 fill-background stroke-input stroke-1" />
+      </Button>
+    </BodyScrollView>
   );
 }
