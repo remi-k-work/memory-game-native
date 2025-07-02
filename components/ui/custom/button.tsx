@@ -64,28 +64,33 @@ const buttonTextVariants = cva("font-medium", {
 export default function Button({ variant, size, icon, isLoading = false, className, children, ...props }: ButtonProps) {
   if (size === "icon") {
     return isLoading ? (
-      <Pressable role="button" disabled className={cn("opacity-50", buttonVariants({ variant, size, className }))} {...props}>
+      <Pressable role="button" hitSlop={16} disabled className={cn("opacity-50", buttonVariants({ variant, size, className }))} {...props}>
         <ActivityIndicator size="large" className="size-12" />
       </Pressable>
     ) : (
-      <Pressable role="button" className={cn(props.disabled && "opacity-50", buttonVariants({ variant, size, className }))} {...props}>
+      <Pressable role="button" hitSlop={16} className={cn(props.disabled && "opacity-50", buttonVariants({ variant, size, className }))} {...props}>
         {children}
       </Pressable>
     );
   }
 
   return isLoading ? (
-    <Pressable role="button" disabled className={cn("flex-row gap-2 opacity-50", buttonVariants({ variant, size, className }))} {...props}>
+    <Pressable role="button" hitSlop={16} disabled className={cn("flex-row gap-2 opacity-50", buttonVariants({ variant, size, className }))} {...props}>
       <ActivityIndicator size="large" className="size-9" />
       <Text className={cn("line-clamp-1 shrink", buttonTextVariants({ variant, size }))}>{children}</Text>
     </Pressable>
   ) : icon ? (
-    <Pressable role="button" className={cn(props.disabled && "opacity-50", "flex-row gap-2", buttonVariants({ variant, size, className }))} {...props}>
+    <Pressable
+      role="button"
+      hitSlop={16}
+      className={cn(props.disabled && "opacity-50", "flex-row gap-2", buttonVariants({ variant, size, className }))}
+      {...props}
+    >
       {icon}
       <Text className={cn("line-clamp-1 shrink", buttonTextVariants({ variant, size }))}>{children}</Text>
     </Pressable>
   ) : (
-    <Pressable role="button" className={cn(props.disabled && "opacity-50", buttonVariants({ variant, size, className }))} {...props}>
+    <Pressable role="button" hitSlop={16} className={cn(props.disabled && "opacity-50", buttonVariants({ variant, size, className }))} {...props}>
       <Text className={cn("line-clamp-1 shrink", buttonTextVariants({ variant, size }))}>{children}</Text>
     </Pressable>
   );
