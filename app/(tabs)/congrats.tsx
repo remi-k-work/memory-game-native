@@ -2,7 +2,7 @@
 import { useState } from "react";
 
 // react native
-import { View } from "react-native";
+import { Alert, Text, View } from "react-native";
 
 // expo
 import { router } from "expo-router";
@@ -16,9 +16,12 @@ import BodyScrollView from "@/components/BodyScrollView";
 import FlippingTitle from "@/components/FlippingTitle";
 import HighScoreTable from "@/components/high-score-table";
 import Difficulty from "@/components/preview/Difficulty";
-import { Button } from "@/components/ui/button";
+import Button from "@/components/ui/custom/button3d";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/custom/card";
-import { Text } from "@/components/ui/text";
+
+// assets
+import CheckCircle from "@/assets/icons/CheckCircle";
+import XCircle from "@/assets/icons/XCircle";
 
 export default function Screen() {
   // Get the state and actions we need from the game store
@@ -39,7 +42,7 @@ export default function Screen() {
   async function handleOKPressed() {
     // The player's name is required and must be exactly 3 characters long
     if (!currName.trim() || currName.trim().length !== 3) {
-      alert("Please enter a name that is exactly 3 characters long.");
+      Alert.alert("Invalid Name!", "It must be 3 characters long.", [{ text: "OK", style: "cancel" }], { cancelable: true });
       return;
     }
 
@@ -87,11 +90,11 @@ export default function Screen() {
           <HighScoreTable difficulty={difficulty} newHighScoreIndex={getNewHighScoreIndex(difficulty, currTurns)} onNameChanged={setCurrName} />
         </CardContent>
         <CardFooter className="flex-row justify-around">
-          <Button size="lg" onPress={handleOKPressed}>
-            <Text>OK</Text>
+          <Button icon={<CheckCircle className="size-9 fill-primary-foreground stroke-input stroke-1" />} onPress={handleOKPressed}>
+            OK
           </Button>
-          <Button size="lg" variant="secondary" onPress={handleCancelPressed}>
-            <Text>Cancel</Text>
+          <Button variant="secondary" icon={<XCircle className="size-9 fill-secondary-foreground stroke-input stroke-1" />} onPress={handleCancelPressed}>
+            Cancel
           </Button>
         </CardFooter>
       </Card>

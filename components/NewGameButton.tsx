@@ -15,8 +15,11 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
-import { Text } from "@/components/ui/text";
+import Button from "@/components/ui/custom/button3d";
+
+// assets
+import Power from "@/assets/icons/Power";
+import XCircle from "@/assets/icons/XCircle";
 
 export default function NewGameButton() {
   // Get the state and actions we need from the game store
@@ -28,21 +31,23 @@ export default function NewGameButton() {
 
   return (
     <>
-      <Button size="lg" disabled={!isGameInProgress} onPress={() => setIsOpen(true)}>
-        <Text>Start a New Game</Text>
+      <Button icon={<Power className="size-9 fill-primary-foreground stroke-input stroke-1" />} disabled={!isGameInProgress} onPress={() => setIsOpen(true)}>
+        Start a New Game
       </Button>
       <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Please Confirm!</AlertDialogTitle>
-            <AlertDialogDescription>Your game will be reset. Are you sure you want to continue?</AlertDialogDescription>
+            <AlertDialogTitle>Your game will be reset!</AlertDialogTitle>
+            <AlertDialogDescription>Are you sure you want to continue?</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>
-              <Text>Cancel</Text>
+            <AlertDialogCancel asChild>
+              <Button variant="secondary" icon={<XCircle className="size-9 fill-secondary-foreground stroke-input stroke-1" />}>
+                Cancel
+              </Button>
             </AlertDialogCancel>
-            <AlertDialogAction onPress={startedaNewGame}>
-              <Text>Start a New Game</Text>
+            <AlertDialogAction onPress={startedaNewGame} asChild>
+              <Button icon={<Power className="size-9 fill-primary-foreground stroke-input stroke-1" />}>New Game</Button>
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

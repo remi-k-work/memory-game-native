@@ -1,5 +1,5 @@
 // react native
-import { View } from "react-native";
+import { Text, View } from "react-native";
 
 // expo
 import { router } from "expo-router";
@@ -13,9 +13,11 @@ import FlippingTitle from "@/components/FlippingTitle";
 import Collection from "@/components/preview/Collection";
 import Difficulty from "@/components/preview/Difficulty";
 import Turns from "@/components/preview/Turns";
-import { Button } from "@/components/ui/button";
+import Button from "@/components/ui/custom/button3d";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/custom/card";
-import { Text } from "@/components/ui/text";
+
+// assets
+import CheckCircle from "@/assets/icons/CheckCircle";
 
 export default function Screen() {
   // Get the state and actions we need from the game store
@@ -53,8 +55,8 @@ export default function Screen() {
           </View>
         </CardContent>
         <CardFooter>
-          <Button size="lg" onPress={handleOKPressed}>
-            <Text>OK</Text>
+          <Button icon={<CheckCircle className="size-9 fill-primary-foreground stroke-input stroke-1" />} onPress={handleOKPressed}>
+            OK
           </Button>
         </CardFooter>
       </Card>
