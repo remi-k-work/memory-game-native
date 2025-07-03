@@ -4,6 +4,7 @@
 import BodyScrollView from "@/components/BodyScrollView";
 import CollectionSlider from "@/components/collection-slider";
 import Button from "@/components/ui/custom/button3d";
+import Switch from "@/components/ui/custom/switch";
 
 // assets
 import CheckCircle from "@/assets/icons/CheckCircle";
@@ -17,6 +18,7 @@ export default function Screen() {
   return (
     <BodyScrollView>
       <CollectionSlider />
+      <Switch />
       <Button
         icon={<PuzzlePiece className="fill-primary-background size-9 stroke-input stroke-1" />}
         isLoading={isLoading}

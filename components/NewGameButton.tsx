@@ -1,20 +1,16 @@
 // react
 import { useState } from "react";
 
+// react native
+import { Modal, Text, View } from "react-native";
+
+// expo
+import { router } from "expo-router";
+
 // other libraries
 import { useGameStore } from "@/stores/gameProvider";
 
 // components
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
 import Button from "@/components/ui/custom/button3d";
 
 // assets
@@ -26,32 +22,46 @@ export default function NewGameButton() {
   const isGameInProgress = useGameStore((state) => state.isGameInProgress());
   const startedaNewGame = useGameStore((state) => state.startedaNewGame);
 
-  // Controls the alert dialog open state
+  // Controls the alert modal open state
   const [isOpen, setIsOpen] = useState(false);
+
+  function handleNewGamePressed() {
+    // Close the alert modal
+    setIsOpen(false);
+
+    // Player has started a new game
+    startedaNewGame();
+
+    // Go back to the home screen
+    router.back();
+  }
+
+  function handleCancelPressed() {
+    // Close the alert modal
+    setIsOpen(false);
+  }
 
   return (
     <>
       <Button icon={<Power className="size-9 fill-primary-foreground stroke-input stroke-1" />} disabled={!isGameInProgress} onPress={() => setIsOpen(true)}>
         Start a New Game
       </Button>
-      <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Your game will be reset!</AlertDialogTitle>
-            <AlertDialogDescription>Are you sure you want to continue?</AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel asChild>
-              <Button variant="secondary" icon={<XCircle className="size-9 fill-secondary-foreground stroke-input stroke-1" />}>
+      {isOpen && (
+        <Modal animationType="fade" transparent onRequestClose={handleCancelPressed}>
+          <View className="flex-1 items-center justify-center bg-background/90">
+            <View className="m-3 gap-1 rounded-lg border border-border bg-card p-3">
+              <Text className="text-center text-xl font-semibold text-foreground">Your game will be reset!</Text>
+              <Text className="mb-4 text-center text-lg text-muted-foreground">Are you sure you want to continue?</Text>
+              <Button icon={<Power className="size-9 fill-primary-foreground stroke-input stroke-1" />} onPress={handleNewGamePressed}>
+                New Game
+              </Button>
+              <Button variant="secondary" icon={<XCircle className="size-9 fill-secondary-foreground stroke-input stroke-1" />} onPress={handleCancelPressed}>
                 Cancel
               </Button>
-            </AlertDialogCancel>
-            <AlertDialogAction onPress={startedaNewGame} asChild>
-              <Button icon={<Power className="size-9 fill-primary-foreground stroke-input stroke-1" />}>New Game</Button>
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+            </View>
+          </View>
+        </Modal>
+      )}
     </>
   );
 }

@@ -9,8 +9,8 @@ import { useGameStore } from "@/stores/gameProvider";
 import { useDebouncedCallback } from "use-debounce";
 
 // components
+import Switch from "@/components/ui/custom/switch";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 
 export default function IllustrationsSwitch() {
   // Get the state and actions we need from the game store
@@ -31,8 +31,8 @@ export default function IllustrationsSwitch() {
     <View className="flex-row items-center gap-2">
       <Switch
         nativeID="show-illustrations"
-        checked={currShowIllustrations}
-        onCheckedChange={() => {
+        value={currShowIllustrations}
+        onValueChange={() => {
           setCurrShowIllustrations(!currShowIllustrations);
           handleShowIllustrationsChanged();
         }}

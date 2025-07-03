@@ -5,6 +5,7 @@ export const COLORS = {
     primaryForeground: "hsl(0 0% 98%)",
     secondary: "hsl(240 4.8% 95.9%)",
     secondaryForeground: "hsl(240 5.9% 10%)",
+    input: "hsl(240 5.9% 90%)",
   },
 
   dark: {
@@ -12,5 +13,6 @@ export const COLORS = {
     primaryForeground: "hsl(240 5.9% 10%)",
     secondary: "hsl(240 3.7% 15.9%)",
     secondaryForeground: "hsl(0 0% 98%)",
+    input: "hsl(240 3.7% 15.9%)",
   },
 } as const;
