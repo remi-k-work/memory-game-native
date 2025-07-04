@@ -6,7 +6,7 @@ import { useHighScoreStore } from "@/stores/highScoreProvider";
 
 // components
 import { AnimatedTable, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/custom/table";
-import Entry from "./Entry";
+import Entry from "./entry/";
 
 // types
 import type { Difficulty } from "@/types/shared";
@@ -18,7 +18,6 @@ interface HighScoreTableProps extends ComponentPropsWithoutRef<typeof AnimatedTa
   difficulty: Difficulty;
   newHighScoreIndex?: number;
   highScoreIndexToHighlight?: number;
-  onNameChanged?: (name: string) => void;
   animStyles?: AnimatedStyle<ViewStyle>[];
   className?: string;
 }
@@ -27,7 +26,6 @@ export default function HighScoreTable({
   difficulty,
   newHighScoreIndex = -1,
   highScoreIndexToHighlight = -1,
-  onNameChanged,
   animStyles,
   className,
   ...props
@@ -69,7 +67,6 @@ export default function HighScoreTable({
                   index={origHighScoreIndex}
                   highScore={highScore}
                   isNewHighScore={origHighScoreIndex === newHighScoreIndex}
-                  onNameChanged={onNameChanged}
                 />
               );
             })
