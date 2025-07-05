@@ -1,5 +1,5 @@
 // react
-import { useState } from "react";
+import { memo, useState } from "react";
 
 // other libraries
 import useAnimSingleCard from "@/features/animations/hooks/useAnimSingleCard";
@@ -8,9 +8,9 @@ import Animated from "react-native-reanimated";
 
 // constants
 const LENGTH = 9;
-const STRIPES = new Array(LENGTH).fill(0).map((_, i) => i);
+const STRIPES = [...Array(LENGTH).keys()];
 
-export default function RegularSide() {
+function RegularSide() {
   const [cardCanvasWidth, setCardCanvasWidth] = useState(0);
   const [cardCanvasHeight, setCardCanvasHeight] = useState(0);
   const width = cardCanvasWidth / LENGTH;
@@ -68,3 +68,5 @@ export default function RegularSide() {
     </Animated.View>
   );
 }
+
+export default memo(RegularSide);

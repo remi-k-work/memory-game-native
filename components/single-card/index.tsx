@@ -10,12 +10,12 @@ import { useGameStore } from "@/stores/gameProvider";
 
 // components
 import FlipCard, { FlipCardFlippedContent, FlipCardRegularContent } from "@/components/flip-card";
+import FlippedSide from "./FlippedSide";
 import IsLoading from "./IsLoading";
+import RegularSide from "./RegularSide";
 
 // types
 import type { Card } from "@/types/shared";
-import FlippedSide from "./FlippedSide";
-import RegularSide from "./RegularSide";
 
 interface SingleCardProps {
   card: Card;

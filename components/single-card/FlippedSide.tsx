@@ -1,11 +1,11 @@
 // react native
 import { Image } from "react-native";
 
-// types
-import type { Card } from "@/types/shared";
-
 // other libraries
 import useOrientation from "@/hooks/useOrientation";
+
+// types
+import type { Card } from "@/types/shared";
 
 interface FlippedSideProps {
   card: Card;
