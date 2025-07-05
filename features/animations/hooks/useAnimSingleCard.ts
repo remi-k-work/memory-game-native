@@ -20,5 +20,5 @@ export default function useAnimSingleCard() {
   const directionRef = useRef<"x" | "y">(Math.random() < 0.5 ? "x" : "y");
 
   // Return all that is needed to trigger the animation
-  return { direction: directionRef.current, AnimatedLinearGradient, LOAD_ENTERING, LOAD_EXITING };
+  return { LOAD_ENTERING, LOAD_EXITING, direction: directionRef.current, AnimatedLinearGradient };
 }

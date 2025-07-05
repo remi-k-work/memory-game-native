@@ -8,7 +8,7 @@ import { View } from "react-native";
 import { useGameStore } from "@/stores/gameProvider";
 
 // components
-import SingleCard from "@/components/SingleCard";
+import SingleCard from "@/components/single-card";
 
 // types
 interface CardGridProps {
