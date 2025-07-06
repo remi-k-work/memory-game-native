@@ -6,7 +6,7 @@ import { useHighScoreStore } from "@/stores/highScoreProvider";
 
 // components
 import { AnimatedTable, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/custom/table";
-import Entry from "./entry/";
+import Entry from "./entry";
 
 // types
 import type { Difficulty } from "@/types/shared";
