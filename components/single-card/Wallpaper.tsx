@@ -7,6 +7,7 @@ import { Canvas, Fill, Group, interpolate, LinearGradient, Mask, Rect, Shadow, v
 
 // types
 import type { AnimatedProp, Color } from "@shopify/react-native-skia";
+import type { LayoutRectangle } from "react-native";
 
 interface WallpaperProps {
   backgroundGradientColors: AnimatedProp<Color[]>;
@@ -22,7 +23,7 @@ function Wallpaper({ backgroundGradientColors, stripesGradientColors }: Wallpape
   const { isPortrait } = useOrientation();
 
   // Store the canvas dimensions, which are set once the layout is calculated
-  const [canvasDimensions, setCanvasDimensions] = useState({ width: 0, height: 0 });
+  const [canvasDimensions, setCanvasDimensions] = useState<LayoutRectangle>({ x: 0, y: 0, width: 0, height: 0 });
   const { width, height } = canvasDimensions;
 
   // This hook memoizes orientation-specific calculations to prevent re-computation on every render
@@ -51,7 +52,7 @@ function Wallpaper({ backgroundGradientColors, stripesGradientColors }: Wallpape
   }, [isPortrait, width, height]);
 
   return (
-    <Canvas style={{ flex: 1 }} onLayout={(ev) => setCanvasDimensions({ width: ev.nativeEvent.layout.width, height: ev.nativeEvent.layout.height })}>
+    <Canvas style={{ flex: 1 }} onLayout={(ev) => setCanvasDimensions(ev.nativeEvent.layout)}>
       <Fill>
         <LinearGradient start={vec(0, 0)} end={orientationConfig.gradientEndPoint} colors={backgroundGradientColors} />
       </Fill>

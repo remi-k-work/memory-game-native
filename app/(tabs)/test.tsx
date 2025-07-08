@@ -2,31 +2,35 @@
 
 // components
 import BodyScrollView from "@/components/BodyScrollView";
-import CollectionSlider from "@/components/collection-slider";
 import Button from "@/components/ui/custom/button3d";
-import Switch from "@/components/ui/custom/switch";
 
 // assets
 import CheckCircle from "@/assets/icons/CheckCircle";
 import Power from "@/assets/icons/Power";
 import PuzzlePiece from "@/assets/icons/PuzzlePiece";
 import XCircle from "@/assets/icons/XCircle";
+import LiquidGaugeProgress from "@/components/liquid-gauge-progress";
 import { useState } from "react";
+import { View } from "react-native";
 
 export default function Screen() {
   const [isLoading, setIsLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
   return (
     <BodyScrollView>
-      <CollectionSlider />
-      <Switch />
-      <Button
+      <View className="size-72">
+        <LiquidGaugeProgress progress={progress} />
+      </View>
+      {/* <CollectionSlider /> */}
+      {/* <Switch /> */}
+      {/* <Button
         icon={<PuzzlePiece className="fill-primary-background size-9 stroke-input stroke-1" />}
         isLoading={isLoading}
         onPress={() => setIsLoading(!isLoading)}
       >
         default
-      </Button>
-      <Button icon={<Power className="size-9 fill-primary-foreground stroke-input stroke-1" />} onPress={() => console.log("pressed")}>
+      </Button> */}
+      <Button icon={<Power className="size-9 fill-primary-foreground stroke-input stroke-1" />} onPress={() => setProgress(progress + 10)}>
         default
       </Button>
       <Button variant="destructive" icon={<XCircle className="size-9 fill-destructive-foreground stroke-input stroke-1" />}>
