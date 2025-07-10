@@ -1,14 +1,16 @@
 // react
 import { ReactNode, createContext, use, useRef } from "react";
 
-// react native
-import { ActivityIndicator, View } from "react-native";
-
 // other libraries
 import { useStore } from "zustand";
-import { type GameState, type GameStore, type GameStoreApi, createGameStore } from "./game";
+import { createGameStore } from "./game";
+
+// components
+import LiquidGaugeProgress from "@/components/liquid-gauge-progress";
 
 // types
+import type { GameState, GameStore, GameStoreApi } from "./game";
+
 interface GameProviderProps {
   initState?: GameState;
   children: ReactNode;
@@ -22,12 +24,7 @@ export const GameStoreProvider = ({ initState, children }: GameProviderProps) =>
 
   // Hydration and asynchronous storages - wait until the store has been hydrated before showing anything
   const _hasHydrated = useStore(storeRef.current, (state) => state._hasHydrated);
-  if (!_hasHydrated)
-    return (
-      <View className="flex-1 items-center justify-center">
-        <ActivityIndicator size="large" />
-      </View>
-    );
+  if (!_hasHydrated) return <LiquidGaugeProgress progress={0} />;
 
   return <GameStoreContext value={storeRef.current}>{children}</GameStoreContext>;
 };

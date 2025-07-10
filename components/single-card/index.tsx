@@ -1,18 +1,16 @@
 // react
-import { useState } from "react";
+import { useRef } from "react";
 
 // react native
-import { Pressable } from "react-native";
+import { Image, Pressable } from "react-native";
 
 // other libraries
-import useAnimSingleCard from "@/features/animations/hooks/useAnimSingleCard";
+import useOrientation from "@/hooks/useOrientation";
 import { useGameStore } from "@/stores/gameProvider";
 
 // components
 import FlipCard, { FlipCardFlippedContent, FlipCardRegularContent } from "@/components/flip-card";
-import FlippedSide from "./FlippedSide";
-import IsLoading from "./IsLoading";
-import RegularSide from "./RegularSide";
+import Wallpaper from "./Wallpaper";
 
 // types
 import type { Card } from "@/types/shared";
@@ -21,22 +19,30 @@ interface SingleCardProps {
   card: Card;
 }
 
-export default function SingleCard({ card, card: { uniqueId, isFlipped } }: SingleCardProps) {
+// constants
+import COLORS from "tailwindcss/colors";
+
+const BACKGROUND_GRADIENT_COLORS = [COLORS.stone[600], COLORS.indigo[600]];
+const STRIPES_GRADIENT_COLORS = [COLORS.stone[500], COLORS.purple[400], COLORS.indigo[500]];
+
+export default function SingleCard({ card, card: { imageP, imageL, isFlipped } }: SingleCardProps) {
   // Get the state and actions we need from the game store
   const chosenaCard = useGameStore((state) => state.chosenaCard);
 
-  // Whether the card image is currently loading
-  const [isLoading, setIsLoading] = useState(false);
+  // Determine the current screen orientation and size
+  const { isPortrait } = useOrientation();
 
-  // Use the already encapsulated animation logic for this component
-  const { direction } = useAnimSingleCard();
+  // A random flip direction (kept in a ref to unflip it later in the same way)
+  const directionRef = useRef<"x" | "y">(Math.random() < 0.5 ? "x" : "y");
 
   return (
-    <Pressable disabled={isLoading} className="flex-1 overflow-hidden rounded-lg" onPress={() => chosenaCard(card)}>
-      <FlipCard kind="needs-to-animate" isFlipped={isFlipped} direction={direction}>
-        <FlipCardRegularContent>{isLoading ? <IsLoading key={uniqueId + "loading"} /> : <RegularSide key={uniqueId + "loaded"} />}</FlipCardRegularContent>
+    <Pressable className="flex-1 overflow-hidden rounded-lg" onPress={() => chosenaCard(card)}>
+      <FlipCard kind="needs-to-animate" isFlipped={isFlipped} direction={directionRef.current}>
+        <FlipCardRegularContent>
+          <Wallpaper backgroundGradientColors={BACKGROUND_GRADIENT_COLORS} stripesGradientColors={STRIPES_GRADIENT_COLORS} />
+        </FlipCardRegularContent>
         <FlipCardFlippedContent>
-          <FlippedSide card={card} onImageLoading={() => setIsLoading(true)} onImageLoaded={() => setIsLoading(false)} />
+          <Image source={isPortrait ? imageP : imageL} resizeMode="contain" className="size-full bg-muted" />
         </FlipCardFlippedContent>
       </FlipCard>
     </Pressable>

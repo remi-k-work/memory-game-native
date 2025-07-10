@@ -4,12 +4,14 @@ import { useEffect, useMemo } from "react";
 // other libraries
 import useDidUpdateEffect from "@/hooks/useDidUpdateEffect";
 import { Skia } from "@shopify/react-native-skia";
-import { Easing, useDerivedValue, useSharedValue, withRepeat, withTiming } from "react-native-reanimated";
+import { Easing, FadeIn, FadeOut, useDerivedValue, useSharedValue, withRepeat, withTiming } from "react-native-reanimated";
 
 // types
 import type { SkFont } from "@shopify/react-native-skia";
 
 // constants
+const GAUGE_ENTERING = FadeIn.springify().damping(80).mass(2).stiffness(50);
+const GAUGE_EXITING = FadeOut.springify().damping(80).mass(2).stiffness(50);
 
 // Number of points to define the wave shape
 const WAVE_POINTS = 40;
@@ -72,7 +74,7 @@ export default function useAnimLiquidGaugeProgress(outerRadius: number, innerRad
   }, [fillPercent]);
 
   // Return all that is needed to trigger the animation
-  return { clipPath };
+  return { GAUGE_ENTERING, GAUGE_EXITING, clipPath };
 }
 
 // Encapsulate the animation logic in a custom hook
