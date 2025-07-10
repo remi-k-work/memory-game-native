@@ -13,6 +13,7 @@ export function generatePixabayUrl(imageType: ImageType, orientation: Orientatio
   pixabayUrl.searchParams.append("orientation", orientation);
   pixabayUrl.searchParams.append("category", category);
   pixabayUrl.searchParams.append("editors_choice", editorsChoice);
+  pixabayUrl.searchParams.append("safesearch", "true");
   pixabayUrl.searchParams.append("per_page", "28");
 
   return pixabayUrl;

@@ -30,7 +30,7 @@ export default function Screen() {
       >
         default
       </Button> */}
-      <Button icon={<Power className="size-9 fill-primary-foreground stroke-input stroke-1" />} onPress={() => setProgress(progress + 10)}>
+      <Button icon={<Power className="size-9 fill-primary-foreground stroke-input stroke-1" />} onPress={() => setProgress(73.33333333333333)}>
         default
       </Button>
       <Button variant="destructive" icon={<XCircle className="size-9 fill-destructive-foreground stroke-input stroke-1" />}>

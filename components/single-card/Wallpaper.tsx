@@ -19,12 +19,15 @@ const LENGTH = 9;
 const STRIPES = [...Array(LENGTH).keys()];
 
 function Wallpaper({ backgroundGradientColors, stripesGradientColors }: WallpaperProps) {
-  // Determine the current screen orientation and size
-  const { isPortrait } = useOrientation();
-
   // Store the canvas dimensions, which are set once the layout is calculated
   const [canvasDimensions, setCanvasDimensions] = useState<LayoutRectangle>({ x: 0, y: 0, width: 0, height: 0 });
   const { width, height } = canvasDimensions;
+
+  // A flag to determine if we can safely render the skia elements
+  const hasLayout = width > 0 && height > 0;
+
+  // Determine the current screen orientation and size
+  const { isPortrait } = useOrientation();
 
   // This hook memoizes orientation-specific calculations to prevent re-computation on every render
   const orientationConfig = useMemo(() => {
@@ -53,33 +56,38 @@ function Wallpaper({ backgroundGradientColors, stripesGradientColors }: Wallpape
 
   return (
     <Canvas style={{ flex: 1 }} onLayout={(ev) => setCanvasDimensions(ev.nativeEvent.layout)}>
-      <Fill>
-        <LinearGradient start={vec(0, 0)} end={orientationConfig.gradientEndPoint} colors={backgroundGradientColors} />
-      </Fill>
-      <Group>
-        <LinearGradient start={vec(0, 0)} end={orientationConfig.gradientEndPoint} colors={stripesGradientColors} />
-        <Shadow dx={10} dy={0} blur={20} color="rgba(0, 0, 0, 0.8)" />
-        {STRIPES.map((i) => (
-          <Group key={i} origin={vec(width / 2, height / 2)} transform={orientationConfig.groupTransform(i)}>
-            <Mask
-              mask={
-                <Group>
-                  <LinearGradient
-                    start={vec(0, 0)}
-                    end={orientationConfig.gradientEndPoint}
-                    positions={[0, 0.1, 0.9, 1]}
-                    colors={["transparent", "black", "black", "transparent"]}
-                  />
-                  <Shadow dx={10} dy={0} blur={20} color="black" />
+      {/* Only attempt to draw if the canvas has a layout */}
+      {hasLayout && (
+        <>
+          <Fill>
+            <LinearGradient start={vec(0, 0)} end={orientationConfig.gradientEndPoint} colors={backgroundGradientColors} />
+          </Fill>
+          <Group>
+            <LinearGradient start={vec(0, 0)} end={orientationConfig.gradientEndPoint} colors={stripesGradientColors} />
+            <Shadow dx={10} dy={0} blur={20} color="rgba(0, 0, 0, 0.8)" />
+            {STRIPES.map((i) => (
+              <Group key={i} origin={vec(width / 2, height / 2)} transform={orientationConfig.groupTransform(i)}>
+                <Mask
+                  mask={
+                    <Group>
+                      <LinearGradient
+                        start={vec(0, 0)}
+                        end={orientationConfig.gradientEndPoint}
+                        positions={[0, 0.1, 0.9, 1]}
+                        colors={["transparent", "black", "black", "transparent"]}
+                      />
+                      <Shadow dx={10} dy={0} blur={20} color="black" />
+                      <Rect x={0} y={0} {...orientationConfig.stripeRect} />
+                    </Group>
+                  }
+                >
                   <Rect x={0} y={0} {...orientationConfig.stripeRect} />
-                </Group>
-              }
-            >
-              <Rect x={0} y={0} {...orientationConfig.stripeRect} />
-            </Mask>
+                </Mask>
+              </Group>
+            ))}
           </Group>
-        ))}
-      </Group>
+        </>
+      )}
     </Canvas>
   );
 }
