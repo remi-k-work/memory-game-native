@@ -9,6 +9,7 @@ import CheckCircle from "@/assets/icons/CheckCircle";
 import Power from "@/assets/icons/Power";
 import PuzzlePiece from "@/assets/icons/PuzzlePiece";
 import XCircle from "@/assets/icons/XCircle";
+import { Confetti } from "@/components/confetti";
 import LiquidGaugeProgress from "@/components/liquid-gauge-progress";
 import { useState } from "react";
 import { View } from "react-native";
@@ -18,6 +19,9 @@ export default function Screen() {
   const [progress, setProgress] = useState(0);
   return (
     <BodyScrollView>
+      <View className="h-screen-safe w-full">
+        <Confetti />
+      </View>
       <View className="size-72">
         <LiquidGaugeProgress progress={progress} />
       </View>

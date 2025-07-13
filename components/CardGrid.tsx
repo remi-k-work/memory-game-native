@@ -14,9 +14,10 @@ import SingleCard from "@/components/single-card";
 interface CardGridProps {
   cols: number;
   rows: number;
+  isDisabled?: boolean;
 }
 
-export default function CardGrid({ cols, rows }: CardGridProps) {
+export default function CardGrid({ cols, rows, isDisabled = true }: CardGridProps) {
   // Get the state and actions we need from the game store
   const currentCards = useGameStore((state) => state.currentCards);
   const choiceOne = useGameStore((state) => state.choiceOne);
@@ -39,7 +40,7 @@ export default function CardGrid({ cols, rows }: CardGridProps) {
       {Array.from({ length: rows }).map((_, rowIndex) => (
         <View key={rowIndex} className="flex-1 flex-row gap-1">
           {Array.from({ length: cols }).map((_, colIndex) => (
-            <SingleCard key={currentCards[rowIndex * cols + colIndex].uniqueId} card={currentCards[rowIndex * cols + colIndex]} />
+            <SingleCard key={currentCards[rowIndex * cols + colIndex].uniqueId} card={currentCards[rowIndex * cols + colIndex]} isDisabled={isDisabled} />
           ))}
         </View>
       ))}

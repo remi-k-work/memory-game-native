@@ -10,8 +10,8 @@ import { Easing, FadeIn, FadeOut, useDerivedValue, useSharedValue, withRepeat, w
 import type { SkFont } from "@shopify/react-native-skia";
 
 // constants
-const GAUGE_ENTERING = FadeIn.springify().damping(80).mass(2).stiffness(50);
-const GAUGE_EXITING = FadeOut.springify().damping(80).mass(2).stiffness(50);
+const GAUGE_ENTERING = FadeIn.duration(600);
+const GAUGE_EXITING = FadeOut.duration(600);
 
 // Number of points to define the wave shape
 const WAVE_POINTS = 40;
