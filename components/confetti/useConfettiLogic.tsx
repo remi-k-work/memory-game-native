@@ -12,6 +12,7 @@ const NUM_OF_CONFETTI = 150;
 const CONFETTI_WIDTH = 10;
 const CONFETTI_HEIGHT = 30;
 const RANDOM_INITIAL_Y_JIGGLE = 20;
+const Y_AXIS_SPREAD = 0.8;
 
 function getRandomBoolean() {
   "worklet";
@@ -37,29 +38,18 @@ export default function useConfettiLogic(canvasDimensions: LayoutRectangle) {
   const confettiPieces = useDerivedValue(() => {
     // Generate the initial random positions and seeds for each confetti piece
     const confettiPieces: ConfettiPiece[] = [];
-    for (let index = 0; index < NUM_OF_CONFETTI; index++) {
+    for (let i = 0; i < NUM_OF_CONFETTI; i++) {
       confettiPieces.push({
-        index,
-        position: {
-          x: Math.random() * canvasDimensions.width,
+        currPositionX: Math.random() * canvasDimensions.width,
 
-          // Start above the screen
-          y: -Math.random() * (canvasDimensions.height * 1.2),
-        },
-        colorIndex: index % COLORS.length,
+        // The confetti will start spawning from this distance above the top of the screen
+        currPositionY: -Math.random() * canvasDimensions.height * Y_AXIS_SPREAD,
 
-        // Random rotation speed
-        rotationSpeed: Math.random() * 4,
-
-        // Confetti falls between 70% and 130% of normal speed
-        fallingSpeed: getRandomValue(0.7, 1.3),
-
-        // Unique seed for flip oscillation
-        flipSeed: getRandomValue(1, 3),
-
+        colorIndex: i % COLORS.length,
         clockwise: getRandomBoolean(),
-        maxRotation: { x: getRandomValue(2 * Math.PI, 20 * Math.PI), z: getRandomValue(2 * Math.PI, 20 * Math.PI) },
-        randomXs: randomXArray(5, -10, 10),
+        maxRotationX: getRandomValue(2 * Math.PI, 20 * Math.PI),
+        maxRotationZ: getRandomValue(2 * Math.PI, 20 * Math.PI),
+        randomXs: randomXArray(5, -80, 80),
         initialRandomY: getRandomValue(-RANDOM_INITIAL_Y_JIGGLE, RANDOM_INITIAL_Y_JIGGLE),
         initialRotation: getRandomValue(0.1 * Math.PI, Math.PI),
         randomSpeed: getRandomValue(0.9, 1.3),

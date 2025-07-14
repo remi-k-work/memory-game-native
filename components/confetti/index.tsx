@@ -10,17 +10,10 @@ import useConfettiLogic from "./useConfettiLogic";
 const NUM_OF_CONFETTI = 150;
 const CONFETTI_WIDTH = 10;
 const CONFETTI_HEIGHT = 30;
-const ANIMATION_DURATION = 4500;
+const ANIMATION_DURATION = 8000;
+const Y_AXIS_SPREAD = 0.8;
 
 const { height, width } = Dimensions.get("window");
-
-// --- Animation Logic (must be a worklet) ---
-const relativeSin = (yPosition: number, offsetId: number) => {
-  "worklet";
-  const rand = Math.sin((yPosition - 500) * (Math.PI / 540));
-  const otherrand = Math.cos((yPosition - 500) * (Math.PI / 540));
-  return offsetId % 2 === 0 ? rand : -otherrand;
-};
 
 export const generateEvenlyDistributedValues = (lowerBound: number, upperBound: number, chunks: number) => {
   "worklet";
@@ -44,53 +37,39 @@ export const Confetti = () => {
     const piece = confettiPieces.value[i];
     if (!piece) return;
 
-    const fallingMaxYMovement = 1000;
+    // --- ADJUSTED CALCULATION ---
 
-    let tx = 0;
-    let ty = 0;
+    // 2. The total distance is from the highest possible start point to the bottom
+    const totalDistanceToFall = height * Y_AXIS_SPREAD + height;
 
-    // Already includes random offsets for x and y
-    const { x, y } = piece.position;
+    // 3. Calculate the base distance so the slowest piece (speed 0.9) clears the screen.
+    const baseFallDistance = totalDistanceToFall / 0.9;
+    // --- END CALCULATION ---
 
-    const initialRandomY = piece.initialRandomY;
-    tx = x + piece.randomOffsetX;
-    ty = y + piece.randomOffsetY + initialRandomY;
+    // Set the initial position of the confetti piece
+    let tx = piece.currPositionX + piece.randomOffsetX;
+    let ty = piece.currPositionY + piece.randomOffsetY + piece.initialRandomY;
 
-    // Apply random speed to the fall height
-    const yChange = interpolate(
-      progress.value,
-      [0, 1],
-      [0, fallingMaxYMovement * piece.randomSpeed], // Use random speed here
-      Extrapolation.CLAMP,
-    );
+    // 1. VERTICAL MOVEMENT: Animate falling down the screen
+    ty += interpolate(progress.value, [0, 1], [0, baseFallDistance * piece.randomSpeed], Extrapolation.CLAMP);
 
-    // Interpolate between randomX values for smooth left-right movement
-    const randomX = interpolate(
-      progress.value,
-      generateEvenlyDistributedValues(1, 2, piece.randomXs.length),
-      piece.randomXs, // Use the randomX array for horizontal movement
-      Extrapolation.CLAMP,
-    );
+    // 2. HORIZONTAL MOVEMENT: Animate the side-to-side swing
+    tx += interpolate(progress.value, [0, 0.25, 0.5, 0.75, 1], piece.randomXs, Extrapolation.CLAMP);
 
-    tx += randomX;
-    ty += yChange;
-
+    // 3. ROTATION & SCALE: Animate the 3D tumbling effect
     const rotationDirection = piece.clockwise ? 1 : -1;
+    const rz = piece.initialRotation + interpolate(progress.value, [0, 1], [0, rotationDirection * piece.maxRotationZ], Extrapolation.CLAMP);
+    const rx = piece.initialRotation + interpolate(progress.value, [0, 1], [0, rotationDirection * piece.maxRotationX], Extrapolation.CLAMP);
 
-    const rz = piece.initialRotation + interpolate(progress.value, [0, 1], [0, rotationDirection * piece.maxRotation.z], Extrapolation.CLAMP);
-    const rx = piece.initialRotation + interpolate(progress.value, [0, 1], [0, rotationDirection * piece.maxRotation.x], Extrapolation.CLAMP);
+    // Scale simulates the x-axis rotation (flipping) by shrinking and growing the piece
+    const scale = Math.abs(Math.cos(rx));
 
-    const oscillatingScale = Math.abs(Math.cos(rx)); // Scale goes from 1 -> 0 -> 1
-    const scale = oscillatingScale;
-
+    // 4. APPLY TRANSFORM: Calculate and set the final transformation matrix
     const px = CONFETTI_WIDTH / 2;
     const py = CONFETTI_HEIGHT / 2;
-
-    // Apply the transformation, including the flipping effect and randomX oscillation
     const s = Math.sin(rz) * scale;
     const c = Math.cos(rz) * scale;
 
-    // Use the interpolated randomX for horizontal oscillation
     val.set(c, s, tx - c * px + s * py, ty - s * px - c * py);
   });
 
@@ -99,10 +78,7 @@ export const Confetti = () => {
     // Set the data on the UI thread
     runOnUI(() => {
       progress.value = 0;
-      progress.value = withTiming(1, {
-        duration: ANIMATION_DURATION,
-        easing: Easing.linear,
-      });
+      progress.value = withTiming(1, { duration: ANIMATION_DURATION, easing: Easing.inOut(Easing.quad) });
     })();
   };
 
