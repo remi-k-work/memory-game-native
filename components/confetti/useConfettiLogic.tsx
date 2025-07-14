@@ -1,43 +1,21 @@
 // other libraries
 import { Group, RoundedRect, rect, useTexture } from "@shopify/react-native-skia";
 import { useDerivedValue } from "react-native-reanimated";
+import { getRandomBoolean, getRandomValue, randomXArray } from "./helpers";
 
 // types
 import type { LayoutRectangle } from "react-native";
 import type { ConfettiPiece } from "./types";
 
 // constants
-const COLORS = ["#deb7ff", "#c785ec", "#a86add", "#8549a7", "#634087"];
-const NUM_OF_CONFETTI = 150;
-const CONFETTI_WIDTH = 10;
-const CONFETTI_HEIGHT = 30;
-const RANDOM_INITIAL_Y_JIGGLE = 20;
-const Y_AXIS_SPREAD = 0.8;
-
-function getRandomBoolean() {
-  "worklet";
-
-  return Math.random() >= 0.5;
-}
-
-function getRandomValue(min: number, max: number) {
-  "worklet";
-
-  if (min === max) return min;
-  return Math.random() * (max - min) + min;
-}
-
-function randomXArray(num: number, min: number, max: number) {
-  "worklet";
-
-  return new Array(num).fill(0).map(() => getRandomValue(min, max));
-}
+import { COLORS, CONFETTI_HEIGHT, CONFETTI_WIDTH, NUM_OF_CONFETTI, RANDOM_INITIAL_Y_JIGGLE, Y_AXIS_SPREAD } from "./constants";
 
 export default function useConfettiLogic(canvasDimensions: LayoutRectangle) {
   // A shared value to hold the initial state of all confetti pieces
   const confettiPieces = useDerivedValue(() => {
     // Generate the initial random positions and seeds for each confetti piece
     const confettiPieces: ConfettiPiece[] = [];
+
     for (let i = 0; i < NUM_OF_CONFETTI; i++) {
       confettiPieces.push({
         currPositionX: Math.random() * canvasDimensions.width,
@@ -73,6 +51,7 @@ export default function useConfettiLogic(canvasDimensions: LayoutRectangle) {
     { width: COLORS.length * CONFETTI_WIDTH, height: CONFETTI_HEIGHT },
   );
 
+  // A shared value to hold locations of sprites in atlas texture for each confetti
   const sprites = useDerivedValue(() => {
     // These are rectangles that tell the atlas which part of the texture to use for each color
     const colorRects = COLORS.map((_, index) => rect(index * CONFETTI_WIDTH, 0, CONFETTI_WIDTH, CONFETTI_HEIGHT));

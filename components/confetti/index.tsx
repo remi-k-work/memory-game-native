@@ -1,35 +1,25 @@
-import React from "react";
-import { Dimensions, Pressable, StyleSheet, Text, View } from "react-native";
+// react native
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
+// other libraries
+import useOrientation from "@/hooks/useOrientation";
 import { Atlas, Canvas, useRSXformBuffer } from "@shopify/react-native-skia";
-
 import { Easing, Extrapolation, interpolate, runOnUI, useSharedValue, withTiming } from "react-native-reanimated";
 import useConfettiLogic from "./useConfettiLogic";
 
-// --- Configuration ---
-const NUM_OF_CONFETTI = 150;
-const CONFETTI_WIDTH = 10;
-const CONFETTI_HEIGHT = 30;
-const ANIMATION_DURATION = 8000;
-const Y_AXIS_SPREAD = 0.8;
+// constants
+import { ANIMATION_DURATION, CONFETTI_HEIGHT, CONFETTI_WIDTH, NUM_OF_CONFETTI, Y_AXIS_SPREAD } from "./constants";
 
-const { height, width } = Dimensions.get("window");
+export default function Confetti() {
+  // Determine the current screen orientation and size
+  const { height, width } = useOrientation();
 
-export const generateEvenlyDistributedValues = (lowerBound: number, upperBound: number, chunks: number) => {
-  "worklet";
-
-  const step = (upperBound - lowerBound) / (chunks - 1);
-  return Array.from({ length: chunks }, (_, i) => lowerBound + step * i);
-};
-
-export const Confetti = () => {
   const { confettiPieces, texture, sprites } = useConfettiLogic({ x: 0, y: 0, width, height });
 
   // A shared value to drive the animation (0 = start, 1 = end)
   const progress = useSharedValue(0);
 
-  // 3. CALCULATE TRANSFORMS FOR ALL PIECES
-  // This hook calculates the position/rotation for all 150 pieces on the UI thread.
+  // This hook calculates the position/rotation for all confetti pieces on the ui thread
   const transforms = useRSXformBuffer(NUM_OF_CONFETTI, (val, i) => {
     "worklet";
 
@@ -82,9 +72,8 @@ export const Confetti = () => {
     })();
   };
 
-  if (!texture) {
-    return null; // Texture is loading
-  }
+  // Texture is still loading
+  if (!texture) return null;
 
   return (
     <View style={styles.container}>
@@ -97,7 +86,7 @@ export const Confetti = () => {
       </Pressable>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
