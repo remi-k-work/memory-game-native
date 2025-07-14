@@ -3,11 +3,10 @@ import { Dimensions, Pressable, StyleSheet, Text, View } from "react-native";
 
 import { Atlas, Canvas, useRSXformBuffer } from "@shopify/react-native-skia";
 
-import { Easing, runOnUI, useSharedValue, withTiming } from "react-native-reanimated";
+import { Easing, Extrapolation, interpolate, runOnUI, useSharedValue, withTiming } from "react-native-reanimated";
 import useConfettiLogic from "./useConfettiLogic";
 
 // --- Configuration ---
-const COLORS = ["#deb7ff", "#c785ec", "#a86add", "#8549a7", "#634087"];
 const NUM_OF_CONFETTI = 150;
 const CONFETTI_WIDTH = 10;
 const CONFETTI_HEIGHT = 30;
@@ -23,17 +22,15 @@ const relativeSin = (yPosition: number, offsetId: number) => {
   return offsetId % 2 === 0 ? rand : -otherrand;
 };
 
-// --- TypeScript Interfaces ---
-interface ConfettiPiece {
-  id: number;
-  x: number;
-  y: number;
-  colorIndex: number;
-  seed: number;
-}
+export const generateEvenlyDistributedValues = (lowerBound: number, upperBound: number, chunks: number) => {
+  "worklet";
+
+  const step = (upperBound - lowerBound) / (chunks - 1);
+  return Array.from({ length: chunks }, (_, i) => lowerBound + step * i);
+};
 
 export const Confetti = () => {
-  const { confettiData, texture, sprites } = useConfettiLogic({ x: 0, y: 0, width, height });
+  const { confettiPieces, texture, sprites } = useConfettiLogic({ x: 0, y: 0, width, height });
 
   // A shared value to drive the animation (0 = start, 1 = end)
   const progress = useSharedValue(0);
@@ -42,22 +39,59 @@ export const Confetti = () => {
   // This hook calculates the position/rotation for all 150 pieces on the UI thread.
   const transforms = useRSXformBuffer(NUM_OF_CONFETTI, (val, i) => {
     "worklet";
+
     // Get the initial data for this specific piece
-    const piece = confettiData.value[i];
-    if (!piece) {
-      return;
-    }
+    const piece = confettiPieces.value[i];
+    if (!piece) return;
 
-    // Use the `progress` value to determine the current Y position (the fall)
-    const totalFallDistance = height * 1.5;
-    const yPosition = piece.y + progress.value * totalFallDistance;
+    const fallingMaxYMovement = 1000;
 
-    // Use the logic from your first example to calculate rotation
-    const rotation = relativeSin(yPosition, piece.id) * piece.seed * 2.5;
+    let tx = 0;
+    let ty = 0;
 
-    // Set the transform for this piece
-    // format: [cos(angle), sin(angle), translateX, translateY]
-    val.set(Math.cos(rotation), Math.sin(rotation), piece.x, yPosition);
+    // Already includes random offsets for x and y
+    const { x, y } = piece.position;
+
+    const initialRandomY = piece.initialRandomY;
+    tx = x + piece.randomOffsetX;
+    ty = y + piece.randomOffsetY + initialRandomY;
+
+    // Apply random speed to the fall height
+    const yChange = interpolate(
+      progress.value,
+      [0, 1],
+      [0, fallingMaxYMovement * piece.randomSpeed], // Use random speed here
+      Extrapolation.CLAMP,
+    );
+
+    // Interpolate between randomX values for smooth left-right movement
+    const randomX = interpolate(
+      progress.value,
+      generateEvenlyDistributedValues(1, 2, piece.randomXs.length),
+      piece.randomXs, // Use the randomX array for horizontal movement
+      Extrapolation.CLAMP,
+    );
+
+    tx += randomX;
+    ty += yChange;
+
+    const rotationDirection = piece.clockwise ? 1 : -1;
+
+    const rz = piece.initialRotation + interpolate(progress.value, [0, 1], [0, rotationDirection * piece.maxRotation.z], Extrapolation.CLAMP);
+    const rx = piece.initialRotation + interpolate(progress.value, [0, 1], [0, rotationDirection * piece.maxRotation.x], Extrapolation.CLAMP);
+
+    const oscillatingScale = Math.abs(Math.cos(rx)); // Scale goes from 1 -> 0 -> 1
+    const scale = oscillatingScale;
+
+    const px = CONFETTI_WIDTH / 2;
+    const py = CONFETTI_HEIGHT / 2;
+
+    // Apply the transformation, including the flipping effect and randomX oscillation
+    const s = Math.sin(rz) * scale;
+    const c = Math.cos(rz) * scale;
+
+    // Use the interpolated randomX for horizontal oscillation
+    val.set(c, s, tx - c * px + s * py, ty - s * px - c * py);
   });
 
   // This function generates the initial state and starts the animation

@@ -4,37 +4,67 @@ import { useDerivedValue } from "react-native-reanimated";
 
 // types
 import type { LayoutRectangle } from "react-native";
-
-interface ConfettiPiece {
-  id: number;
-  x: number;
-  y: number;
-  colorIndex: number;
-  seed: number;
-}
+import type { ConfettiPiece } from "./types";
 
 // constants
 const COLORS = ["#deb7ff", "#c785ec", "#a86add", "#8549a7", "#634087"];
 const NUM_OF_CONFETTI = 150;
 const CONFETTI_WIDTH = 10;
 const CONFETTI_HEIGHT = 30;
+const RANDOM_INITIAL_Y_JIGGLE = 20;
+
+function getRandomBoolean() {
+  "worklet";
+
+  return Math.random() >= 0.5;
+}
+
+function getRandomValue(min: number, max: number) {
+  "worklet";
+
+  if (min === max) return min;
+  return Math.random() * (max - min) + min;
+}
+
+function randomXArray(num: number, min: number, max: number) {
+  "worklet";
+
+  return new Array(num).fill(0).map(() => getRandomValue(min, max));
+}
 
 export default function useConfettiLogic(canvasDimensions: LayoutRectangle) {
   // A shared value to hold the initial state of all confetti pieces
-  const confettiData = useDerivedValue(() => {
+  const confettiPieces = useDerivedValue(() => {
     // Generate the initial random positions and seeds for each confetti piece
     const confettiPieces: ConfettiPiece[] = [];
-    for (let i = 0; i < NUM_OF_CONFETTI; i++) {
+    for (let index = 0; index < NUM_OF_CONFETTI; index++) {
       confettiPieces.push({
-        id: i,
-        x: Math.random() * canvasDimensions.width,
+        index,
+        position: {
+          x: Math.random() * canvasDimensions.width,
 
-        // Start above the screen
-        y: -Math.random() * (canvasDimensions.height * 1.2),
-        colorIndex: i % COLORS.length,
+          // Start above the screen
+          y: -Math.random() * (canvasDimensions.height * 1.2),
+        },
+        colorIndex: index % COLORS.length,
 
-        // Random seed for rotation speed
-        seed: Math.random() * 4 + 1,
+        // Random rotation speed
+        rotationSpeed: Math.random() * 4,
+
+        // Confetti falls between 70% and 130% of normal speed
+        fallingSpeed: getRandomValue(0.7, 1.3),
+
+        // Unique seed for flip oscillation
+        flipSeed: getRandomValue(1, 3),
+
+        clockwise: getRandomBoolean(),
+        maxRotation: { x: getRandomValue(2 * Math.PI, 20 * Math.PI), z: getRandomValue(2 * Math.PI, 20 * Math.PI) },
+        randomXs: randomXArray(5, -10, 10),
+        initialRandomY: getRandomValue(-RANDOM_INITIAL_Y_JIGGLE, RANDOM_INITIAL_Y_JIGGLE),
+        initialRotation: getRandomValue(0.1 * Math.PI, Math.PI),
+        randomSpeed: getRandomValue(0.9, 1.3),
+        randomOffsetX: getRandomValue(-10, 10),
+        randomOffsetY: getRandomValue(-10, 10),
       });
     }
 
@@ -58,8 +88,8 @@ export default function useConfettiLogic(canvasDimensions: LayoutRectangle) {
     const colorRects = COLORS.map((_, index) => rect(index * CONFETTI_WIDTH, 0, CONFETTI_WIDTH, CONFETTI_HEIGHT));
 
     // We map the sprite for each confetti piece based on its color index
-    return Array.from({ length: NUM_OF_CONFETTI }).map((_, index) => colorRects[confettiData.value[index].colorIndex]);
+    return Array.from({ length: NUM_OF_CONFETTI }).map((_, index) => colorRects[confettiPieces.value[index].colorIndex]);
   });
 
-  return { confettiData, texture, sprites };
+  return { confettiPieces, texture, sprites };
 }
