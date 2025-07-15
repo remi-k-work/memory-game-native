@@ -1,23 +1,23 @@
 // react
-import { useEffect } from "react";
+import { useCallback } from "react";
+
+// expo
+import { useFocusEffect } from "expo-router";
 
 // other libraries
-import useOrientation from "@/hooks/useOrientation";
 import { useRSXformBuffer } from "@shopify/react-native-skia";
 import { Easing, Extrapolation, interpolate, useSharedValue, withTiming } from "react-native-reanimated";
 
 // types
 import type { ConfettiPiece } from "@/components/confetti/types";
-import type { DerivedValue } from "react-native-reanimated";
+import type { SkSize } from "@shopify/react-native-skia";
+import type { DerivedValue, SharedValue } from "react-native-reanimated";
 
 // constants
 import { ANIMATION_DURATION, CONFETTI_HEIGHT, CONFETTI_WIDTH, NUM_OF_CONFETTI, Y_AXIS_SPREAD } from "@/components/confetti/constants";
 
 // Encapsulate the animation logic in a custom hook
-export default function useAnimConfetti(confettiPieces: DerivedValue<ConfettiPiece[]>) {
-  // Determine the current screen orientation and size
-  const { height } = useOrientation();
-
+export default function useAnimConfetti(currentCanvasSize: SharedValue<SkSize>, confettiPieces: DerivedValue<ConfettiPiece[]>) {
   // A shared value to drive the animation (0 = start, 1 = end)
   const progress = useSharedValue(0);
 
@@ -30,7 +30,7 @@ export default function useAnimConfetti(confettiPieces: DerivedValue<ConfettiPie
     if (!piece) return;
 
     // The total distance is from the highest possible start point to the bottom
-    const totalDistanceToFall = height * Y_AXIS_SPREAD + height;
+    const totalDistanceToFall = currentCanvasSize.value.height * Y_AXIS_SPREAD + currentCanvasSize.value.height;
 
     // Calculate the base distance so the slowest piece (speed 0.9) clears the screen
     const baseFallDistance = totalDistanceToFall / 0.9;
@@ -62,10 +62,14 @@ export default function useAnimConfetti(confettiPieces: DerivedValue<ConfettiPie
     val.set(c, s, tx - c * px + s * py, ty - s * px - c * py);
   });
 
-  // Start the animation when the component mounts
-  useEffect(() => {
-    progress.value = withTiming(1, { duration: ANIMATION_DURATION, easing: Easing.inOut(Easing.quad) });
-  }, []);
+  // This block runs every time the screen comes into focus
+  useFocusEffect(
+    useCallback(() => {
+      // Restart the animation and reset its state
+      progress.value = 0;
+      progress.value = withTiming(1, { duration: ANIMATION_DURATION, easing: Easing.inOut(Easing.quad) });
+    }, []),
+  );
 
   // Return all that is needed to trigger the animation
   return { transforms };

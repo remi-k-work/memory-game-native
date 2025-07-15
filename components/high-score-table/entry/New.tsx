@@ -1,11 +1,11 @@
 // react
-import { useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 // react native
-import { Alert, Keyboard, Text } from "react-native";
+import { Alert, Keyboard, Text, TextInput } from "react-native";
 
 // expo
-import { router } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 
 // other libraries
 import useOrientation from "@/hooks/useOrientation";
@@ -15,8 +15,8 @@ import Animated, { measure, useAnimatedKeyboard, useAnimatedRef, useAnimatedStyl
 
 // components
 import Button from "@/components/ui/custom/button3d";
+import Input from "@/components/ui/custom/input";
 import { TableCell, TableRow } from "@/components/ui/custom/table";
-import { Input } from "@/components/ui/input";
 
 // assets
 import CheckCircle from "@/assets/icons/CheckCircle";
@@ -43,6 +43,9 @@ export default function NewEntry({ index, highScore: { name } }: NewEntryProps) 
   const highScores = useHighScoreStore((state) => state[difficulty]);
   const getNewHighScoreIndex = useHighScoreStore((state) => state.getNewHighScoreIndex);
   const enteredNewHighScore = useHighScoreStore((state) => state.enteredNewHighScore);
+
+  // To be able to set the focus on the input field
+  const inputRef = useRef<TextInput>(null);
 
   // The current player's name that they have entered
   const [currName, setCurrName] = useState("");
@@ -75,6 +78,26 @@ export default function NewEntry({ index, highScore: { name } }: NewEntryProps) 
     // We only want to translate the content upwards if there is an overlap; otherwise, we will leave it alone
     return { transform: [{ translateY: withSpring(-Math.max(0, overlap)) }] };
   });
+
+  // This block runs every time the screen comes into focus
+  useFocusEffect(
+    useCallback(() => {
+      // Reset the current player's name and focus on the input field
+      setCurrName("");
+
+      // Schedule the focus call
+      const timeoutId = setTimeout(() => inputRef.current?.focus(), 3000);
+
+      // This return function acts as a cleanup and runs when the screen loses focus
+      return () => {
+        // Clear the timeout to prevent it from running after the screen loses focus
+        clearTimeout(timeoutId);
+
+        // Remove the focus from the input field
+        inputRef.current?.blur();
+      };
+    }, []),
+  );
 
   async function handleOKPressed() {
     // The player's name is required and must be exactly 3 characters long
@@ -119,9 +142,9 @@ export default function NewEntry({ index, highScore: { name } }: NewEntryProps) 
         </TableCell>
         <TableCell className="w-1/5">
           <Input
+            ref={inputRef}
             autoCapitalize="characters"
             maxLength={3}
-            autoFocus
             placeholder={name}
             value={currName}
             onChangeText={(value) => {

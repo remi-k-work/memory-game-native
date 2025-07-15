@@ -1,5 +1,5 @@
 // react native
-import { Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
 // other libraries
 import { useGameStore } from "@/stores/gameProvider";
@@ -7,6 +7,7 @@ import { useHighScoreStore } from "@/stores/highScoreProvider";
 
 // components
 import BodyScrollView from "@/components/BodyScrollView";
+import Confetti from "@/components/confetti";
 import FlippingTitle from "@/components/FlippingTitle";
 import HighScoreTable from "@/components/high-score-table";
 import Difficulty from "@/components/preview/Difficulty";
@@ -37,6 +38,11 @@ export default function Screen() {
           <HighScoreTable difficulty={difficulty} newHighScoreIndex={getNewHighScoreIndex(difficulty, currTurns)} />
         </CardContent>
       </Card>
+
+      {/* Render the confetti animation in the front of the screen, but make sure to not capture or obscure any touch events */}
+      <View className="pointer-events-none" style={StyleSheet.absoluteFill}>
+        <Confetti />
+      </View>
     </BodyScrollView>
   );
 }
