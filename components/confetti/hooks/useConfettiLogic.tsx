@@ -1,16 +1,20 @@
 // other libraries
+import { getRandomBoolean, getRandomValue, randomXArray } from "@/components/confetti/helpers";
+import useOrientation from "@/hooks/useOrientation";
 import { Group, RoundedRect, rect, useTexture } from "@shopify/react-native-skia";
 import { useDerivedValue } from "react-native-reanimated";
-import { getRandomBoolean, getRandomValue, randomXArray } from "./helpers";
 
 // types
-import type { LayoutRectangle } from "react-native";
-import type { ConfettiPiece } from "./types";
+import type { ConfettiPiece } from "@/components/confetti/types";
 
 // constants
-import { COLORS, CONFETTI_HEIGHT, CONFETTI_WIDTH, NUM_OF_CONFETTI, RANDOM_INITIAL_Y_JIGGLE, Y_AXIS_SPREAD } from "./constants";
+import { COLORS, CONFETTI_HEIGHT, CONFETTI_WIDTH, NUM_OF_CONFETTI, RANDOM_INITIAL_Y_JIGGLE, Y_AXIS_SPREAD } from "@/components/confetti/constants";
 
-export default function useConfettiLogic(canvasDimensions: LayoutRectangle) {
+// Encapsulate the confetti logic in a custom hook
+export default function useConfettiLogic() {
+  // Determine the current screen orientation and size
+  const { height, width } = useOrientation();
+
   // A shared value to hold the initial state of all confetti pieces
   const confettiPieces = useDerivedValue(() => {
     // Generate the initial random positions and seeds for each confetti piece
@@ -18,10 +22,10 @@ export default function useConfettiLogic(canvasDimensions: LayoutRectangle) {
 
     for (let i = 0; i < NUM_OF_CONFETTI; i++) {
       confettiPieces.push({
-        currPositionX: Math.random() * canvasDimensions.width,
+        currPositionX: getRandomValue(0, width),
 
         // The confetti will start spawning from this distance above the top of the screen
-        currPositionY: -Math.random() * canvasDimensions.height * Y_AXIS_SPREAD,
+        currPositionY: getRandomValue(-height * Y_AXIS_SPREAD, 0),
 
         colorIndex: i % COLORS.length,
         clockwise: getRandomBoolean(),
