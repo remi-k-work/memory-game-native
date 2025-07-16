@@ -64,6 +64,26 @@ export const createHighScoreStore = (initState?: HighScoreState) => {
         version: 1,
         storage: createJSONStorage(() => highScoreStorage()),
 
+        // Only persist the actual score data
+        partialize: (state) => ({
+          easy: state.easy,
+          medium: state.medium,
+          hard: state.hard,
+        }),
+
+        // Safely merge the persisted state with the initial state
+        merge: (persistedState, currentState) => {
+          const typedState = (persistedState as Partial<HighScoreState>) || {};
+          return {
+            ...currentState,
+
+            // Check for race conditions, and use the current state if the persisted state is invalid
+            easy: typedState.easy && typedState.easy.length > 0 ? typedState.easy : currentState.easy,
+            medium: typedState.medium && typedState.medium.length > 0 ? typedState.medium : currentState.medium,
+            hard: typedState.hard && typedState.hard.length > 0 ? typedState.hard : currentState.hard,
+          };
+        },
+
         // The store has been hydrated
         onRehydrateStorage: (state) => () => state._setHasHydrated(),
       },

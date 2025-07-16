@@ -161,6 +161,36 @@ export const createGameStore = (initState?: GameState) => {
         version: 1,
         storage: createJSONStorage(() => AsyncStorage),
 
+        // Only persist the actual game data
+        partialize: (state) => ({
+          fetchedCards: state.fetchedCards,
+          currentCards: state.currentCards,
+          collection: state.collection,
+          difficulty: state.difficulty,
+          showIllustrations: state.showIllustrations,
+          turns: state.turns,
+          choiceOne: state.choiceOne,
+          choiceTwo: state.choiceTwo,
+        }),
+
+        // Safely merge the persisted state with the initial state
+        merge: (persistedState, currentState) => {
+          const typedState = (persistedState as Partial<GameState>) || {};
+          return {
+            ...currentState,
+
+            // Check for race conditions, and use the current state if the persisted state is invalid
+            fetchedCards: typedState.fetchedCards && typedState.fetchedCards.length > 0 ? typedState.fetchedCards : currentState.fetchedCards,
+            currentCards: typedState.currentCards && typedState.currentCards.length > 0 ? typedState.currentCards : currentState.currentCards,
+            collection: typedState.collection ? typedState.collection : currentState.collection,
+            difficulty: typedState.difficulty ? typedState.difficulty : currentState.difficulty,
+            showIllustrations: typedState.showIllustrations ? typedState.showIllustrations : currentState.showIllustrations,
+            turns: typedState.turns ? typedState.turns : currentState.turns,
+            choiceOne: typedState.choiceOne ? typedState.choiceOne : currentState.choiceOne,
+            choiceTwo: typedState.choiceTwo ? typedState.choiceTwo : currentState.choiceTwo,
+          };
+        },
+
         // The store has been hydrated
         onRehydrateStorage: (state) => () => state._setHasHydrated(),
       },
