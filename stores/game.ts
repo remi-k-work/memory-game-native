@@ -126,8 +126,7 @@ export const createGameStore = (initState?: GameState) => {
           })),
 
         // A new set of cards has been fetched
-        hasFetchedCards: (fetchedCards) =>
-          set((state) => ({ fetchedCards, currentCards: replaceCardImages(state.currentCards, fetchedCards), choiceOne: undefined, choiceTwo: undefined })),
+        hasFetchedCards: (fetchedCards) => set((state) => ({ fetchedCards, currentCards: replaceCardImages(state.currentCards, fetchedCards) })),
 
         // *** State-derived functions and selectors ***
 
