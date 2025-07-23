@@ -2,7 +2,6 @@
 import { memo, useMemo, useState } from "react";
 
 // other libraries
-import useOrientation from "@/hooks/useOrientation";
 import { Canvas, Fill, Group, interpolate, LinearGradient, Mask, Rect, Shadow, vec } from "@shopify/react-native-skia";
 
 // types
@@ -15,79 +14,65 @@ interface WallpaperProps {
 }
 
 // constants
-const LENGTH = 9;
-const STRIPES = [...Array(LENGTH).keys()];
+const NUM_OF_STRIPES = 9;
+const STRIPES = [...Array(NUM_OF_STRIPES).keys()];
 
 function Wallpaper({ backgroundGradientColors, stripesGradientColors }: WallpaperProps) {
   // Store the canvas dimensions, which are set once the layout is calculated
   const [canvasDimensions, setCanvasDimensions] = useState<LayoutRectangle>({ x: 0, y: 0, width: 0, height: 0 });
   const { width, height } = canvasDimensions;
 
-  // A flag to determine if we can safely render the skia elements
-  const hasLayout = width > 0 && height > 0;
-
-  // Determine the current screen orientation and size
-  const { isPortrait } = useOrientation();
-
   // This hook memoizes orientation-specific calculations to prevent re-computation on every render
   const orientationConfig = useMemo(() => {
-    // Calculate the size of a single stripe based on the dominant screen dimension
-    const stripeSize = isPortrait ? width / LENGTH : height / LENGTH;
+    // Establish the current wallpaper's orientation
+    const isPortrait = height >= width;
 
-    // Define the end point for linear gradients, vertical for portrait and horizontal for landscape
-    const gradientEndPoint = isPortrait ? vec(0, height) : vec(width, 0);
+    // Calculate the size of a single stripe based on the dominant screen dimension
+    const stripeSize = isPortrait ? width / NUM_OF_STRIPES : height / NUM_OF_STRIPES;
 
     return {
-      stripeSize,
-      gradientEndPoint,
+      // Define the end point for linear gradients, vertical for portrait and horizontal for landscape
+      gradientEndPoint: isPortrait ? vec(0, height) : vec(width, 0),
 
       // Define the dimensions for each stripe's rectangle
       stripeRect: { width: isPortrait ? stripeSize : width, height: isPortrait ? height : stripeSize },
 
       // A function that returns the transformation for each stripe
-      groupTransform: (i: number) =>
+      groupTransform: (stripeIndex: number) =>
+        // In portrait, stripes move horizontally and scale vertically; otherwise, they move vertically and scale horizontally
         isPortrait
-          ? // In portrait, stripes move horizontally (translateX) and scale vertically (scaleY)
-            [{ translateX: i * stripeSize }, { scaleY: interpolate(i, [0, (LENGTH - 1) / 2, LENGTH - 1], [1, 0.9, 1]) }]
-          : // In landscape, they move vertically (translateY) and scale horizontally (scaleX)
-            [{ translateY: i * stripeSize }, { scaleX: interpolate(i, [0, (LENGTH - 1) / 2, LENGTH - 1], [1, 0.9, 1]) }],
+          ? [{ translateX: stripeIndex * stripeSize }, { scaleY: interpolate(stripeIndex, [0, (NUM_OF_STRIPES - 1) / 2, NUM_OF_STRIPES - 1], [1, 0.9, 1]) }]
+          : [{ translateY: stripeIndex * stripeSize }, { scaleX: interpolate(stripeIndex, [0, (NUM_OF_STRIPES - 1) / 2, NUM_OF_STRIPES - 1], [1, 0.9, 1]) }],
     };
-  }, [isPortrait, width, height]);
+  }, [width, height]);
 
   return (
     <Canvas style={{ flex: 1 }} onLayout={(ev) => setCanvasDimensions(ev.nativeEvent.layout)}>
-      {/* Only attempt to draw if the canvas has a layout */}
-      {hasLayout && (
-        <>
-          <Fill>
-            <LinearGradient start={vec(0, 0)} end={orientationConfig.gradientEndPoint} colors={backgroundGradientColors} />
-          </Fill>
-          <Group>
-            <LinearGradient start={vec(0, 0)} end={orientationConfig.gradientEndPoint} colors={stripesGradientColors} />
-            <Shadow dx={10} dy={0} blur={20} color="rgba(0, 0, 0, 0.8)" />
-            {STRIPES.map((i) => (
-              <Group key={i} origin={vec(width / 2, height / 2)} transform={orientationConfig.groupTransform(i)}>
-                <Mask
-                  mask={
-                    <Group>
-                      <LinearGradient
-                        start={vec(0, 0)}
-                        end={orientationConfig.gradientEndPoint}
-                        positions={[0, 0.1, 0.9, 1]}
-                        colors={["transparent", "black", "black", "transparent"]}
-                      />
-                      <Shadow dx={10} dy={0} blur={20} color="black" />
-                      <Rect x={0} y={0} {...orientationConfig.stripeRect} />
-                    </Group>
-                  }
-                >
-                  <Rect x={0} y={0} {...orientationConfig.stripeRect} />
-                </Mask>
-              </Group>
-            ))}
+      <Fill>
+        <LinearGradient start={vec(0, 0)} end={orientationConfig.gradientEndPoint} colors={backgroundGradientColors} />
+      </Fill>
+      <Group>
+        <LinearGradient start={vec(0, 0)} end={orientationConfig.gradientEndPoint} colors={stripesGradientColors} />
+        <Shadow dx={10} dy={0} blur={20} color="rgba(0, 0, 0, 0.8)" />
+        {STRIPES.map((stripeIndex) => (
+          <Group key={stripeIndex} origin={vec(width / 2, height / 2)} transform={orientationConfig.groupTransform(stripeIndex)}>
+            <Mask
+              mask={
+                <Rect x={0} y={0} {...orientationConfig.stripeRect}>
+                  <LinearGradient
+                    start={vec(0, 0)}
+                    end={orientationConfig.gradientEndPoint}
+                    positions={[0, 0.1, 0.9, 1]}
+                    colors={["transparent", "black", "black", "transparent"]}
+                  />
+                </Rect>
+              }
+            >
+              <Rect x={0} y={0} {...orientationConfig.stripeRect} />
+            </Mask>
           </Group>
-        </>
-      )}
+        ))}
+      </Group>
     </Canvas>
   );
 }

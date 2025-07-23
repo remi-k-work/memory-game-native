@@ -23,10 +23,10 @@ interface SingleCardProps {
 // constants
 import COLORS from "tailwindcss/colors";
 
-const BACKGROUND_GRADIENT_COLORS = [COLORS.stone[600], COLORS.indigo[600]];
-const STRIPES_GRADIENT_COLORS = [COLORS.stone[500], COLORS.purple[400], COLORS.indigo[500]];
-const BACKGROUND_GRADIENT_COLORS_DISABLED = [COLORS.stone[600], COLORS.rose[600]];
-const STRIPES_GRADIENT_COLORS_DISABLED = [COLORS.stone[500], COLORS.purple[400], COLORS.rose[500]];
+const BACKGROUND_GRADIENT_COLORS_REG = [COLORS.stone[600], COLORS.indigo[600]];
+const BACKGROUND_GRADIENT_COLORS_DIS = [COLORS.stone[600], COLORS.rose[600]];
+const STRIPES_GRADIENT_COLORS_REG = [COLORS.stone[500], COLORS.purple[400], COLORS.indigo[500]];
+const STRIPES_GRADIENT_COLORS_DIS = [COLORS.stone[500], COLORS.purple[400], COLORS.rose[500]];
 
 export default function SingleCard({ card, card: { imageP, imageL, isFlipped }, isDisabled = false }: SingleCardProps) {
   // Get the state and actions we need from the game store
@@ -42,11 +42,10 @@ export default function SingleCard({ card, card: { imageP, imageL, isFlipped }, 
     <Pressable disabled={isDisabled} className="flex-1 overflow-hidden rounded-lg" onPress={() => chosenaCard(card)}>
       <FlipCard kind="needs-to-animate" isFlipped={isFlipped} direction={directionRef.current}>
         <FlipCardRegularContent>
-          {isDisabled ? (
-            <Wallpaper backgroundGradientColors={BACKGROUND_GRADIENT_COLORS_DISABLED} stripesGradientColors={STRIPES_GRADIENT_COLORS_DISABLED} />
-          ) : (
-            <Wallpaper backgroundGradientColors={BACKGROUND_GRADIENT_COLORS} stripesGradientColors={STRIPES_GRADIENT_COLORS} />
-          )}
+          <Wallpaper
+            backgroundGradientColors={isDisabled ? BACKGROUND_GRADIENT_COLORS_DIS : BACKGROUND_GRADIENT_COLORS_REG}
+            stripesGradientColors={isDisabled ? STRIPES_GRADIENT_COLORS_DIS : STRIPES_GRADIENT_COLORS_REG}
+          />
         </FlipCardRegularContent>
         <FlipCardFlippedContent>
           <Image source={isPortrait ? imageP : imageL} resizeMode="contain" className="size-full bg-muted" />
