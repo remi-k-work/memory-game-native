@@ -26,7 +26,5 @@ export default function RegularContent({ children }: RegularContentProps) {
     return { transform: [direction === "x" ? { rotateX: rotateValue } : { rotateY: rotateValue }, { perspective: 300 }] };
   });
 
-  return (
-    <Animated.View style={[{ position: "absolute", backfaceVisibility: "hidden" }, StyleSheet.absoluteFill, contentAnimatedStyle]}>{children}</Animated.View>
-  );
+  return <Animated.View style={[{ backfaceVisibility: "hidden" }, StyleSheet.absoluteFill, contentAnimatedStyle]}>{children}</Animated.View>;
 }
