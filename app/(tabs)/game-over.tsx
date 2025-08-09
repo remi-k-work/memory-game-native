@@ -1,27 +1,42 @@
+// react
+import { useState } from "react";
+
 // react native
-import { Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
 // expo
 import { router } from "expo-router";
 
 // other libraries
 import { useGameStore } from "@/stores/gameProvider";
+import { Skia } from "@shopify/react-native-skia";
 
 // components
 import BodyScrollView from "@/components/BodyScrollView";
-import FlippingTitle from "@/components/FlippingTitle";
 import Collection from "@/components/preview/Collection";
 import Difficulty from "@/components/preview/Difficulty";
 import Turns from "@/components/preview/Turns";
+import SkottiePlayer from "@/components/SkottiePlayer";
 import Button from "@/components/ui/custom/button3d";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/custom/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/custom/card";
 
 // assets
 import CheckCircle from "@/assets/icons/CheckCircle";
+const skottieJSON = require("@/assets/skotties/GameOver.json");
+const skottie = Skia.Skottie.Make(JSON.stringify(skottieJSON));
+
+// types
+import type { LayoutRectangle } from "react-native";
+
+// constants
+const SKOTTIE_BG_HEIGHT = 277;
 
 export default function Screen() {
   // Get the state and actions we need from the game store
   const startedaNewGame = useGameStore((state) => state.startedaNewGame);
+
+  // Save the skottie canvas dimensions, which will change based on the screen orientation
+  const [skottieCanvas, setSkottieCanvas] = useState<LayoutRectangle>({ x: 0, y: 0, width: 0, height: 0 });
 
   function handleOKPressed() {
     // Player has started a new game
@@ -33,13 +48,9 @@ export default function Screen() {
 
   return (
     <BodyScrollView>
+      {/* Create enough empty space for the skottie backdrop (opaque), as the transparent part will fill the remainder of the screen */}
+      <View style={{ height: SKOTTIE_BG_HEIGHT * Math.min(skottieCanvas.width / skottie.size().width, skottieCanvas.height / skottie.size().height) }} />
       <Card>
-        <CardHeader>
-          <CardTitle>
-            <FlippingTitle icon="PuzzlePiece" text="Game Over!" />
-          </CardTitle>
-          <CardDescription>High Score still awaits you!</CardDescription>
-        </CardHeader>
         <CardContent>
           <View className="items-center gap-1">
             <Text className="text-muted-foreground">Number of Turns</Text>
@@ -60,6 +71,11 @@ export default function Screen() {
           </Button>
         </CardFooter>
       </Card>
+
+      {/* Render the skottie in the front of the screen, but make sure to not capture or obscure any touch events */}
+      <View className="pointer-events-none" style={StyleSheet.absoluteFill}>
+        <SkottiePlayer animation={skottie} onSkottieLayout={(skottieCanvas) => setSkottieCanvas(skottieCanvas)} />
+      </View>
     </BodyScrollView>
   );
 }

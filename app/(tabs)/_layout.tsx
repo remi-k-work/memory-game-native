@@ -20,7 +20,7 @@ export default function Layout() {
         <TabTrigger name="congrats" href="/congrats">
           <TabTurns />
         </TabTrigger>
-        <TabTrigger name="test" href="/test">
+        <TabTrigger name="game-over" href="/game-over">
           <TabTurns />
         </TabTrigger>
         {/* <TabTrigger name="game-over" href="/game-over" className="hidden" />

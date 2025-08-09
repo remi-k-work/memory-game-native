@@ -20,13 +20,17 @@ const skottie = Skia.Skottie.Make(JSON.stringify(skottieJSON));
 // types
 import type { LayoutRectangle } from "react-native";
 
+// constants
+const SKOTTIE_BG_HEIGHT = 277;
+
 export default function Screen() {
   // Save the skottie canvas dimensions, which will change based on the screen orientation
   const [skottieCanvas, setSkottieCanvas] = useState<LayoutRectangle>({ x: 0, y: 0, width: 0, height: 0 });
 
   return (
     <BodyScrollView>
-      <View style={{ height: 275 * Math.min(skottieCanvas.width / skottie.size().width, skottieCanvas.height / skottie.size().height) }} />
+      {/* Create enough empty space for the skottie backdrop (opaque), as the transparent part will fill the remainder of the screen */}
+      <View style={{ height: SKOTTIE_BG_HEIGHT * Math.min(skottieCanvas.width / skottie.size().width, skottieCanvas.height / skottie.size().height) }} />
       <Card>
         <CardContent className="bg-transparent">
           <HighScoreTabs />
