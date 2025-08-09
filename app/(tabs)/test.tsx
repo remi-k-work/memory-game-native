@@ -11,12 +11,13 @@ import PuzzlePiece from "@/assets/icons/PuzzlePiece";
 import XCircle from "@/assets/icons/XCircle";
 import Confetti from "@/components/confetti";
 import LiquidGaugeProgress from "@/components/liquid-gauge-progress";
-import { Canvas, Group, Skia, Skottie, useClock } from "@shopify/react-native-skia";
+import { Skia } from "@shopify/react-native-skia";
 import { useState } from "react";
-import { Dimensions, StyleSheet, View } from "react-native";
-import { useDerivedValue, useSharedValue } from "react-native-reanimated";
+import { View } from "react-native";
+import { useSharedValue } from "react-native-reanimated";
 
 // types
+import SkottiePlayer from "@/components/SkottiePlayer";
 import type { SkSize } from "@shopify/react-native-skia";
 
 const testJSON = require("@/assets/skotties/Settings.json");
@@ -26,26 +27,15 @@ export default function Screen() {
   const [isLoading, setIsLoading] = useState(false);
   const [progress, setProgress] = useState(0);
 
-  const clock = useClock();
-  const frame = useDerivedValue(() => {
-    const fps = animation.fps();
-    const duration = animation.duration();
-    const currentFrame = Math.floor((clock.value / 1000) * fps) % (duration * fps);
-    return currentFrame;
-  });
-
   // This shared value is used to store the current canvas size, which may change depending on the screen orientation
   const currentCanvasSize = useSharedValue<SkSize>({ width: 0, height: 0 });
 
-  const transform = useDerivedValue(() => [
-    { scale: Math.min(currentCanvasSize.value.width / animation.size().width, currentCanvasSize.value.height / animation.size().height) },
-  ]);
-
-  console.log("window:", Dimensions.get("window").width, Dimensions.get("window").height);
-  console.log("canvas:", currentCanvasSize.value.width, currentCanvasSize.value.height);
+  // console.log("window:", Dimensions.get("window").width, Dimensions.get("window").height);
+  // console.log("canvas:", currentCanvasSize.value.width, currentCanvasSize.value.height);
   return (
     <>
       <BodyScrollView>
+        <SkottiePlayer animation={animation} onSkottieLayout={() => {}} />
         <View className="h-screen-safe w-full">
           <Confetti />
         </View>
@@ -112,13 +102,13 @@ export default function Screen() {
           <PuzzlePiece className="size-12 fill-background stroke-input stroke-1" />
         </Button>
       </BodyScrollView>
-      <View className="pointer-events-none" style={StyleSheet.absoluteFill}>
+      {/* <View className="pointer-events-none" style={StyleSheet.absoluteFill}>
         <Canvas style={{ flex: 1 }} onSize={currentCanvasSize}>
           <Group transform={transform}>
             <Skottie animation={animation} frame={frame} />
           </Group>
         </Canvas>
-      </View>
+      </View> */}
     </>
   );
 }

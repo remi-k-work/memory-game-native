@@ -1,26 +1,37 @@
+// react
+import { useState } from "react";
+
 // react native
-import { Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
+
+// other libraries
+import { Skia } from "@shopify/react-native-skia";
 
 // components
 import BodyScrollView from "@/components/BodyScrollView";
 import CollectionSlider from "@/components/collection-slider";
 import DifficultyChanger from "@/components/DifficultyChanger";
-import FlippingTitle from "@/components/FlippingTitle";
 import IllustrationsSwitch from "@/components/IllustrationsSwitch";
 import NewGameButton from "@/components/NewGameButton";
 import PixaBayBanner from "@/components/PixaBayBanner";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/custom/card";
+import SkottiePlayer from "@/components/SkottiePlayer";
+import { Card, CardContent, CardFooter } from "@/components/ui/custom/card";
+
+// assets
+const skottieJSON = require("@/assets/skotties/Settings.json");
+const skottie = Skia.Skottie.Make(JSON.stringify(skottieJSON));
+
+// types
+import type { LayoutRectangle } from "react-native";
 
 export default function Screen() {
+  // Save the skottie canvas dimensions, which will change based on the screen orientation
+  const [skottieCanvas, setSkottieCanvas] = useState<LayoutRectangle>({ x: 0, y: 0, width: 0, height: 0 });
+
   return (
     <BodyScrollView>
+      <View style={{ height: 232 * Math.min(skottieCanvas.width / skottie.size().width, skottieCanvas.height / skottie.size().height) }} />
       <Card>
-        <CardHeader>
-          <CardTitle>
-            <FlippingTitle icon="WrenchScrewDriver" text="Settings" />
-          </CardTitle>
-          <CardDescription>Adjust your game experience</CardDescription>
-        </CardHeader>
         <CardContent>
           <View className="items-center gap-2">
             <Text className="text-muted-foreground">What Difficulty?</Text>
@@ -40,6 +51,11 @@ export default function Screen() {
           <PixaBayBanner />
         </CardFooter>
       </Card>
+
+      {/* Render the skottie in the front of the screen, but make sure to not capture or obscure any touch events */}
+      <View className="pointer-events-none" style={StyleSheet.absoluteFill}>
+        <SkottiePlayer animation={skottie} onSkottieLayout={(skottieCanvas) => setSkottieCanvas(skottieCanvas)} />
+      </View>
     </BodyScrollView>
   );
 }
