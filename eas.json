@@ -8,7 +8,9 @@
       "developmentClient": true,
       "distribution": "internal",
       "channel": "development",
-      "preInstall": ["npm config set force true"]
+      "npm": {
+        "force": true
+      }
     },
     "preview": {
       "distribution": "internal",
