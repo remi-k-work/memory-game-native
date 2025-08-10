@@ -61,8 +61,8 @@ export default function Screen() {
       </Card>
 
       {/* Render the skottie in the front of the screen, but make sure to not capture or obscure any touch events */}
-      <View className="pointer-events-none" style={StyleSheet.absoluteFill}>
-        <SkottiePlayer animation={colorScheme === "dark" ? skottie : skottieL} onSkottieLayout={(skottieCanvas) => setSkottieCanvas(skottieCanvas)} />
+      <View className="pointer-events-none" style={StyleSheet.absoluteFill} onLayout={(ev) => setSkottieCanvas(ev.nativeEvent.layout)}>
+        <SkottiePlayer animation={colorScheme === "dark" ? skottie : skottieL} />
       </View>
     </BodyScrollView>
   );

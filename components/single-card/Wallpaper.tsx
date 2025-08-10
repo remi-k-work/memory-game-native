@@ -1,6 +1,9 @@
 // react
 import { memo, useMemo, useState } from "react";
 
+// react native
+import { View } from "react-native";
+
 // other libraries
 import { Canvas, Fill, Group, interpolate, LinearGradient, Mask, Rect, Shadow, vec } from "@shopify/react-native-skia";
 
@@ -47,33 +50,35 @@ function Wallpaper({ backgroundGradientColors, stripesGradientColors }: Wallpape
   }, [width, height]);
 
   return (
-    <Canvas style={{ flex: 1 }} onLayout={(ev) => setCanvasDimensions(ev.nativeEvent.layout)}>
-      <Fill>
-        <LinearGradient start={vec(0, 0)} end={orientationConfig.gradientEndPoint} colors={backgroundGradientColors} />
-      </Fill>
-      <Group>
-        <LinearGradient start={vec(0, 0)} end={orientationConfig.gradientEndPoint} colors={stripesGradientColors} />
-        <Shadow dx={10} dy={0} blur={20} color="rgba(0, 0, 0, 0.8)" />
-        {STRIPES.map((stripeIndex) => (
-          <Group key={stripeIndex} origin={vec(width / 2, height / 2)} transform={orientationConfig.groupTransform(stripeIndex)}>
-            <Mask
-              mask={
-                <Rect x={0} y={0} {...orientationConfig.stripeRect}>
-                  <LinearGradient
-                    start={vec(0, 0)}
-                    end={orientationConfig.gradientEndPoint}
-                    positions={[0, 0.1, 0.9, 1]}
-                    colors={["transparent", "black", "black", "transparent"]}
-                  />
-                </Rect>
-              }
-            >
-              <Rect x={0} y={0} {...orientationConfig.stripeRect} />
-            </Mask>
-          </Group>
-        ))}
-      </Group>
-    </Canvas>
+    <View className="flex-1" onLayout={(ev) => setCanvasDimensions(ev.nativeEvent.layout)}>
+      <Canvas style={{ flex: 1 }}>
+        <Fill>
+          <LinearGradient start={vec(0, 0)} end={orientationConfig.gradientEndPoint} colors={backgroundGradientColors} />
+        </Fill>
+        <Group>
+          <LinearGradient start={vec(0, 0)} end={orientationConfig.gradientEndPoint} colors={stripesGradientColors} />
+          <Shadow dx={10} dy={0} blur={20} color="rgba(0, 0, 0, 0.8)" />
+          {STRIPES.map((stripeIndex) => (
+            <Group key={stripeIndex} origin={vec(width / 2, height / 2)} transform={orientationConfig.groupTransform(stripeIndex)}>
+              <Mask
+                mask={
+                  <Rect x={0} y={0} {...orientationConfig.stripeRect}>
+                    <LinearGradient
+                      start={vec(0, 0)}
+                      end={orientationConfig.gradientEndPoint}
+                      positions={[0, 0.1, 0.9, 1]}
+                      colors={["transparent", "black", "black", "transparent"]}
+                    />
+                  </Rect>
+                }
+              >
+                <Rect x={0} y={0} {...orientationConfig.stripeRect} />
+              </Mask>
+            </Group>
+          ))}
+        </Group>
+      </Canvas>
+    </View>
   );
 }
 
