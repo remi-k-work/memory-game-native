@@ -7,10 +7,7 @@
     "development": {
       "developmentClient": true,
       "distribution": "internal",
-      "channel": "development",
-      "npm": {
-        "force": true
-      }
+      "channel": "development"
     },
     "preview": {
       "distribution": "internal",
