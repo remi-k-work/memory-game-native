@@ -1,7 +1,7 @@
 // other libraries
 import useColorScheme from "@/hooks/useColorScheme";
 import useOrientation from "@/hooks/useOrientation";
-import Animated, { Extrapolation, interpolate, interpolateColor, useAnimatedStyle, useScrollViewOffset, withTiming } from "react-native-reanimated";
+import Animated, { Extrapolation, interpolate, interpolateColor, useAnimatedStyle, useScrollOffset, withTiming } from "react-native-reanimated";
 
 // types
 import type { AnimatedRef, SharedValue } from "react-native-reanimated";
@@ -18,7 +18,7 @@ export default function useAnimCollectionSlider(scrollViewRef: AnimatedRef<Anima
   const { slideWidth, slideHeight } = useSlideDimensions();
 
   // Return all that is needed to trigger the animation
-  return { slideWidth, slideHeight, scrollOffset: useScrollViewOffset(scrollViewRef) };
+  return { slideWidth, slideHeight, scrollOffset: useScrollOffset(scrollViewRef) };
 }
 
 // Encapsulate the animation logic in a custom hook

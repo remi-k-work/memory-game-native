@@ -3,7 +3,7 @@ import { usePathname } from "expo-router";
 
 // other libraries
 import useColorScheme from "@/hooks/useColorScheme";
-import { interpolateColor, useAnimatedProps, useAnimatedStyle, withSpring } from "react-native-reanimated";
+import { interpolateColor, useAnimatedProps, useAnimatedStyle, withSpring, withTiming } from "react-native-reanimated";
 
 // constants
 import { COLORS } from "@/constants/colors";
@@ -31,12 +31,10 @@ function useAnimNavTab(isNavTabFocused: boolean = false) {
   // Animate the nav tab to smoothly transition between focused and unfocused states
   return {
     animStyle: useAnimatedStyle(() => ({
-      backgroundColor: withSpring(interpolateColor(isNavTabFocused ? 1 : 0, [1, 0], [primary, secondary]), { damping: 80, stiffness: 200 }),
-      width: withSpring(isNavTabFocused ? 90 : 60),
-      borderRadius: withSpring(isNavTabFocused ? "25%" : "50%"),
+      backgroundColor: withTiming(interpolateColor(isNavTabFocused ? 1 : 0, [1, 0], [primary, secondary])),
+      width: withSpring(isNavTabFocused ? 90 : 60, { stiffness: 100, damping: 10, mass: 1.2 }),
+      borderRadius: withSpring(isNavTabFocused ? "25%" : "50%", { stiffness: 100, damping: 10, mass: 1.2 }),
     })),
-    animProps: useAnimatedProps(() => ({
-      fill: withSpring(interpolateColor(isNavTabFocused ? 1 : 0, [1, 0], [primaryForeground, secondaryForeground]), { damping: 80, stiffness: 200 }),
-    })),
+    animProps: useAnimatedProps(() => ({ fill: withTiming(interpolateColor(isNavTabFocused ? 1 : 0, [1, 0], [primaryForeground, secondaryForeground])) })),
   };
 }

@@ -35,7 +35,7 @@ export default function Screen() {
   return (
     <>
       <BodyScrollView>
-        <SkottiePlayer animation={animation} onSkottieLayout={() => {}} />
+        <SkottiePlayer animation={animation} />
         <View className="h-screen-safe w-full">
           <Confetti />
         </View>

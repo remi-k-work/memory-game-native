@@ -46,7 +46,7 @@ export default function useAnimHighScoreTabs(highScoreTab: Difficulty) {
 function useAnimHighScoreTab(isHighScoreTabFocused: boolean = false) {
   // Animate the high score tab to smoothly transition between focused and unfocused states
   return {
-    animStyle: useAnimatedStyle(() => ({ height: withSpring(isHighScoreTabFocused ? 90 : 64) })),
+    animStyle: useAnimatedStyle(() => ({ height: withSpring(isHighScoreTabFocused ? 90 : 64, { stiffness: 300, damping: 30, mass: 4 }) })),
   };
 }
 
@@ -58,7 +58,7 @@ function useAnimHighScoreEntry(entryIndex: number, highScoreTab: Difficulty) {
   // Trigger the animation when the entry index changes and restart it when the high score tab changes
   useEffect(() => {
     left.value = -50;
-    left.value = withDelay(entryIndex * DELAY, withSpring(0));
+    left.value = withDelay(entryIndex * DELAY, withSpring(0, { stiffness: 300, damping: 30, mass: 4 }));
   }, [entryIndex, highScoreTab]);
 
   return {

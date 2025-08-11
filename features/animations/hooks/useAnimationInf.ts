@@ -5,7 +5,8 @@ import { useCallback, useEffect, useState } from "react";
 import { useFocusEffect } from "expo-router";
 
 // other libraries
-import { runOnJS, useFrameCallback, useSharedValue } from "react-native-reanimated";
+import { useFrameCallback, useSharedValue } from "react-native-reanimated";
+import { runOnJS } from "react-native-worklets";
 import useSharedValues from "./useSharedValues";
 
 // types

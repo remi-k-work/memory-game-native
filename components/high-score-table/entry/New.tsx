@@ -76,7 +76,7 @@ export default function NewEntry({ index, highScore: { name } }: NewEntryProps) 
     const overlap = contentBottom - keyboardTop;
 
     // We only want to translate the content upwards if there is an overlap; otherwise, we will leave it alone
-    return { transform: [{ translateY: withSpring(-Math.max(0, overlap)) }] };
+    return { transform: [{ translateY: withSpring(-Math.max(0, overlap), { stiffness: 900, damping: 90, mass: 4 }) }] };
   });
 
   // This block runs every time the screen comes into focus

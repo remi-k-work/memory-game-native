@@ -42,11 +42,11 @@ export default function TabTurns() {
   }, [isGameOver]);
 
   // Use the already encapsulated animation logic for this component
-  const { TURNS_TEXT_HEIGHT, translateY, prevTurns } = useAnimTabTurns(turns);
+  const { TURNS_TEXT_HEIGHT, animStyle, prevTurns } = useAnimTabTurns(turns);
 
   return (
     <View className="w-16 overflow-hidden rounded-xl bg-foreground" style={{ height: TURNS_TEXT_HEIGHT }}>
-      <Animated.View style={{ transform: [{ translateY }] }}>
+      <Animated.View style={animStyle}>
         <Text className="line-clamp-1 text-center text-4xl tabular-nums text-background" style={{ lineHeight: TURNS_TEXT_HEIGHT }} adjustsFontSizeToFit>
           {prevTurns}
         </Text>
