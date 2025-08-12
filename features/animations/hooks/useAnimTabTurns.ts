@@ -20,7 +20,9 @@ export default function useAnimTabTurns(turns: number) {
   // Trigger the animation when the number of turns changes
   useDidUpdateEffect(() => {
     // This translation moves the "old" number of turns out of view and brings the "new" one into view
-    translateY.value = withSpring(-TURNS_TEXT_HEIGHT, { stiffness: 100, damping: 10, mass: 1.2 }, (isFinished) => isFinished && runOnJS(setPrevTurns)(turns));
+    translateY.value = withSpring(-TURNS_TEXT_HEIGHT, { stiffness: 100, damping: 10, mass: 1.2 }, (isFinished) => {
+      if (isFinished) runOnJS(setPrevTurns)(turns);
+    });
   }, [turns]);
 
   // Reset the translation when the "old" number of turns changes (avoids the flicker effect)

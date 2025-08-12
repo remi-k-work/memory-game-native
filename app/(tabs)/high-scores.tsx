@@ -36,7 +36,7 @@ export default function Screen() {
       {/* Create enough empty space for the skottie backdrop (opaque), as the transparent part will fill the remainder of the screen */}
       <View style={{ height: SKOTTIE_BG_HEIGHT * Math.min(skottieCanvas.width / skottie.size().width, skottieCanvas.height / skottie.size().height) }} />
       <Card>
-        <CardContent className="bg-transparent">
+        <CardContent>
           <HighScoreTabs />
         </CardContent>
       </Card>

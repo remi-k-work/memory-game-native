@@ -1,6 +1,6 @@
 // other libraries
 import useColorScheme from "@/hooks/useColorScheme";
-import useOrientation from "@/hooks/useOrientation";
+import useSlideDimensions from "@/hooks/useSlideDimensions";
 import Animated, { Extrapolation, interpolate, interpolateColor, useAnimatedStyle, useScrollOffset, withTiming } from "react-native-reanimated";
 
 // types
@@ -8,9 +8,6 @@ import type { AnimatedRef, SharedValue } from "react-native-reanimated";
 
 // constants
 import { COLORS } from "@/constants/colors";
-
-const SLIDE_SIZE_P = 192;
-const SLIDE_SIZE_L = 320;
 
 // Encapsulate the animation logic in a custom hook
 export default function useAnimCollectionSlider(scrollViewRef: AnimatedRef<Animated.ScrollView>) {
@@ -80,16 +77,4 @@ export function useAnimDot(scrollOffset: SharedValue<number>, slideIndex: number
 
   // Return all that is needed to trigger the animation
   return { animStyleDot };
-}
-
-// Helper hook to establish the slide dimensions according to the screen orientation
-function useSlideDimensions() {
-  // Determine the current screen orientation and size
-  const { isPortrait } = useOrientation();
-
-  // Establish the width and height of each slide based on the screen orientation
-  const slideWidth = isPortrait ? SLIDE_SIZE_P : SLIDE_SIZE_L;
-  const slideHeight = isPortrait ? SLIDE_SIZE_L : SLIDE_SIZE_P;
-
-  return { isPortrait, slideWidth, slideHeight };
 }

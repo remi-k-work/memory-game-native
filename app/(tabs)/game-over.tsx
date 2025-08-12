@@ -56,13 +56,15 @@ export default function Screen() {
       <View style={{ height: SKOTTIE_BG_HEIGHT * Math.min(skottieCanvas.width / skottie.size().width, skottieCanvas.height / skottie.size().height) }} />
       <Card>
         <CardContent>
-          <View className="items-center gap-1">
-            <Text className="text-muted-foreground">Number of Turns</Text>
-            <Turns />
-          </View>
-          <View className="items-center gap-1">
-            <Text className="text-muted-foreground">Difficulty Level</Text>
-            <Difficulty />
+          <View className="flex-row justify-around">
+            <View className="ml-6 mr-3 flex-1 items-center gap-1 rounded-lg border border-background p-3">
+              <Text className="text-muted-foreground">Number of Turns</Text>
+              <Turns />
+            </View>
+            <View className="ml-3 mr-6 flex-1 items-center gap-1 rounded-lg border border-background p-3">
+              <Text className="text-muted-foreground">Difficulty Level</Text>
+              <Difficulty />
+            </View>
           </View>
           <View className="items-center gap-1">
             <Text className="text-muted-foreground">Collection Set</Text>

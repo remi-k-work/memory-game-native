@@ -11,10 +11,11 @@ import { useHighScoreStore } from "@/stores/highScoreProvider";
 import { Skia } from "@shopify/react-native-skia";
 
 // components
-import BodyScrollView from "@/components/BodyScrollView";
 import Confetti from "@/components/confetti";
 import HighScoreTable from "@/components/high-score-table";
+import KeybScrollView from "@/components/KeybScrollView";
 import Difficulty from "@/components/preview/Difficulty";
+import Turns from "@/components/preview/Turns";
 import SkottiePlayer from "@/components/SkottiePlayer";
 import { Card, CardContent } from "@/components/ui/custom/card";
 
@@ -44,16 +45,24 @@ export default function Screen() {
 
   return (
     <>
-      <BodyScrollView>
+      <KeybScrollView>
         {/* Create enough empty space for the skottie backdrop (opaque), as the transparent part will fill the remainder of the screen */}
         <View style={{ height: SKOTTIE_BG_HEIGHT * Math.min(skottieCanvas.width / skottie.size().width, skottieCanvas.height / skottie.size().height) }} />
         <Card>
           <CardContent>
-            <View className="items-center gap-1">
-              <Text className="text-muted-foreground">Difficulty Level</Text>
-              <Difficulty />
+            <View className="flex-row justify-around">
+              <View className="ml-6 mr-3 flex-1 items-center gap-1 rounded-lg border border-background p-3">
+                <Text className="text-muted-foreground">Number of Turns</Text>
+                <Turns />
+              </View>
+              <View className="ml-3 mr-6 flex-1 items-center gap-1 rounded-lg border border-background p-3">
+                <Text className="text-muted-foreground">Difficulty Level</Text>
+                <Difficulty />
+              </View>
             </View>
-            <HighScoreTable difficulty={difficulty} newHighScoreIndex={getNewHighScoreIndex(difficulty, currTurns)} />
+            <View>
+              <HighScoreTable difficulty={difficulty} newHighScoreIndex={getNewHighScoreIndex(difficulty, currTurns)} />
+            </View>
           </CardContent>
         </Card>
 
@@ -61,7 +70,7 @@ export default function Screen() {
         <View className="pointer-events-none" style={StyleSheet.absoluteFill} onLayout={(ev) => setSkottieCanvas(ev.nativeEvent.layout)}>
           <SkottiePlayer animation={colorScheme === "dark" ? skottie : skottieL} />
         </View>
-      </BodyScrollView>
+      </KeybScrollView>
 
       {/* Render the confetti animation in the front of the screen, but make sure to not capture or obscure any touch events */}
       <View className="pointer-events-none" style={StyleSheet.absoluteFill}>

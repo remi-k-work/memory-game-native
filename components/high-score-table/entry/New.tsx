@@ -8,10 +8,8 @@ import { Alert, Keyboard, Text, TextInput } from "react-native";
 import { router, useFocusEffect } from "expo-router";
 
 // other libraries
-import useOrientation from "@/hooks/useOrientation";
 import { useGameStore } from "@/stores/gameProvider";
 import { useHighScoreStore, useRehydrateHighScore } from "@/stores/highScoreProvider";
-import Animated, { measure, useAnimatedKeyboard, useAnimatedRef, useAnimatedStyle, withSpring } from "react-native-reanimated";
 
 // components
 import Button from "@/components/ui/custom/button3d";
@@ -24,7 +22,6 @@ import XCircle from "@/assets/icons/XCircle";
 
 // types
 import type { HighScore } from "@/types/shared";
-import type { MeasuredDimensions } from "react-native-reanimated";
 
 interface NewEntryProps {
   index: number;
@@ -49,35 +46,6 @@ export default function NewEntry({ index, highScore: { name } }: NewEntryProps) 
 
   // The current player's name that they have entered
   const [currName, setCurrName] = useState("");
-
-  // Determine the current screen orientation and size
-  const { height: screenHeight } = useOrientation();
-
-  // To make sure the keyboard does not cover the new high score entry
-  const { height: keyboardHeight } = useAnimatedKeyboard();
-  const newHighScoreRef = useAnimatedRef();
-
-  const animStyleNewHighScore = useAnimatedStyle(() => {
-    // We need to measure our new high score entry, which is the content we do not want to overlap
-    let contentMeasurement: MeasuredDimensions | null = null;
-    if (_WORKLET) contentMeasurement = measure(newHighScoreRef);
-    if (!contentMeasurement) return { transform: [{ translateY: 0 }] };
-
-    // Extract the y-coordinate of the content relative to the top of the screen as well as its height
-    const { pageY: contentY, height: contentHeight } = contentMeasurement;
-
-    // The y-coordinate of the top edge of the keyboard
-    const keyboardTop = screenHeight - keyboardHeight.value;
-
-    // The y-coordinate of the bottom edge of the content we do not want to overlap
-    const contentBottom = contentY + contentHeight;
-
-    // How much the keyboard is currently overlapping the content? If this value is positive, the keyboard is covering the content
-    const overlap = contentBottom - keyboardTop;
-
-    // We only want to translate the content upwards if there is an overlap; otherwise, we will leave it alone
-    return { transform: [{ translateY: withSpring(-Math.max(0, overlap), { stiffness: 900, damping: 90, mass: 4 }) }] };
-  });
 
   // This block runs every time the screen comes into focus
   useFocusEffect(
@@ -135,7 +103,7 @@ export default function NewEntry({ index, highScore: { name } }: NewEntryProps) 
 
   return (
     // Show the new high score entry as highlighted and editable
-    <Animated.View ref={newHighScoreRef} style={animStyleNewHighScore}>
+    <>
       <TableRow className="items-center bg-primary">
         <TableCell className="w-1/5">
           <Text className="text-center text-primary-foreground">{index + 1}</Text>
@@ -174,6 +142,6 @@ export default function NewEntry({ index, highScore: { name } }: NewEntryProps) 
           </Button>
         </TableCell>
       </TableRow>
-    </Animated.View>
+    </>
   );
 }
