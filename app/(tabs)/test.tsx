@@ -9,16 +9,14 @@ import CheckCircle from "@/assets/icons/CheckCircle";
 import Power from "@/assets/icons/Power";
 import PuzzlePiece from "@/assets/icons/PuzzlePiece";
 import XCircle from "@/assets/icons/XCircle";
-import Confetti from "@/components/confetti";
-import LiquidGaugeProgress from "@/components/liquid-gauge-progress";
 import { Skia } from "@shopify/react-native-skia";
-import { useState } from "react";
-import { View } from "react-native";
+import { useRef, useState } from "react";
 import { useSharedValue } from "react-native-reanimated";
 
 // types
-import SkottiePlayer from "@/components/SkottiePlayer";
 import type { SkSize } from "@shopify/react-native-skia";
+import { router } from "expo-router";
+import { Text, View } from "react-native";
 
 const testJSON = require("@/assets/skotties/Settings.json");
 const animation = Skia.Skottie.Make(JSON.stringify(testJSON));
@@ -30,18 +28,44 @@ export default function Screen() {
   // This shared value is used to store the current canvas size, which may change depending on the screen orientation
   const currentCanvasSize = useSharedValue<SkSize>({ width: 0, height: 0 });
 
-  // console.log("window:", Dimensions.get("window").width, Dimensions.get("window").height);
-  // console.log("canvas:", currentCanvasSize.value.width, currentCanvasSize.value.height);
+  // An array to hold the refs of each individual entry
+  const targetEntryRefs = useRef<(View | null)[]>([]);
+
   return (
     <>
+      <BodyScrollView targetChildRefs={targetEntryRefs} scrollToIndex={9}>
+        {Array.from({ length: 10 }).map((_, i) => (
+          <View key={i} style={{ padding: 20 }}>
+            <View
+              ref={(ref) => {
+                targetEntryRefs.current[i] = ref;
+              }}
+              style={{
+                width: "100%",
+                height: 100,
+                marginVertical: 10,
+                backgroundColor: i % 2 ? "lightblue" : "lightgreen",
+              }}
+            >
+              <Text className="text-center text-5xl">{i}</Text>
+            </View>
+          </View>
+        ))}
+      </BodyScrollView>
       <BodyScrollView>
-        <SkottiePlayer animation={animation} />
+        <Button
+          icon={<Power className="size-9 fill-primary-foreground stroke-input stroke-1" />}
+          onPress={() => router.navigate(`/high-scores?highScoreIndexToHighlight=${9}&forDifficulty=${"easy"}`)}
+        >
+          default
+        </Button>
+        {/* <SkottiePlayer animation={animation} />
         <View className="h-screen-safe w-full">
           <Confetti />
         </View>
         <View className="size-72">
           <LiquidGaugeProgress progress={progress} />
-        </View>
+        </View> */}
         {/* <CollectionSlider /> */}
         {/* <Switch /> */}
         {/* <Button

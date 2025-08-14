@@ -2,7 +2,7 @@
 import { useState } from "react";
 
 // react native
-import { Text } from "react-native";
+import { Text, View } from "react-native";
 
 // expo
 import { useLocalSearchParams } from "expo-router";
@@ -18,8 +18,13 @@ import { AnimatedTabsTrigger, Tabs, TabsContent, TabsList } from "@/components/u
 
 // types
 import type { Difficulty } from "@/types/shared";
+import type { RefObject } from "react";
 
-export default function HighScoreTabs() {
+interface HighScoreTabsProps {
+  targetEntryRefs: RefObject<(View | null)[]>;
+}
+
+export default function HighScoreTabs({ targetEntryRefs }: HighScoreTabsProps) {
   // Get the state and actions we need from the game store
   const difficulty = useGameStore((state) => state.difficulty);
 
@@ -51,17 +56,18 @@ export default function HighScoreTabs() {
     <Tabs value={highScoreTab} onValueChange={(value) => setHighScoreTab(value as Difficulty)}>
       <TabsList>
         <AnimatedTabsTrigger value="easy" className="min-w-32 bg-green-700" style={animStyleEasyTab}>
-          <Text className="bg-green-700 px-4 py-2 text-xl text-foreground">EASY</Text>
+          <Text className="bg-green-700 px-4 py-2 text-2xl text-foreground">EASY</Text>
         </AnimatedTabsTrigger>
         <AnimatedTabsTrigger value="medium" className="min-w-32 bg-yellow-700" style={animStyleMediumTab}>
-          <Text className="bg-yellow-700 px-4 py-2 text-xl text-foreground">MEDIUM</Text>
+          <Text className="bg-yellow-700 px-4 py-2 text-2xl text-foreground">MEDIUM</Text>
         </AnimatedTabsTrigger>
         <AnimatedTabsTrigger value="hard" className="min-w-32 bg-red-700" style={animStyleHardTab}>
-          <Text className="bg-red-700 px-4 py-2 text-xl text-foreground">HARD</Text>
+          <Text className="bg-red-700 px-4 py-2 text-2xl text-foreground">HARD</Text>
         </AnimatedTabsTrigger>
       </TabsList>
       <TabsContent value="easy">
         <HighScoreTable
+          targetEntryRefs={targetEntryRefs}
           difficulty="easy"
           highScoreIndexToHighlight={forDifficulty === "easy" ? Number(highScoreIndexToHighlight ?? "-1") : -1}
           entering={TAB_CONTENT_ENTERING}
@@ -72,6 +78,7 @@ export default function HighScoreTabs() {
       </TabsContent>
       <TabsContent value="medium">
         <HighScoreTable
+          targetEntryRefs={targetEntryRefs}
           difficulty="medium"
           highScoreIndexToHighlight={forDifficulty === "medium" ? Number(highScoreIndexToHighlight ?? "-1") : -1}
           entering={TAB_CONTENT_ENTERING}
@@ -82,6 +89,7 @@ export default function HighScoreTabs() {
       </TabsContent>
       <TabsContent value="hard">
         <HighScoreTable
+          targetEntryRefs={targetEntryRefs}
           difficulty="hard"
           highScoreIndexToHighlight={forDifficulty === "hard" ? Number(highScoreIndexToHighlight ?? "-1") : -1}
           entering={TAB_CONTENT_ENTERING}

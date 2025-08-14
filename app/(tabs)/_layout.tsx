@@ -14,13 +14,13 @@ export default function Layout() {
         <TabTrigger name="index" href="/" className="hidden" />
         <TabTrigger name="settings" href="/settings" className="hidden" />
         <TabTrigger name="high-scores" href="/high-scores" className="hidden" />
-        <TabTrigger name="turns" href="/turns" onPress={(ev) => ev.preventDefault()}>
+        {/* <TabTrigger name="turns" href="/turns" onPress={(ev) => ev.preventDefault()}>
+          <TabTurns />
+        </TabTrigger> */}
+        <TabTrigger name="test" href="/test">
           <TabTurns />
         </TabTrigger>
         <TabTrigger name="congrats" href="/congrats">
-          <TabTurns />
-        </TabTrigger>
-        <TabTrigger name="game-over" href="/game-over">
           <TabTurns />
         </TabTrigger>
         {/* <TabTrigger name="game-over" href="/game-over" className="hidden" />

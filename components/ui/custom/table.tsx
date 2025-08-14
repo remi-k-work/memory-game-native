@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import Animated from "react-native-reanimated";
 
 // types
+import type { ComponentPropsWithRef } from "react";
 import type { ViewProps } from "react-native";
 
 function Table({ className, ...props }: ViewProps) {
@@ -24,8 +25,8 @@ function TableFooter({ className, ...props }: ViewProps) {
   return <View role="rowgroup" className={cn("bg-muted/50", className)} {...props} />;
 }
 
-function TableRow({ className, ...props }: ViewProps) {
-  return <View role="row" className={cn("flex-row border-b border-border", className)} {...props} />;
+function TableRow({ ref, className, ...props }: ComponentPropsWithRef<typeof View>) {
+  return <View ref={ref} role="row" className={cn("flex-row border-b border-border", className)} {...props} />;
 }
 
 function TableHead({ className, ...props }: ViewProps) {

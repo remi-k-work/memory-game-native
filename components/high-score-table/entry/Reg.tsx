@@ -5,35 +5,54 @@ import { Text } from "react-native";
 import { cn } from "@/lib/utils";
 
 // components
+import Collection from "@/components/preview/Collection";
+import Turns from "@/components/preview/Turns";
 import { AnimatedTableRow, TableCell } from "@/components/ui/custom/table";
 
 // types
 import type { HighScore } from "@/types/shared";
-import type { ViewStyle } from "react-native";
-import type { AnimatedStyle } from "react-native-reanimated";
+import type { Ref } from "react";
+import type { View, ViewStyle } from "react-native";
+import type { AnimatedStyle, CSSAnimationKeyframes } from "react-native-reanimated";
 
 interface RegEntryProps {
+  ref: Ref<View | null>;
   index: number;
   highScore: HighScore;
   isHighlighted?: boolean;
   animStyle?: AnimatedStyle<ViewStyle>;
 }
 
-export default function RegEntry({ index, highScore: { name, turns, collection }, isHighlighted = false, animStyle }: RegEntryProps) {
+// constants
+const wobble: CSSAnimationKeyframes = {
+  from: { transform: [{ translateX: 0 }] },
+  "15%": { transform: [{ translateX: -25 }, { rotateZ: "-5deg" }] },
+  "30%": { transform: [{ translateX: 20 }, { rotateZ: "3deg" }] },
+  "45%": { transform: [{ translateX: -15 }, { rotateZ: "-3deg" }] },
+  "60%": { transform: [{ translateX: 10 }, { rotateZ: "2deg" }] },
+  "75%": { transform: [{ translateX: -5 }, { rotateZ: "-1deg" }] },
+  to: { transform: [{ translateX: 0 }] },
+};
+
+export default function RegEntry({ ref, index, highScore: { name, turns, collection }, isHighlighted = false, animStyle }: RegEntryProps) {
   return (
     // Show the regular high score entry as highlighted or not
-    <AnimatedTableRow className={cn("items-center", isHighlighted && "bg-primary")} style={animStyle}>
+    <AnimatedTableRow
+      ref={ref}
+      className={cn("items-center", isHighlighted && "bg-primary")}
+      style={[animStyle, isHighlighted && { animationName: wobble, animationDuration: "2s", animationIterationCount: "infinite" }]}
+    >
       <TableCell className="w-1/5">
-        <Text className={cn("text-center text-foreground", isHighlighted && "text-primary-foreground")}>{index + 1}</Text>
+        <Text className={cn("text-center text-5xl text-foreground", isHighlighted && "text-primary-foreground")}>{index + 1}</Text>
       </TableCell>
       <TableCell className="w-1/5">
-        <Text className={cn("text-center text-foreground", isHighlighted && "text-primary-foreground")}>{name}</Text>
+        <Text className={cn("text-center text-3xl text-foreground", isHighlighted && "text-primary-foreground")}>{name}</Text>
       </TableCell>
       <TableCell className="w-2/5">
-        <Text className={cn("text-center text-foreground", isHighlighted && "text-primary-foreground")}>{collection}</Text>
+        <Collection collectionCategory={collection} isHighlighted={isHighlighted} />
       </TableCell>
       <TableCell className="w-1/5">
-        <Text className={cn("text-center text-foreground", isHighlighted && "text-primary-foreground")}>{turns}</Text>
+        <Turns turns={turns} isHighlighted={isHighlighted} />
       </TableCell>
     </AnimatedTableRow>
   );

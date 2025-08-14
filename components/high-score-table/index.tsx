@@ -10,11 +10,12 @@ import Entry from "./entry";
 
 // types
 import type { Difficulty } from "@/types/shared";
-import type { ComponentPropsWithoutRef } from "react";
-import type { ViewStyle } from "react-native";
+import type { ComponentPropsWithoutRef, RefObject } from "react";
+import type { View, ViewStyle } from "react-native";
 import type { AnimatedStyle } from "react-native-reanimated";
 
 interface HighScoreTableProps extends ComponentPropsWithoutRef<typeof AnimatedTable> {
+  targetEntryRefs?: RefObject<(View | null)[]>;
   difficulty: Difficulty;
   newHighScoreIndex?: number;
   highScoreIndexToHighlight?: number;
@@ -23,6 +24,7 @@ interface HighScoreTableProps extends ComponentPropsWithoutRef<typeof AnimatedTa
 }
 
 export default function HighScoreTable({
+  targetEntryRefs,
   difficulty,
   newHighScoreIndex = -1,
   highScoreIndexToHighlight = -1,
@@ -74,6 +76,9 @@ export default function HighScoreTable({
             highScores.map((highScore, index) => (
               <Entry
                 key={difficulty + index}
+                ref={(ref) => {
+                  targetEntryRefs!.current[index] = ref;
+                }}
                 index={index}
                 highScore={highScore}
                 isHighlighted={index === highScoreIndexToHighlight}

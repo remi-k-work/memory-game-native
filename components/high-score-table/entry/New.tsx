@@ -12,6 +12,8 @@ import { useGameStore } from "@/stores/gameProvider";
 import { useHighScoreStore, useRehydrateHighScore } from "@/stores/highScoreProvider";
 
 // components
+import Collection from "@/components/preview/Collection";
+import Turns from "@/components/preview/Turns";
 import Button from "@/components/ui/custom/button3d";
 import Input from "@/components/ui/custom/input";
 import { TableCell, TableRow } from "@/components/ui/custom/table";
@@ -106,7 +108,7 @@ export default function NewEntry({ index, highScore: { name } }: NewEntryProps) 
     <>
       <TableRow className="items-center bg-primary">
         <TableCell className="w-1/5">
-          <Text className="text-center text-primary-foreground">{index + 1}</Text>
+          <Text className="text-center text-5xl text-primary-foreground">{index + 1}</Text>
         </TableCell>
         <TableCell className="w-1/5">
           <Input
@@ -124,10 +126,10 @@ export default function NewEntry({ index, highScore: { name } }: NewEntryProps) 
           />
         </TableCell>
         <TableCell className="w-2/5">
-          <Text className="text-center text-primary-foreground">{currCollection}</Text>
+          <Collection collectionCategory={currCollection} isHighlighted />
         </TableCell>
         <TableCell className="w-1/5">
-          <Text className="text-center text-primary-foreground">{currTurns}</Text>
+          <Turns turns={currTurns} isHighlighted />
         </TableCell>
       </TableRow>
       <TableRow className="justify-around bg-background">

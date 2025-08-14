@@ -1,8 +1,11 @@
 // react
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 // react native
 import { StyleSheet, View } from "react-native";
+
+// expo
+import { useLocalSearchParams } from "expo-router";
 
 // other libraries
 import useColorScheme from "@/hooks/useColorScheme";
@@ -31,13 +34,19 @@ export default function Screen() {
   // Get the current user's desired color scheme
   const { colorScheme } = useColorScheme();
 
+  // Get access to the local search parameters
+  const { highScoreIndexToHighlight } = useLocalSearchParams<{ highScoreIndexToHighlight?: string; forDifficulty?: string }>();
+
+  // An array to hold the refs of each individual entry
+  const targetEntryRefs = useRef<(View | null)[]>([]);
+
   return (
-    <BodyScrollView>
+    <BodyScrollView targetChildRefs={targetEntryRefs} scrollToIndex={highScoreIndexToHighlight ? Number(highScoreIndexToHighlight) : undefined}>
       {/* Create enough empty space for the skottie backdrop (opaque), as the transparent part will fill the remainder of the screen */}
       <View style={{ height: SKOTTIE_BG_HEIGHT * Math.min(skottieCanvas.width / skottie.size().width, skottieCanvas.height / skottie.size().height) }} />
       <Card>
         <CardContent>
-          <HighScoreTabs />
+          <HighScoreTabs targetEntryRefs={targetEntryRefs} />
         </CardContent>
       </Card>
 
