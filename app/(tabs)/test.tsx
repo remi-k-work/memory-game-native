@@ -55,7 +55,7 @@ export default function Screen() {
       <BodyScrollView>
         <Button
           icon={<Power className="size-9 fill-primary-foreground stroke-input stroke-1" />}
-          onPress={() => router.navigate(`/high-scores?highScoreIndexToHighlight=${9}&forDifficulty=${"easy"}`)}
+          onPress={() => router.navigate(`/high-scores?highScoreIndexToHighlight=${6}&forDifficulty=${"hard"}`)}
         >
           default
         </Button>

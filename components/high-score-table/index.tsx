@@ -11,7 +11,7 @@ import Entry from "./entry";
 // types
 import type { Difficulty } from "@/types/shared";
 import type { ComponentPropsWithoutRef, RefObject } from "react";
-import type { View, ViewStyle } from "react-native";
+import type { ColorValue, View, ViewStyle } from "react-native";
 import type { AnimatedStyle } from "react-native-reanimated";
 
 interface HighScoreTableProps extends ComponentPropsWithoutRef<typeof AnimatedTable> {
@@ -19,6 +19,8 @@ interface HighScoreTableProps extends ComponentPropsWithoutRef<typeof AnimatedTa
   difficulty: Difficulty;
   newHighScoreIndex?: number;
   highScoreIndexToHighlight?: number;
+  bgColorReg?: ColorValue;
+  bgColorAlt?: ColorValue;
   animStyles?: AnimatedStyle<ViewStyle>[];
   className?: string;
 }
@@ -28,6 +30,8 @@ export default function HighScoreTable({
   difficulty,
   newHighScoreIndex = -1,
   highScoreIndexToHighlight = -1,
+  bgColorReg,
+  bgColorAlt,
   animStyles,
   className,
   ...props
@@ -81,6 +85,8 @@ export default function HighScoreTable({
                 }}
                 index={index}
                 highScore={highScore}
+                bgColorReg={bgColorReg}
+                bgColorAlt={bgColorAlt}
                 isHighlighted={index === highScoreIndexToHighlight}
                 animStyle={animStyles?.[index]}
               />

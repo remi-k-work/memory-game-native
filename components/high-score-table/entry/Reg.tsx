@@ -12,13 +12,15 @@ import { AnimatedTableRow, TableCell } from "@/components/ui/custom/table";
 // types
 import type { HighScore } from "@/types/shared";
 import type { Ref } from "react";
-import type { View, ViewStyle } from "react-native";
+import type { ColorValue, View, ViewStyle } from "react-native";
 import type { AnimatedStyle, CSSAnimationKeyframes } from "react-native-reanimated";
 
 interface RegEntryProps {
   ref: Ref<View | null>;
   index: number;
   highScore: HighScore;
+  bgColorReg: ColorValue;
+  bgColorAlt: ColorValue;
   isHighlighted?: boolean;
   animStyle?: AnimatedStyle<ViewStyle>;
 }
@@ -34,13 +36,26 @@ const wobble: CSSAnimationKeyframes = {
   to: { transform: [{ translateX: 0 }] },
 };
 
-export default function RegEntry({ ref, index, highScore: { name, turns, collection }, isHighlighted = false, animStyle }: RegEntryProps) {
+export default function RegEntry({
+  ref,
+  index,
+  highScore: { name, turns, collection },
+  bgColorReg,
+  bgColorAlt,
+  isHighlighted = false,
+  animStyle,
+}: RegEntryProps) {
   return (
     // Show the regular high score entry as highlighted or not
     <AnimatedTableRow
       ref={ref}
       className={cn("items-center", isHighlighted && "bg-primary")}
-      style={[animStyle, isHighlighted && { animationName: wobble, animationDuration: "2s", animationIterationCount: "infinite" }]}
+      style={[
+        animStyle,
+        isHighlighted && { animationName: wobble, animationDuration: "2s", animationIterationCount: "infinite" },
+        !isHighlighted && index % 2 === 0 && { backgroundColor: bgColorReg },
+        !isHighlighted && index % 2 === 1 && { backgroundColor: bgColorAlt },
+      ]}
     >
       <TableCell className="w-1/5">
         <Text className={cn("text-center text-5xl text-foreground", isHighlighted && "text-primary-foreground")}>{index + 1}</Text>

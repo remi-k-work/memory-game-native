@@ -24,6 +24,9 @@ interface HighScoreTabsProps {
   targetEntryRefs: RefObject<(View | null)[]>;
 }
 
+// constants
+import COLORS from "tailwindcss/colors";
+
 export default function HighScoreTabs({ targetEntryRefs }: HighScoreTabsProps) {
   // Get the state and actions we need from the game store
   const difficulty = useGameStore((state) => state.difficulty);
@@ -70,6 +73,8 @@ export default function HighScoreTabs({ targetEntryRefs }: HighScoreTabsProps) {
           targetEntryRefs={targetEntryRefs}
           difficulty="easy"
           highScoreIndexToHighlight={forDifficulty === "easy" ? Number(highScoreIndexToHighlight ?? "-1") : -1}
+          bgColorReg={COLORS.green[700]}
+          bgColorAlt={COLORS.green[800]}
           entering={TAB_CONTENT_ENTERING}
           exiting={TAB_CONTENT_EXITING}
           animStyles={animStyleEasyEntries}
@@ -81,6 +86,8 @@ export default function HighScoreTabs({ targetEntryRefs }: HighScoreTabsProps) {
           targetEntryRefs={targetEntryRefs}
           difficulty="medium"
           highScoreIndexToHighlight={forDifficulty === "medium" ? Number(highScoreIndexToHighlight ?? "-1") : -1}
+          bgColorReg={COLORS.yellow[700]}
+          bgColorAlt={COLORS.yellow[800]}
           entering={TAB_CONTENT_ENTERING}
           exiting={TAB_CONTENT_EXITING}
           animStyles={animStyleMediumEntries}
@@ -92,6 +99,8 @@ export default function HighScoreTabs({ targetEntryRefs }: HighScoreTabsProps) {
           targetEntryRefs={targetEntryRefs}
           difficulty="hard"
           highScoreIndexToHighlight={forDifficulty === "hard" ? Number(highScoreIndexToHighlight ?? "-1") : -1}
+          bgColorReg={COLORS.red[700]}
+          bgColorAlt={COLORS.red[800]}
           entering={TAB_CONTENT_ENTERING}
           exiting={TAB_CONTENT_EXITING}
           animStyles={animStyleHardEntries}
