@@ -1,5 +1,5 @@
 // react
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useRef } from "react";
 
 // react native
 import { Alert, Keyboard, Text, TextInput } from "react-native";
@@ -8,6 +8,7 @@ import { Alert, Keyboard, Text, TextInput } from "react-native";
 import { router, useFocusEffect } from "expo-router";
 
 // other libraries
+import { useHighScoreTableContext } from "@/components/high-score-table/Context";
 import { useGameStore } from "@/stores/gameProvider";
 import { useHighScoreStore, useRehydrateHighScore } from "@/stores/highScoreProvider";
 
@@ -40,14 +41,12 @@ export default function NewEntry({ index, highScore: { name } }: NewEntryProps) 
   // Get the state and actions we need from the high score store
   const rehydrateHighScore = useRehydrateHighScore();
   const highScores = useHighScoreStore((state) => state[difficulty]);
-  const getNewHighScoreIndex = useHighScoreStore((state) => state.getNewHighScoreIndex);
   const enteredNewHighScore = useHighScoreStore((state) => state.enteredNewHighScore);
 
   // To be able to set the focus on the input field
   const inputRef = useRef<TextInput>(null);
 
-  // The current player's name that they have entered
-  const [currName, setCurrName] = useState("");
+  const { newHighScoreIndex, currName, setCurrName } = useHighScoreTableContext("new-high-score");
 
   // This block runs every time the screen comes into focus
   useFocusEffect(
@@ -80,7 +79,6 @@ export default function NewEntry({ index, highScore: { name } }: NewEntryProps) 
     await rehydrateHighScore();
 
     // Player has entered a new high score
-    const newHighScoreIndex = getNewHighScoreIndex(difficulty, currTurns);
     enteredNewHighScore(difficulty, newHighScoreIndex, {
       ...highScores[newHighScoreIndex],
       name: currName.toUpperCase(),

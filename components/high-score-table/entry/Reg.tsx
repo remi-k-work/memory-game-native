@@ -2,27 +2,21 @@
 import { Text } from "react-native";
 
 // other libraries
+import { useHighScoreTableContext } from "@/components/high-score-table/Context";
 import { cn } from "@/lib/utils";
 
 // components
 import Collection from "@/components/preview/Collection";
 import Turns from "@/components/preview/Turns";
-import { AnimatedTableRow, TableCell } from "@/components/ui/custom/table";
+import { AnimatedTableRow, TableCell, TableRow } from "@/components/ui/custom/table";
 
 // types
 import type { HighScore } from "@/types/shared";
-import type { Ref } from "react";
-import type { ColorValue, View, ViewStyle } from "react-native";
-import type { AnimatedStyle, CSSAnimationKeyframes } from "react-native-reanimated";
+import type { CSSAnimationKeyframes } from "react-native-reanimated";
 
 interface RegEntryProps {
-  ref: Ref<View | null>;
   index: number;
   highScore: HighScore;
-  bgColorReg: ColorValue;
-  bgColorAlt: ColorValue;
-  isHighlighted?: boolean;
-  animStyle?: AnimatedStyle<ViewStyle>;
 }
 
 // constants
@@ -36,39 +30,58 @@ const wobble: CSSAnimationKeyframes = {
   to: { transform: [{ translateX: 0 }] },
 };
 
-export default function RegEntry({
-  ref,
-  index,
-  highScore: { name, turns, collection },
-  bgColorReg,
-  bgColorAlt,
-  isHighlighted = false,
-  animStyle,
-}: RegEntryProps) {
+export default function RegEntry({ index, highScore: { name, turns, collection } }: RegEntryProps) {
+  const highScoreTableContext = useHighScoreTableContext();
+
+  // Show the regular high score entry as highlighted or not (this is the animated version for the "all-high-score" mode)
+  if (highScoreTableContext.kind === "all-high-score") {
+    const { targetEntryRefs, highScoreIndexToHighlight, entryBgColorReg, entryBgColorAlt, entryAnimStyles } = highScoreTableContext;
+    const isHighlighted = highScoreIndexToHighlight === index;
+
+    return (
+      <AnimatedTableRow
+        ref={(ref) => {
+          targetEntryRefs.current[index] = ref;
+        }}
+        className={cn("items-center", isHighlighted && "bg-primary")}
+        style={[
+          entryAnimStyles[index],
+          isHighlighted && { animationName: wobble, animationDuration: "2s", animationIterationCount: "infinite" },
+          !isHighlighted && index % 2 === 0 && { backgroundColor: entryBgColorReg },
+          !isHighlighted && index % 2 === 1 && { backgroundColor: entryBgColorAlt },
+        ]}
+      >
+        <TableCell className="w-1/5">
+          <Text className={cn("text-center text-5xl text-foreground", isHighlighted && "text-primary-foreground")}>{index + 1}</Text>
+        </TableCell>
+        <TableCell className="w-1/5">
+          <Text className={cn("text-center text-3xl text-foreground", isHighlighted && "text-primary-foreground")}>{name}</Text>
+        </TableCell>
+        <TableCell className="w-2/5">
+          <Collection collectionCategory={collection} isHighlighted={isHighlighted} />
+        </TableCell>
+        <TableCell className="w-1/5">
+          <Turns turns={turns} isHighlighted={isHighlighted} />
+        </TableCell>
+      </AnimatedTableRow>
+    );
+  }
+
+  // Show the regular high score entry (this is the non-animated and simple version for the "new-high-score" mode)
   return (
-    // Show the regular high score entry as highlighted or not
-    <AnimatedTableRow
-      ref={ref}
-      className={cn("items-center", isHighlighted && "bg-primary")}
-      style={[
-        animStyle,
-        isHighlighted && { animationName: wobble, animationDuration: "2s", animationIterationCount: "infinite" },
-        !isHighlighted && index % 2 === 0 && { backgroundColor: bgColorReg },
-        !isHighlighted && index % 2 === 1 && { backgroundColor: bgColorAlt },
-      ]}
-    >
+    <TableRow className="items-center bg-background">
       <TableCell className="w-1/5">
-        <Text className={cn("text-center text-5xl text-foreground", isHighlighted && "text-primary-foreground")}>{index + 1}</Text>
+        <Text className="text-center text-5xl text-foreground">{index + 1}</Text>
       </TableCell>
       <TableCell className="w-1/5">
-        <Text className={cn("text-center text-3xl text-foreground", isHighlighted && "text-primary-foreground")}>{name}</Text>
+        <Text className="text-center text-3xl text-foreground">{name}</Text>
       </TableCell>
       <TableCell className="w-2/5">
-        <Collection collectionCategory={collection} isHighlighted={isHighlighted} />
+        <Collection collectionCategory={collection} />
       </TableCell>
       <TableCell className="w-1/5">
-        <Turns turns={turns} isHighlighted={isHighlighted} />
+        <Turns turns={turns} />
       </TableCell>
-    </AnimatedTableRow>
+    </TableRow>
   );
 }

@@ -1,11 +1,14 @@
 // react native
 import { Text } from "react-native";
 
+// other libraries
+import { useHighScoreTableContext } from "@/components/high-score-table/Context";
+
 // components
 import Collection from "@/components/preview/Collection";
 import Turns from "@/components/preview/Turns";
 import { TableCell, TableRow } from "@/components/ui/custom/table";
-import CrossedOut from "./CrossedOut";
+import CrossedOutEntry from "./CrossedOut";
 
 // types
 import type { HighScore } from "@/types/shared";
@@ -16,23 +19,40 @@ interface OldEntryProps {
 }
 
 export default function OldEntry({ index, highScore: { name, turns, collection } }: OldEntryProps) {
+  const { currName } = useHighScoreTableContext("new-high-score");
+
   return (
     // Show the old high score entry, which is being replaced, crossed out
-    <TableRow className="items-center bg-background">
-      <TableCell className="w-1/5">
-        <Text className="text-center text-5xl text-foreground">{index + 1}</Text>
-      </TableCell>
-      <TableCell className="w-1/5">
-        <Text className="text-center text-3xl text-foreground">{name}</Text>
-      </TableCell>
-      <TableCell className="w-2/5">
-        <Collection collectionCategory={collection} />
-      </TableCell>
-      <TableCell className="w-1/5">
-        <Turns turns={turns} />
-      </TableCell>
-
-      <CrossedOut />
-    </TableRow>
+    <>
+      <TableRow className="items-center bg-background">
+        <TableCell className="w-1/5">
+          <Text className="text-center text-5xl text-foreground">{index + 1}</Text>
+        </TableCell>
+        <TableCell className="w-1/5">
+          <Text className="text-center text-3xl text-foreground">{name}</Text>
+        </TableCell>
+        <TableCell className="w-2/5">
+          <Collection collectionCategory={collection} />
+        </TableCell>
+        <TableCell className="w-1/5">
+          <Turns turns={turns} />
+        </TableCell>
+        <CrossedOutEntry />
+      </TableRow>
+      <TableRow className="items-center bg-primary">
+        <TableCell className="w-1/5">
+          <Text className="text-center text-5xl text-primary-foreground">{index + 1}</Text>
+        </TableCell>
+        <TableCell className="w-1/5">
+          <Text className="text-center text-3xl text-primary-foreground">{currName}</Text>
+        </TableCell>
+        <TableCell className="w-2/5">
+          <Collection isHighlighted />
+        </TableCell>
+        <TableCell className="w-1/5">
+          <Turns isHighlighted />
+        </TableCell>
+      </TableRow>
+    </>
   );
 }

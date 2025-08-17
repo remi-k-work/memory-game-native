@@ -28,7 +28,7 @@ export default function Collection({ collectionCategory, isHighlighted = false }
   // Establish the slide dimensions according to the screen orientation
   const { isPortrait, slideWidth, slideHeight } = useSlideDimensions();
 
-  return collectionCategory ? (
+  return collectionCategory || isHighlighted ? (
     <View className="items-center">
       <Image
         source={isPortrait ? previewP : previewL}

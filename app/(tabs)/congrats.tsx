@@ -7,7 +7,6 @@ import { StyleSheet, Text, View } from "react-native";
 // other libraries
 import useColorScheme from "@/hooks/useColorScheme";
 import { useGameStore } from "@/stores/gameProvider";
-import { useHighScoreStore } from "@/stores/highScoreProvider";
 import { Skia } from "@shopify/react-native-skia";
 
 // components
@@ -32,10 +31,6 @@ const SKOTTIE_BG_HEIGHT = 234;
 export default function Screen() {
   // Get the state and actions we need from the game store
   const difficulty = useGameStore((state) => state.difficulty);
-  const currTurns = useGameStore((state) => state.turns);
-
-  // Get the state and actions we need from the high score store
-  const getNewHighScoreIndex = useHighScoreStore((state) => state.getNewHighScoreIndex);
 
   // Save the skottie canvas dimensions, which will change based on the screen orientation
   const [skottieCanvas, setSkottieCanvas] = useState<LayoutRectangle>({ x: 0, y: 0, width: 0, height: 0 });
@@ -61,7 +56,7 @@ export default function Screen() {
               </View>
             </View>
             <View>
-              <HighScoreTable difficulty={difficulty} newHighScoreIndex={getNewHighScoreIndex(difficulty, currTurns)} />
+              <HighScoreTable kind="new-high-score" difficultyToView={difficulty} />
             </View>
           </CardContent>
         </Card>

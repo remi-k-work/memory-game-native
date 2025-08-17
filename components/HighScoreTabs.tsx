@@ -32,28 +32,20 @@ export default function HighScoreTabs({ targetEntryRefs }: HighScoreTabsProps) {
   const difficulty = useGameStore((state) => state.difficulty);
 
   // Get access to the local search parameters
-  const { highScoreIndexToHighlight, forDifficulty } = useLocalSearchParams<{ highScoreIndexToHighlight?: string; forDifficulty?: string }>();
+  const { forDifficulty } = useLocalSearchParams<{ highScoreIndexToHighlight?: string; forDifficulty?: string }>();
 
   // The currently active high score tab for which high scores are being displayed
   const [highScoreTab, setHighScoreTab] = useState<Difficulty>(difficulty);
 
   // When the difficulty changes, update the active high score tab (keep them in sync)
-  useDidUpdateEffect(() => setHighScoreTab(difficulty), [difficulty]);
   useDidUpdateEffect(() => {
+    setHighScoreTab(difficulty);
     if (forDifficulty) setHighScoreTab(forDifficulty as Difficulty);
-  }, [forDifficulty]);
+  }, [difficulty, forDifficulty]);
 
   // Use the already encapsulated animation logic for this component
-  const {
-    TAB_CONTENT_ENTERING,
-    TAB_CONTENT_EXITING,
-    animStyleEasyTab,
-    animStyleMediumTab,
-    animStyleHardTab,
-    animStyleEasyEntries,
-    animStyleMediumEntries,
-    animStyleHardEntries,
-  } = useAnimHighScoreTabs(highScoreTab);
+  const { animStyleEasyTab, animStyleMediumTab, animStyleHardTab, animStyleEasyEntries, animStyleMediumEntries, animStyleHardEntries } =
+    useAnimHighScoreTabs(highScoreTab);
 
   return (
     <Tabs value={highScoreTab} onValueChange={(value) => setHighScoreTab(value as Difficulty)}>
@@ -70,40 +62,34 @@ export default function HighScoreTabs({ targetEntryRefs }: HighScoreTabsProps) {
       </TabsList>
       <TabsContent value="easy">
         <HighScoreTable
+          kind="all-high-score"
           targetEntryRefs={targetEntryRefs}
-          difficulty="easy"
-          highScoreIndexToHighlight={forDifficulty === "easy" ? Number(highScoreIndexToHighlight ?? "-1") : -1}
-          bgColorReg={COLORS.green[700]}
-          bgColorAlt={COLORS.green[800]}
-          entering={TAB_CONTENT_ENTERING}
-          exiting={TAB_CONTENT_EXITING}
-          animStyles={animStyleEasyEntries}
+          difficultyToView="easy"
+          entryBgColorReg={COLORS.green[700]}
+          entryBgColorAlt={COLORS.green[800]}
+          entryAnimStyles={animStyleEasyEntries!}
           className="bg-green-700"
         />
       </TabsContent>
       <TabsContent value="medium">
         <HighScoreTable
+          kind="all-high-score"
           targetEntryRefs={targetEntryRefs}
-          difficulty="medium"
-          highScoreIndexToHighlight={forDifficulty === "medium" ? Number(highScoreIndexToHighlight ?? "-1") : -1}
-          bgColorReg={COLORS.yellow[700]}
-          bgColorAlt={COLORS.yellow[800]}
-          entering={TAB_CONTENT_ENTERING}
-          exiting={TAB_CONTENT_EXITING}
-          animStyles={animStyleMediumEntries}
+          difficultyToView="medium"
+          entryBgColorReg={COLORS.yellow[700]}
+          entryBgColorAlt={COLORS.yellow[800]}
+          entryAnimStyles={animStyleMediumEntries!}
           className="bg-yellow-700"
         />
       </TabsContent>
       <TabsContent value="hard">
         <HighScoreTable
+          kind="all-high-score"
           targetEntryRefs={targetEntryRefs}
-          difficulty="hard"
-          highScoreIndexToHighlight={forDifficulty === "hard" ? Number(highScoreIndexToHighlight ?? "-1") : -1}
-          bgColorReg={COLORS.red[700]}
-          bgColorAlt={COLORS.red[800]}
-          entering={TAB_CONTENT_ENTERING}
-          exiting={TAB_CONTENT_EXITING}
-          animStyles={animStyleHardEntries}
+          difficultyToView="hard"
+          entryBgColorReg={COLORS.red[700]}
+          entryBgColorAlt={COLORS.red[800]}
+          entryAnimStyles={animStyleHardEntries!}
           className="bg-red-700"
         />
       </TabsContent>

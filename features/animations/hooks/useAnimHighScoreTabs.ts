@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 
 // other libraries
-import { FadeInRight, FadeOutLeft, useAnimatedStyle, useSharedValue, withDelay, withSpring } from "react-native-reanimated";
+import { useAnimatedStyle, useSharedValue, withDelay, withSpring } from "react-native-reanimated";
 
 // types
 import type { Difficulty } from "@/types/shared";
@@ -11,8 +11,6 @@ import type { AnimatedStyle } from "react-native-reanimated";
 
 // constants
 const DELAY = 60;
-const TAB_CONTENT_ENTERING = FadeInRight.springify().damping(80).mass(2).stiffness(50);
-const TAB_CONTENT_EXITING = FadeOutLeft.springify().damping(80).mass(2).stiffness(50);
 
 // Encapsulate the animation logic in a custom hook
 export default function useAnimHighScoreTabs(highScoreTab: Difficulty) {
@@ -30,24 +28,13 @@ export default function useAnimHighScoreTabs(highScoreTab: Difficulty) {
   const animStyleHardEntries = highScoreTab === "hard" ? allAnimStyleEntries : undefined;
 
   // Return all that is needed to trigger the animation
-  return {
-    TAB_CONTENT_ENTERING,
-    TAB_CONTENT_EXITING,
-    animStyleEasyTab,
-    animStyleMediumTab,
-    animStyleHardTab,
-    animStyleEasyEntries,
-    animStyleMediumEntries,
-    animStyleHardEntries,
-  };
+  return { animStyleEasyTab, animStyleMediumTab, animStyleHardTab, animStyleEasyEntries, animStyleMediumEntries, animStyleHardEntries };
 }
 
 // Helper hook for a single high score tab transition
 function useAnimHighScoreTab(isHighScoreTabFocused: boolean = false) {
   // Animate the high score tab to smoothly transition between focused and unfocused states
-  return {
-    animStyle: useAnimatedStyle(() => ({ height: withSpring(isHighScoreTabFocused ? 90 : 64, { stiffness: 300, damping: 30, mass: 4 }) })),
-  };
+  return { animStyle: useAnimatedStyle(() => ({ height: withSpring(isHighScoreTabFocused ? 90 : 64, { stiffness: 300, damping: 30, mass: 4 }) })) };
 }
 
 // Helper hook for a single high score entry transition
@@ -61,7 +48,5 @@ function useAnimHighScoreEntry(entryIndex: number, highScoreTab: Difficulty) {
     left.value = withDelay(entryIndex * DELAY, withSpring(0, { stiffness: 300, damping: 30, mass: 4 }));
   }, [entryIndex, highScoreTab]);
 
-  return {
-    animStyle: useAnimatedStyle(() => ({ left: left.value })),
-  };
+  return { animStyle: useAnimatedStyle(() => ({ left: left.value })) };
 }
