@@ -27,7 +27,7 @@ export default function Slide({ collection: { category, previewP, previewL }, sc
         style={{ width: slideWidth, height: slideHeight }}
       >
         <View className="rounded-b-lg bg-background/75 p-2">
-          <Text className="text-center text-lg text-foreground">{category}</Text>
+          <Text className="text-center text-lg text-foreground sm:text-xl md:text-2xl lg:text-3xl">{category}</Text>
         </View>
       </ImageBackground>
     </Animated.View>

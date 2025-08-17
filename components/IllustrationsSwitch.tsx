@@ -9,8 +9,8 @@ import { useGameStore } from "@/stores/gameProvider";
 import { useDebouncedCallback } from "use-debounce";
 
 // components
+import { Label } from "@/components/ui/custom/label";
 import Switch from "@/components/ui/custom/switch";
-import { Label } from "@/components/ui/label";
 
 export default function IllustrationsSwitch() {
   // Get the state and actions we need from the game store
@@ -28,7 +28,7 @@ export default function IllustrationsSwitch() {
   }, 600);
 
   return (
-    <View className="flex-row items-center gap-2">
+    <View className="flex-row items-center gap-2 rounded-lg border border-background px-6 py-4">
       <Switch
         nativeID="show-illustrations"
         value={currShowIllustrations}
@@ -39,7 +39,7 @@ export default function IllustrationsSwitch() {
       />
       <Label
         nativeID="show-illustrations"
-        className="native:text-xl"
+        className="text-xl sm:text-2xl md:text-3xl lg:text-4xl"
         onPress={() => {
           setCurrShowIllustrations(!currShowIllustrations);
           handleShowIllustrationsChanged();

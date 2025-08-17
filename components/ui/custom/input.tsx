@@ -10,7 +10,11 @@ import type { ComponentPropsWithRef } from "react";
 export default function Input({ className, ...props }: ComponentPropsWithRef<typeof TextInput>) {
   return (
     <TextInput
-      className={cn("bg-background p-3 text-lg text-foreground placeholder:text-muted-foreground", props.editable === false && "opacity-50", className)}
+      className={cn(
+        "bg-background p-3 text-lg text-foreground placeholder:text-muted-foreground sm:text-xl md:text-2xl lg:text-3xl",
+        props.editable === false && "opacity-50",
+        className,
+      )}
       {...props}
     />
   );

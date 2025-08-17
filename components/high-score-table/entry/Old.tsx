@@ -27,10 +27,10 @@ export default function OldEntry({ index, highScore: { name, turns, collection }
     <>
       <TableRow className="items-center bg-background">
         <TableCell className="w-1/5">
-          <Text className="text-center text-5xl text-foreground">{index + 1}</Text>
+          <Text className="text-center text-5xl text-foreground sm:text-6xl md:text-7xl lg:text-8xl">{index + 1}</Text>
         </TableCell>
         <TableCell className="w-1/5">
-          <Text className="text-center text-3xl text-foreground">{name}</Text>
+          <Text className="text-center text-3xl text-foreground sm:text-4xl md:text-5xl lg:text-6xl">{name}</Text>
         </TableCell>
         <TableCell className="w-2/5">
           <Collection collectionCategory={collection} />

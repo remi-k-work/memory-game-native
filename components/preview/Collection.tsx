@@ -35,7 +35,7 @@ export default function Collection({ collectionCategory, isHighlighted = false }
         className="rounded-lg"
         style={{ width: slideWidth * TINY_PREVIEW_SCALE, height: slideHeight * TINY_PREVIEW_SCALE }}
       />
-      <Text className={cn("text-sm text-foreground", isHighlighted && "text-primary-foreground")}>{currentCollectionCategory}</Text>
+      <Text className={cn("text-foreground sm:text-lg md:text-xl lg:text-2xl", isHighlighted && "text-primary-foreground")}>{currentCollectionCategory}</Text>
     </View>
   ) : (
     <ImageBackground
@@ -44,7 +44,7 @@ export default function Collection({ collectionCategory, isHighlighted = false }
       style={{ width: slideWidth, height: slideHeight }}
     >
       <View className="rounded-b-lg bg-background/75 p-2">
-        <Text className="text-center text-lg text-foreground">{currentCollectionCategory}</Text>
+        <Text className="text-center text-lg text-foreground sm:text-xl md:text-2xl lg:text-3xl">{currentCollectionCategory}</Text>
       </View>
     </ImageBackground>
   );

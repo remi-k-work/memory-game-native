@@ -5,7 +5,7 @@ import { TouchableOpacity } from "react-native";
 import { useGameStore } from "@/stores/gameProvider";
 
 // components
-import { Label } from "@/components/ui/label";
+import { Label } from "@/components/ui/custom/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 // types
@@ -20,19 +20,19 @@ export default function DifficultyChanger() {
     <RadioGroup value={difficulty} onValueChange={(value) => changedDifficulty(value as Difficulty)} className="flex-row items-center justify-center gap-0">
       <TouchableOpacity className="pointer-events-box-only flex-row items-center gap-1 rounded-l-xl bg-green-700 p-4" onPress={() => changedDifficulty("easy")}>
         <RadioGroupItem value="easy" aria-labelledby="label-for-easy" />
-        <Label nativeID="label-for-easy" className="native:text-xl">
+        <Label nativeID="label-for-easy" className="text-xl sm:text-2xl md:text-3xl lg:text-4xl">
           EASY
         </Label>
       </TouchableOpacity>
       <TouchableOpacity className="pointer-events-box-only flex-row items-center gap-1 bg-yellow-700 p-4" onPress={() => changedDifficulty("medium")}>
         <RadioGroupItem value="medium" aria-labelledby="label-for-medium" />
-        <Label nativeID="label-for-medium" className="native:text-xl">
+        <Label nativeID="label-for-medium" className="text-xl sm:text-2xl md:text-3xl lg:text-4xl">
           MEDIUM
         </Label>
       </TouchableOpacity>
       <TouchableOpacity className="pointer-events-box-only flex-row items-center gap-1 rounded-r-xl bg-red-700 p-4" onPress={() => changedDifficulty("hard")}>
         <RadioGroupItem value="hard" aria-labelledby="label-for-hard" />
-        <Label nativeID="label-for-hard" className="native:text-xl">
+        <Label nativeID="label-for-hard" className="text-xl sm:text-2xl md:text-3xl lg:text-4xl">
           HARD
         </Label>
       </TouchableOpacity>

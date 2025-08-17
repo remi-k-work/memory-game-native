@@ -42,15 +42,15 @@ export default function Screen() {
       <Card>
         <CardContent>
           <View className="items-center gap-2">
-            <Text className="text-muted-foreground">What Difficulty?</Text>
+            <Text className="text-lg text-muted-foreground sm:text-xl md:text-2xl lg:text-3xl">What Difficulty?</Text>
             <DifficultyChanger />
           </View>
           <View className="items-center gap-2">
-            <Text className="text-muted-foreground">Which Collection Set?</Text>
+            <Text className="text-lg text-muted-foreground sm:text-xl md:text-2xl lg:text-3xl">Which Collection Set?</Text>
             <CollectionSlider />
           </View>
           <View className="items-center gap-2">
-            <Text className="text-muted-foreground">Photos or Illustrations?</Text>
+            <Text className="text-lg text-muted-foreground sm:text-xl md:text-2xl lg:text-3xl">Photos or Illustrations?</Text>
             <IllustrationsSwitch />
           </View>
           <NewGameButton />

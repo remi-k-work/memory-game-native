@@ -47,11 +47,11 @@ export default function Screen() {
           <CardContent>
             <View className="flex-row justify-around">
               <View className="ml-6 mr-3 flex-1 items-center gap-1 rounded-lg border border-background p-3">
-                <Text className="text-muted-foreground">Number of Turns</Text>
+                <Text className="text-lg text-muted-foreground sm:text-xl md:text-2xl lg:text-3xl">Number of Turns</Text>
                 <Turns />
               </View>
               <View className="ml-3 mr-6 flex-1 items-center gap-1 rounded-lg border border-background p-3">
-                <Text className="text-muted-foreground">Difficulty Level</Text>
+                <Text className="text-lg text-muted-foreground sm:text-xl md:text-2xl lg:text-3xl">Difficulty Level</Text>
                 <Difficulty />
               </View>
             </View>

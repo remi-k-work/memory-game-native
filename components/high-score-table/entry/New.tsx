@@ -106,7 +106,7 @@ export default function NewEntry({ index, highScore: { name } }: NewEntryProps) 
     <>
       <TableRow className="items-center bg-primary">
         <TableCell className="w-1/5">
-          <Text className="text-center text-5xl text-primary-foreground">{index + 1}</Text>
+          <Text className="text-center text-5xl text-primary-foreground sm:text-6xl md:text-7xl lg:text-8xl">{index + 1}</Text>
         </TableCell>
         <TableCell className="w-1/5">
           <Input

@@ -50,8 +50,8 @@ export default function NewGameButton() {
         <Modal animationType="fade" transparent onRequestClose={handleCancelPressed}>
           <View className="flex-1 items-center justify-center bg-background/90">
             <View className="m-3 gap-1 rounded-lg border border-border bg-card p-3">
-              <Text className="text-center text-xl font-semibold text-foreground">Your game will be reset!</Text>
-              <Text className="mb-4 text-center text-lg text-muted-foreground">Are you sure you want to continue?</Text>
+              <Text className="text-center text-2xl font-semibold text-foreground sm:text-3xl md:text-4xl lg:text-5xl">Your game will be reset!</Text>
+              <Text className="mb-4 text-center text-xl text-muted-foreground sm:text-2xl md:text-3xl lg:text-4xl">Are you sure you want to continue?</Text>
               <Button icon={<Power className="size-9 fill-primary-foreground stroke-input stroke-1" />} onPress={handleNewGamePressed}>
                 New Game
               </Button>

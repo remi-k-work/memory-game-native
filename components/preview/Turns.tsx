@@ -19,8 +19,8 @@ export default function Turns({ turns, isHighlighted = false }: TurnsProps) {
   return (
     <Text
       className={cn(
-        "rounded-xl bg-foreground px-4 py-2 text-4xl text-background",
-        (turns !== undefined || isHighlighted) && "mx-auto px-2 py-1 text-3xl",
+        "rounded-xl bg-foreground px-4 py-2 text-4xl text-background sm:text-5xl md:text-6xl lg:text-7xl",
+        (turns !== undefined || isHighlighted) && "mx-auto px-2 py-1 text-3xl sm:text-4xl md:text-5xl lg:text-6xl",
         isHighlighted && "bg-background text-foreground",
       )}
     >

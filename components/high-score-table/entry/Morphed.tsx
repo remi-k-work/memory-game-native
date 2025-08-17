@@ -33,10 +33,10 @@ export default function MorphedEntry({ index }: MorphedEntryProps) {
       style={{ animationName: morphIn, animationDuration: "8s", animationTimingFunction: "ease-in-out", animationIterationCount: "infinite" }}
     >
       <TableCell className="w-1/5">
-        <Text className="text-center text-5xl text-primary-foreground">{index + 1}</Text>
+        <Text className="text-center text-5xl text-primary-foreground sm:text-6xl md:text-7xl lg:text-8xl">{index + 1}</Text>
       </TableCell>
       <TableCell className="w-1/5">
-        <Text className="text-center text-3xl text-primary-foreground">{currName}</Text>
+        <Text className="text-center text-3xl text-primary-foreground sm:text-4xl md:text-5xl lg:text-6xl">{currName}</Text>
       </TableCell>
       <TableCell className="w-2/5">
         <Collection isHighlighted />
