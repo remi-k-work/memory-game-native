@@ -1,15 +1,13 @@
-// react native
-import { Text } from "react-native";
-
 // other libraries
 import { useGameStore } from "@/stores/gameProvider";
 import { useHighScoreStore } from "@/stores/highScoreProvider";
 import { FadeInRight, FadeOutLeft } from "react-native-reanimated";
 
 // components
-import { AnimatedTable, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/custom/table";
+import { AnimatedTable, TableBody } from "@/components/ui/custom/table";
 import HighScoreTableProvider from "./Context";
 import Entry from "./entry";
+import Header from "./Header";
 
 // types
 import type { HighScoreTableProviderPropsWithoutChildren } from "./Context";
@@ -37,22 +35,7 @@ export default function HighScoreTable({ difficultyToView, className, ...props }
     return (
       <HighScoreTableProvider kind="new-high-score" difficultyToView={difficultyToView}>
         <AnimatedTable entering={HIGH_SCORE_ENTERING} exiting={HIGH_SCORE_EXITING} className={className}>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-1/5">
-                <Text className="text-center font-bold text-foreground">#</Text>
-              </TableHead>
-              <TableHead className="w-1/5">
-                <Text className="text-center font-bold text-foreground">Name</Text>
-              </TableHead>
-              <TableHead className="w-2/5">
-                <Text className="text-center font-bold text-foreground">Collection</Text>
-              </TableHead>
-              <TableHead className="w-1/5">
-                <Text className="text-center font-bold text-foreground">Turns</Text>
-              </TableHead>
-            </TableRow>
-          </TableHeader>
+          <Header />
           <TableBody>
             {highScores.slice(prevHighScoreIndex, nextHighScoreIndex).map((highScore, index) => {
               // Determine the actual index in the original high scores array before slicing occurred
@@ -78,22 +61,7 @@ export default function HighScoreTable({ difficultyToView, className, ...props }
       entryAnimStyles={entryAnimStyles}
     >
       <AnimatedTable entering={HIGH_SCORE_ENTERING} exiting={HIGH_SCORE_EXITING} className={className}>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-1/5">
-              <Text className="text-center font-bold text-foreground">#</Text>
-            </TableHead>
-            <TableHead className="w-1/5">
-              <Text className="text-center font-bold text-foreground">Name</Text>
-            </TableHead>
-            <TableHead className="w-2/5">
-              <Text className="text-center font-bold text-foreground">Collection</Text>
-            </TableHead>
-            <TableHead className="w-1/5">
-              <Text className="text-center font-bold text-foreground">Turns</Text>
-            </TableHead>
-          </TableRow>
-        </TableHeader>
+        <Header />
         <TableBody>
           {highScores.map((highScore, index) => (
             <Entry key={difficultyToView + index} index={index} highScore={highScore} />

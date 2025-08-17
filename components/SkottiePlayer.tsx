@@ -18,7 +18,7 @@ export default function SkottiePlayer({ animation }: SkottiePlayerProps) {
   const { transform, frame } = useFocusAwareSkottiePlayer(currentCanvasSize, animation);
 
   return (
-    <Canvas style={{ flex: 1 }} onSize={currentCanvasSize}>
+    <Canvas style={{ flex: 1, width: "98%", marginInline: "auto" }} onSize={currentCanvasSize}>
       <Group transform={transform}>
         <Skottie animation={animation} frame={frame} />
       </Group>

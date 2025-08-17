@@ -15,8 +15,10 @@ export default function useAnimCrossedOutEntry(cellSize: LayoutRectangle) {
   const crossOutLine1 = useMemo<CSSAnimationKeyframes>(
     () => ({
       from: { opacity: 0, transform: [{ rotateZ: angle }, { scaleX: 0 }], transformOrigin: "left center" },
-      "30%": { opacity: 1 },
-      to: { opacity: 1, transform: [{ rotateZ: angle }, { scaleX: 1 }], transformOrigin: "left center" },
+      "25%": { opacity: 1 },
+      "50%": { opacity: 1, transform: [{ rotateZ: angle }, { scaleX: 1 }], transformOrigin: "left center" },
+      "75%": { opacity: 1 },
+      to: { opacity: 0, transform: [{ rotateZ: angle }, { scaleX: 1 }], transformOrigin: "left center" },
     }),
     [angle],
   );
@@ -24,8 +26,10 @@ export default function useAnimCrossedOutEntry(cellSize: LayoutRectangle) {
   const crossOutLine2 = useMemo<CSSAnimationKeyframes>(
     () => ({
       from: { opacity: 0, transform: [{ rotateZ: `-${angle}` }, { scaleX: 0 }], transformOrigin: "right center" },
-      "30%": { opacity: 1 },
-      to: { opacity: 1, transform: [{ rotateZ: `-${angle}` }, { scaleX: 1 }], transformOrigin: "right center" },
+      "25%": { opacity: 1 },
+      "50%": { opacity: 1, transform: [{ rotateZ: `-${angle}` }, { scaleX: 1 }], transformOrigin: "right center" },
+      "75%": { opacity: 1 },
+      to: { opacity: 0, transform: [{ rotateZ: `-${angle}` }, { scaleX: 1 }], transformOrigin: "right center" },
     }),
     [angle],
   );
@@ -36,18 +40,17 @@ export default function useAnimCrossedOutEntry(cellSize: LayoutRectangle) {
       opacity: 0,
       width: Math.sqrt(cellSize.width ** 2 + cellSize.height ** 2),
       animationName: crossOutLine1,
-      animationDuration: "2s",
+      animationDuration: "4s",
       animationTimingFunction: "ease-in-out",
-      animationFillMode: "forwards",
+      animationIterationCount: "infinite" as const,
     },
     animStyleCrossOutLine2: {
       opacity: 0,
       width: Math.sqrt(cellSize.width ** 2 + cellSize.height ** 2),
       animationName: crossOutLine2,
-      animationDuration: "2s",
+      animationDuration: "4s",
       animationTimingFunction: "ease-in-out",
-      animationFillMode: "forwards",
-      animationDelay: "1.9s",
+      animationIterationCount: "infinite" as const,
     },
   };
 }

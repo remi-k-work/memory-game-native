@@ -9,6 +9,7 @@ import Collection from "@/components/preview/Collection";
 import Turns from "@/components/preview/Turns";
 import { TableCell, TableRow } from "@/components/ui/custom/table";
 import CrossedOutEntry from "./CrossedOut";
+import MorphedEntry from "./Morphed";
 
 // types
 import type { HighScore } from "@/types/shared";
@@ -39,20 +40,7 @@ export default function OldEntry({ index, highScore: { name, turns, collection }
         </TableCell>
         <CrossedOutEntry />
       </TableRow>
-      <TableRow className="items-center bg-primary">
-        <TableCell className="w-1/5">
-          <Text className="text-center text-5xl text-primary-foreground">{index + 1}</Text>
-        </TableCell>
-        <TableCell className="w-1/5">
-          <Text className="text-center text-3xl text-primary-foreground">{currName}</Text>
-        </TableCell>
-        <TableCell className="w-2/5">
-          <Collection isHighlighted />
-        </TableCell>
-        <TableCell className="w-1/5">
-          <Turns isHighlighted />
-        </TableCell>
-      </TableRow>
+      <MorphedEntry index={index} />
     </>
   );
 }
