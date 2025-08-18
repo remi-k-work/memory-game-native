@@ -1,7 +1,11 @@
+// react native
+import { View } from "react-native";
+
 // other libraries
 import { useHighScoreTableContext } from "@/components/high-score-table/Context";
 
 // components
+import MorphedEntry from "./Morphed";
 import NewEntry from "./New";
 import OldEntry from "./Old";
 import RegEntry from "./Reg";
@@ -25,7 +29,10 @@ export default function Entry({ index, highScore }: EntryProps) {
     return isNewHighScore ? (
       <>
         <OldEntry index={index} highScore={highScore} />
-        <NewEntry index={index} highScore={highScore} />
+        <View>
+          <MorphedEntry index={index} />
+        </View>
+        <NewEntry index={index} />
       </>
     ) : (
       <RegEntry index={index} highScore={highScore} />

@@ -24,14 +24,11 @@ import CheckCircle from "@/assets/icons/CheckCircle";
 import XCircle from "@/assets/icons/XCircle";
 
 // types
-import type { HighScore } from "@/types/shared";
-
 interface NewEntryProps {
   index: number;
-  highScore: HighScore;
 }
 
-export default function NewEntry({ index, highScore: { name } }: NewEntryProps) {
+export default function NewEntry({ index }: NewEntryProps) {
   // Get the state and actions we need from the game store
   const difficulty = useGameStore((state) => state.difficulty);
   const currCollection = useGameStore((state) => state.collection);
@@ -113,7 +110,6 @@ export default function NewEntry({ index, highScore: { name } }: NewEntryProps) 
             ref={inputRef}
             autoCapitalize="characters"
             maxLength={3}
-            placeholder={name}
             value={currName}
             onChangeText={(value) => {
               setCurrName(value);

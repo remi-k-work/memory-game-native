@@ -1,15 +1,11 @@
 // react native
 import { Text } from "react-native";
 
-// other libraries
-import { useHighScoreTableContext } from "@/components/high-score-table/Context";
-
 // components
 import Collection from "@/components/preview/Collection";
 import Turns from "@/components/preview/Turns";
 import { TableCell, TableRow } from "@/components/ui/custom/table";
 import CrossedOutEntry from "./CrossedOut";
-import MorphedEntry from "./Morphed";
 
 // types
 import type { HighScore } from "@/types/shared";
@@ -20,27 +16,22 @@ interface OldEntryProps {
 }
 
 export default function OldEntry({ index, highScore: { name, turns, collection } }: OldEntryProps) {
-  const { currName } = useHighScoreTableContext("new-high-score");
-
+  // Show the old high score entry, which is being replaced, crossed out
   return (
-    // Show the old high score entry, which is being replaced, crossed out
-    <>
-      <TableRow className="items-center bg-background">
-        <TableCell className="w-1/5">
-          <Text className="text-center text-5xl text-foreground sm:text-6xl md:text-7xl lg:text-8xl">{index + 1}</Text>
-        </TableCell>
-        <TableCell className="w-1/5">
-          <Text className="text-center text-3xl text-foreground sm:text-4xl md:text-5xl lg:text-6xl">{name}</Text>
-        </TableCell>
-        <TableCell className="w-2/5">
-          <Collection collectionCategory={collection} />
-        </TableCell>
-        <TableCell className="w-1/5">
-          <Turns turns={turns} />
-        </TableCell>
-        <CrossedOutEntry />
-      </TableRow>
-      <MorphedEntry index={index} />
-    </>
+    <TableRow className="items-center bg-background">
+      <TableCell className="w-1/5">
+        <Text className="text-center text-5xl text-foreground sm:text-6xl md:text-7xl lg:text-8xl">{index + 1}</Text>
+      </TableCell>
+      <TableCell className="w-1/5">
+        <Text className="text-center text-3xl text-foreground sm:text-4xl md:text-5xl lg:text-6xl">{name}</Text>
+      </TableCell>
+      <TableCell className="w-2/5">
+        <Collection collectionCategory={collection} />
+      </TableCell>
+      <TableCell className="w-1/5">
+        <Turns turns={turns} />
+      </TableCell>
+      <CrossedOutEntry />
+    </TableRow>
   );
 }

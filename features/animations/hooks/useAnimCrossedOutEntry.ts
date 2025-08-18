@@ -6,11 +6,11 @@ import type { LayoutRectangle } from "react-native";
 import type { CSSAnimationKeyframes } from "react-native-reanimated";
 
 // Encapsulate the animation logic in a custom hook
-export default function useAnimCrossedOutEntry(cellSize: LayoutRectangle) {
+export default function useAnimCrossedOutEntry(entrySize: LayoutRectangle) {
   const angle = useMemo(() => {
-    if (!cellSize.width || !cellSize.height) return "0deg";
-    return `${Math.atan(cellSize.height / cellSize.width) * (180 / Math.PI)}deg`;
-  }, [cellSize]);
+    if (!entrySize.width || !entrySize.height) return "0deg";
+    return `${Math.atan(entrySize.height / entrySize.width) * (180 / Math.PI)}deg`;
+  }, [entrySize]);
 
   const crossOutLine1 = useMemo<CSSAnimationKeyframes>(
     () => ({
@@ -38,7 +38,7 @@ export default function useAnimCrossedOutEntry(cellSize: LayoutRectangle) {
   return {
     animStyleCrossOutLine1: {
       opacity: 0,
-      width: Math.sqrt(cellSize.width ** 2 + cellSize.height ** 2),
+      width: Math.sqrt(entrySize.width ** 2 + entrySize.height ** 2),
       animationName: crossOutLine1,
       animationDuration: "4s",
       animationTimingFunction: "ease-in-out",
@@ -46,7 +46,7 @@ export default function useAnimCrossedOutEntry(cellSize: LayoutRectangle) {
     },
     animStyleCrossOutLine2: {
       opacity: 0,
-      width: Math.sqrt(cellSize.width ** 2 + cellSize.height ** 2),
+      width: Math.sqrt(entrySize.width ** 2 + entrySize.height ** 2),
       animationName: crossOutLine2,
       animationDuration: "4s",
       animationTimingFunction: "ease-in-out",
